@@ -32,6 +32,7 @@ class AppLoadDataCommandTest extends KernelTestCase
     public function load(): void
     {
         $this->consoleCommand('app:load')
+            ->addOption('songs')
             ->addOption('limit', 3)
             ->execute()
             ->assertSuccessful() // command exit code is 0

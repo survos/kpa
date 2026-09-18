@@ -26,7 +26,7 @@ use Survos\MeiliBundle\Metadata\MeiliIndex;
 )]
 final class Lyrics
 {
-	#[Column(length: 255, nullable: true)]
+	#[Column(length: 255)]
 	#[Id]
 	public ?string $code = null;
 
@@ -43,7 +43,7 @@ final class Lyrics
 		$this->parsedSong = null; // Reset to trigger re-parsing on next access
 	} }
 
-	#[Column(type: Types::JSON, options: ['jsonb' => true], nullable: true)]
+	#[Column(type: Types::JSONB, nullable: true)]
 	public ?array $chordProData = null;
 
 	private ?\ChordPro\Song $parsedSong = null;

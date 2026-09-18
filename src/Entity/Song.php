@@ -13,9 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
+use App\Api\Filter\SortFilter;
+
 use ApiPlatform\Metadata\ApiResource;
 use Survos\ApiGridBundle\Api\Filter\MultiFieldSearchFilter;
 use Survos\FieldBundle\Attribute\EntityMeta;
@@ -23,7 +22,7 @@ use Survos\FieldBundle\Attribute\Field;
 use Survos\FieldBundle\Attribute\RouteIdentity;
 use Survos\FieldBundle\Entity\RouteIdentityTrait;
 use Survos\FieldBundle\Enum\Widget;
-use Survos\MeiliBundle\Api\Filter\FacetsFieldSearchFilter;
+
 use Survos\MeiliBundle\Metadata\Facet;
 use Survos\MeiliBundle\Metadata\MeiliIndex;
 use Survos\StateBundle\Traits\MarkingInterface;
@@ -37,9 +36,13 @@ use Symfony\Component\Workflow\Marking;
 use Doctrine\ORM\Mapping\Column;
 
 use Doctrine\DBAL\Types\Types;
+#[QueryParameter(key: 'title', filter: new PartialSearchFilter(), property: 'title', castToArray: false)]
+#[QueryParameter(key: 'order[:property]', filter: new SortFilter(), properties: ['title', 'year', 'lyricsLength', 'publisher', 'writers'], castToArray: false)]
+#[QueryParameter(key: 'search', property: 'search', filter: new MultiFieldSearchFilter(properties: ['title' => null, 'publisher' => null, 'writers' => null]), properties: ['title', 'publisher', 'writers'], castToArray: false)]
+#[QueryParameter(key: 'facet_filter', property: 'facet_filter', filter: 'kpa.song.facets', properties: ['school', 'year'], schema: ['type' => 'array', 'items' => ['type' => 'string']])]
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[RouteIdentity(field: 'id', key: 'songId')]
-#[ApiResource(operations: [
+#[ApiResource(order: ['id' => \SortDirection::Ascending], operations: [
     new GetCollection(
         uriTemplate: '/songs/export.{_format}',
         formats: ['csv' => ['text/csv']],
@@ -56,10 +59,6 @@ use Doctrine\DBAL\Types\Types;
         ),
     ],
     normalizationContext: ['groups' => ['song.read', 'rp']])]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
-#[ApiFilter(OrderFilter::class, properties: ['title', 'year', 'lyricsLength', 'publisher', 'writers'])]
-#[ApiFilter(MultiFieldSearchFilter::class, properties: ['title', 'publisher', 'writers'])]
-#[ApiFilter(FacetsFieldSearchFilter::class, properties: ['school', 'year'], arguments: ["searchParameterName" => "facet_filter"]) ]
 #[Groups(['song.read'])]
 #[Assert\EnableAutoMapping]
 #[EntityMeta(

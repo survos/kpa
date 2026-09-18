@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
+use App\Api\Filter\SortFilter;
+use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
+
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\VideoRepository;
@@ -18,11 +19,16 @@ use Survos\FieldBundle\Attribute\Field;
 use Survos\FieldBundle\Attribute\RouteIdentity;
 use Survos\FieldBundle\Entity\RouteIdentityTrait;
 use Survos\FieldBundle\Enum\Widget;
-use Survos\MeiliBundle\Api\Filter\FacetsFieldSearchFilter;
+
 use Survos\MeiliBundle\Metadata\MeiliIndex;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource(
+#[QueryParameter(key: 'title', filter: new PartialSearchFilter(), property: 'title', castToArray: false)]
+#[QueryParameter(key: 'description', filter: new PartialSearchFilter(), property: 'description', castToArray: false)]
+#[QueryParameter(key: 'order[:property]', filter: new SortFilter(), properties: ['title', 'year'], castToArray: false)]
+#[QueryParameter(key: 'search', property: 'search', filter: new MultiFieldSearchFilter(properties: ['title' => null, 'description' => null]), properties: ['title', 'description'], castToArray: false)]
+#[QueryParameter(key: 'facet_filter', property: 'facet_filter', filter: 'kpa.video.facets', properties: ['school', 'year'], schema: ['type' => 'array', 'items' => ['type' => 'string']])]
+#[ApiResource(order: ['id' => \SortDirection::Ascending],
     operations: [new Get(),
 
         new GetCollection(
@@ -41,16 +47,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ]
 )]
 
-#[ApiFilter(OrderFilter::class, properties: ['title','year'])]
-#[ApiFilter(SearchFilter::class, properties: ['title'=>'partial', 'description' => 'partial'])]
-#[ApiFilter(MultiFieldSearchFilter::class, properties: ['title', 'description'])]
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[Groups(['video.read'])]
 
-#[ApiFilter(FacetsFieldSearchFilter::class,
-    properties: ['school','year'],
-    arguments: [ "searchParameterName" => "facet_filter"]
-)]
 #[MeiliIndex(
     ui: ['icon' => 'Video'],
     filterable: ['school','year'],

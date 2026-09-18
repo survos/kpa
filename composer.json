@@ -16,7 +16,7 @@
         "ext-sqlite3": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "api-platform/core": "^4.3.x-dev",
+        "api-platform/core": "^4.3.x-dev || ^5.0",
         "doctrine/doctrine-bundle": "^3.2.4",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.7",
@@ -67,6 +67,7 @@
         "survos/tabler-bundle": "^2.10.28",
         "survos/tui-extras-bundle": "^2.10.19",
         "survos/wordpress-bundle": "^2.24",
+        "symfony/ai-agent": "^0.8",
         "symfony/ai-bundle": "^0.8.0",
         "symfony/asset": "^8.1",
         "symfony/asset-mapper": "^8.1.1",
@@ -203,5 +204,11 @@
         "index": [
             "php -d memory_limit=512M bin/console grid:index --reset"
         ]
-    }
+    },
+    "repositories": [{
+        "name": "survos-satis",
+        "type": "composer",
+        "url": "https://satis.survos.com",
+        "only": ["survos/deployment-bundle", "survos/omeka-bundle"]
+    }]
 }

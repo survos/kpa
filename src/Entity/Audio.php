@@ -3,27 +3,25 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Workflow\AudioWFDefinition;
 use App\Workflow\FileAssetWFDefinition;
 use Doctrine\ORM\Mapping as ORM;
 use Survos\FieldBundle\Attribute\EntityMeta;
-use Survos\MeiliBundle\Api\Filter\FacetsFieldSearchFilter;
+
 use Survos\MeiliBundle\Metadata\MeiliIndex;
-use ApiPlatform\Metadata\ApiFilter;
+
 use Survos\StateBundle\Traits\MarkingInterface;
 use Survos\StateBundle\Traits\MarkingTrait;
 
+#[QueryParameter(key: 'facet_filter', property: 'facet_filter', filter: 'kpa.audio.facets', properties: ['format', 'variant'], schema: ['type' => 'array', 'items' => ['type' => 'string']])]
 #[ORM\Entity]
-#[ApiResource(operations: [
+#[ApiResource(order: ['id' => \SortDirection::Ascending], operations: [
     new Get(),
     new GetCollection(name: self::DOCTRINE_ROUTE),
 ])]
-#[ApiFilter(FacetsFieldSearchFilter::class,
-    properties: ['format', 'variant'],
-    arguments: ["searchParameterName" => "facet_filter"]
-)]
 #[EntityMeta(
     icon: 'tabler:wave-sine',
     order: 40,

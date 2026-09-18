@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
+use App\Api\Filter\SortFilter;
+use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
+
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Api\Filter\FacetsFieldSearchFilter;
@@ -20,9 +21,19 @@ use Survos\StateBundle\Traits\MarkingInterface;
 use Survos\StateBundle\Traits\MarkingTrait;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+#[QueryParameter(key: 'filename', filter: new PartialSearchFilter(), property: 'filename', castToArray: false)]
+#[QueryParameter(key: 'relativePath', filter: new PartialSearchFilter(), property: 'relativePath', castToArray: false)]
+#[QueryParameter(key: 'path', filter: new PartialSearchFilter(), property: 'path', castToArray: false)]
+#[QueryParameter(key: 'dirname', filter: new PartialSearchFilter(), property: 'dirname', castToArray: false)]
+#[QueryParameter(key: 'extension', filter: new PartialSearchFilter(), property: 'extension', castToArray: false)]
+#[QueryParameter(key: 'mimeType', filter: new PartialSearchFilter(), property: 'mimeType', castToArray: false)]
+#[QueryParameter(key: 'type', filter: new PartialSearchFilter(), property: 'type', castToArray: false)]
+#[QueryParameter(key: 'order[:property]', filter: new SortFilter(), properties: ['filename', 'size', 'modifiedTime', 'duration', 'extension', 'mimeType', 'type'], castToArray: false)]
+#[QueryParameter(key: 'search', property: 'search', filter: new MultiFieldSearchFilter(properties: ['filename' => null, 'relativePath' => null, 'dirname' => null]), properties: ['filename', 'relativePath', 'dirname'], castToArray: false)]
+#[QueryParameter(key: 'facet_filter', property: 'facet_filter', filter: 'kpa.fileasset.facets', properties: ['type'], schema: ['type' => 'array', 'items' => ['type' => 'string']])]
 #[ORM\Entity(repositoryClass: FileAssetRepository::class)]
 #[ORM\UniqueConstraint(name: 'file_asset_path', columns: ['path'])]
-#[ApiResource(operations: [
+#[ApiResource(order: ['id' => \SortDirection::Ascending], operations: [
     new GetCollection(
         uriTemplate: '/file-assets/export.{_format}',
         formats: ['csv' => ['text/csv']],
@@ -33,21 +44,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
     new Get(),
     new GetCollection(name: self::DOCTRINE_ROUTE),
 ])]
-#[ApiFilter(SearchFilter::class, properties: [
-    'filename' => 'partial',
-    'relativePath' => 'partial',
-    'path' => 'partial',
-    'dirname' => 'partial',
-    'extension' => 'partial',
-    'mimeType' => 'partial',
-    'type' => 'partial',
-])]
-#[ApiFilter(OrderFilter::class, properties: ['filename', 'size', 'modifiedTime', 'duration', 'extension', 'mimeType', 'type'])]
-#[ApiFilter(MultiFieldSearchFilter::class, properties: ['filename', 'relativePath', 'dirname'])]
-#[ApiFilter(FacetsFieldSearchFilter::class,
-    properties: ['type'],
-    arguments: ["searchParameterName" => "facet_filter"]
-)]
 #[EntityMeta(
     icon: 'tabler:files',
     order: 30,
@@ -111,7 +107,7 @@ class FileAsset implements MarkingInterface
         #[ORM\Column(type: Types::FLOAT, nullable: true)]
         #[Groups(['fileasset.csv'])]
         public ?float $duration = null,
-        #[ORM\Column(type: Types::JSON, options: ['jsonb' => true], nullable: true)]
+        #[ORM\Column(type: Types::JSONB, nullable: true)]
         public ?array $probedData = null,
         #[ORM\Column(type: 'json', nullable: true)]
         public ?array $lyricsCandidates = null,
