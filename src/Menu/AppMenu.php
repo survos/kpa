@@ -14,7 +14,6 @@ use Survos\MeiliBundle\Service\MeiliService;
 use Survos\TablerBundle\Event\MenuEvent;
 use Survos\TablerBundle\Menu\MenuBuilderTrait;
 use Survos\TablerBundle\Service\ContextService;
-use Survos\TablerBundle\Traits\KnpMenuHelperTrait;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
