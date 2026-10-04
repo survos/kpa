@@ -19,8 +19,5 @@ survos_tabler:
     text: KP
 
   menu_options:
-    entityClass: null
-    video: null
-    columns: null
     frontPage: false
     showAppMenu: true
