@@ -21,7 +21,6 @@
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.7",
         "easycorp/easyadmin-bundle": "^5.1",
-        "friendsofsymfony/jsrouting-bundle": "^3.6.1",
         "google/apiclient": "^2.19.4",
         "inspector-apm/inspector-symfony": "^1.11.5",
         "intelektron/chordpro-php": "^1.1.1",
@@ -190,7 +189,6 @@
         ],
         "auto-scripts": {
             "cache:clear --no-warmup": "symfony-cmd",
-            "fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd",
             "cache:clear": "symfony-cmd"

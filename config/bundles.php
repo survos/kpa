@@ -17,7 +17,6 @@ return [
     Survos\ImgproxyBundle\SurvosImgproxyBundle::class => ['all' => true],
     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
     Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
-    FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Survos\AuthBundle\SurvosAuthBundle::class => ['all' => true],
     KnpU\OAuth2ClientBundle\KnpUOAuth2ClientBundle::class => ['all' => true],
@@ -59,4 +58,5 @@ return [
     Survos\ElasticBundle\SurvosElasticBundle::class => ['all' => true],
     Survos\WordpressBundle\SurvosWordpressBundle::class => ['all' => true],
     Survos\SchemaOrgBundle\SurvosSchemaOrgBundle::class => ['all' => true],
+    Survos\Grid\SurvosGridBundle::class => ['all' => true],
 ];
