@@ -14,7 +14,7 @@ class AppLoadDataCommandTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        self::markTestSkipped('Legacy app:load import is no longer used; restore its Omeka configuration before reviving this test.');
+        self::markTestSkipped('Omeka publishing proof of concept is no longer used; restore Omeka configuration before reviving this test.');
 
         parent::setUp();
 
