@@ -23,6 +23,7 @@
  * }>
  */
 return [
+    'router' => ['path' => './assets/router.js'],
     'app' => ['path' => './assets/app.js', 'entrypoint' => true],
     'admin' => ['path' => './assets/admin.js', 'entrypoint' => true],
     'meili' => ['path' => './assets/meili.js', 'entrypoint' => true],
@@ -160,8 +161,8 @@ return [
     'instantsearch.js' => ['version' => '4.110.0'],
     'instantsearch.js/es/widgets' => ['version' => '4.110.0'],
     'instantsearch-ui-components' => ['version' => '0.34.0'],
-    '@meilisearch/instant-meilisearch' => ['version' => '0.31.3'],
-    'meilisearch' => ['version' => '0.60.0'],
+    '@meilisearch/instant-meilisearch' => ['version' => '0.31.4'],
+    'meilisearch' => ['version' => '0.57.0'],
     'instantsearch.css/themes/algolia.min.css' => ['version' => '8.19.0', 'type' => 'css'],
     'stimulus-attributes' => ['version' => '1.0.2'],
     'datatables.net-bs5/css/dataTables.bootstrap5.min.css' => ['version' => '3.1.3', 'type' => 'css'],
@@ -201,4 +202,5 @@ return [
     'd3-color' => ['version' => '3.0.1'],
     'd3-ease' => ['version' => '3.0.1'],
     'd3-drag' => ['version' => '3.0.0'],
+    '@symfony/ux-router' => ['path' => './vendor/symfony/ux-router/assets/dist/router_controller.js'],
 ];

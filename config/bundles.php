@@ -59,4 +59,6 @@ return [
     Survos\WordpressBundle\SurvosWordpressBundle::class => ['all' => true],
     Survos\SchemaOrgBundle\SurvosSchemaOrgBundle::class => ['all' => true],
     Survos\Grid\SurvosGridBundle::class => ['all' => true],
+    Survos\MenuBundle\SurvosMenuBundle::class => ['all' => true],
+    Symfony\UX\Router\UXRouterBundle::class => ['all' => true],
 ];
