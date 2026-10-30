@@ -30,6 +30,13 @@ framework:
             # delay Meilisearch updates, the two want different retry behaviour (ES answers
             # 429 when its write queue saturates), and each can be consumed and stopped by
             # its own worker.
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: async
+                retry_strategy:
+                    max_retries: 3
+                    multiplier: 2
             elastic:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:

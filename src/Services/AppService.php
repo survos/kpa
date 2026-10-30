@@ -349,11 +349,11 @@ class AppService
 
     public function testGoogleApi()
     {
-        $client = new Google\Client();
+        $client = new \Google\Client();
         $client->setApplicationName("Client_Library_Examples");
         $client->setDeveloperKey("YOUR_APP_KEY");
 
-        $service = new Google\Service\Books($client);
+        $service = new \Google\Service\Books($client);
         $query = 'Henry David Thoreau';
         $optParams = [
             'filter' => 'free-ebooks',

@@ -5,7 +5,8 @@ namespace App\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Routing\RouterInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Routing\RouterInterface;
 
 class MusicDisplayField # implements FieldInterface
 {

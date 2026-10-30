@@ -16,8 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Survos\ApiGridBundle\Api\Filter\MultiFieldSearchFilter;
 use Survos\FieldBundle\Attribute\EntityMeta;
 use Survos\MeiliBundle\Metadata\MeiliIndex;
-use Survos\StateBundle\Traits\MarkingInterface;
-use Survos\StateBundle\Traits\MarkingTrait;
+use App\Entity\Traits\MarkingTrait;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FileAssetRepository::class)]
@@ -59,7 +58,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     ui: ['icon' => 'FileAsset'],
     filterable: ['type'],
 )]
-class FileAsset implements MarkingInterface
+class FileAsset
 {
     use MarkingTrait;
 

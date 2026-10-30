@@ -1,4 +1,4 @@
 survos_storage:
-   debug; true
+   debug: true
   # this is generated automatically with bin/console storage:config <api-key>
 

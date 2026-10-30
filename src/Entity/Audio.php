@@ -12,8 +12,7 @@ use Survos\FieldBundle\Attribute\EntityMeta;
 use Survos\MeiliBundle\Api\Filter\FacetsFieldSearchFilter;
 use Survos\MeiliBundle\Metadata\MeiliIndex;
 use ApiPlatform\Metadata\ApiFilter;
-use Survos\StateBundle\Traits\MarkingInterface;
-use Survos\StateBundle\Traits\MarkingTrait;
+use App\Entity\Traits\MarkingTrait;
 
 #[ORM\Entity]
 #[ApiResource(operations: [
@@ -35,7 +34,7 @@ use Survos\StateBundle\Traits\MarkingTrait;
     ui: ['icon' => 'Audio'],
     filterable: ['format', 'variant'],
 )]
-class Audio implements MarkingInterface
+class Audio
 {
     use MarkingTrait;
 

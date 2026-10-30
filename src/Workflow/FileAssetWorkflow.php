@@ -6,7 +6,6 @@ use App\Entity\FileAsset;
 use App\Workflow\FileAssetWFDefinition as WF;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
-use Survos\StateBundle\Attribute\Workflow;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Workflow\Attribute\AsGuardListener;
 use Symfony\Component\Workflow\Attribute\AsTransitionListener;

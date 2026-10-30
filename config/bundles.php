@@ -41,7 +41,6 @@ return [
     Survos\StorageBundle\SurvosStorageBundle::class => ['all' => true],
     Survos\EzBundle\SurvosEzBundle::class => ['all' => true],
     Survos\TablerBundle\SurvosTablerBundle::class => ['all' => true],
-    Survos\StateBundle\SurvosStateBundle::class => ['all' => true],
     Survos\OmekaBundle\SurvosOmekaBundle::class => ['all' => true],
     Survos\ApiGridBundle\SurvosApiGridBundle::class => ['all' => true],
     Survos\JsTwigBundle\SurvosJsTwigBundle::class => ['all' => true],
@@ -61,4 +60,8 @@ return [
     Survos\Grid\SurvosGridBundle::class => ['all' => true],
     Survos\MenuBundle\SurvosMenuBundle::class => ['all' => true],
     Symfony\UX\Router\UXRouterBundle::class => ['all' => true],
+    Survos\WorkflowExtrasBundle\SurvosWorkflowExtrasBundle::class => ['all' => true],
+    Survos\WorkflowMessengerBundle\SurvosWorkflowMessengerBundle::class => ['all' => true],
+    Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
+    Survos\Tree\SurvosTreeBundle::class => ['all' => true],
 ];

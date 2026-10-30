@@ -26,8 +26,7 @@ use Survos\FieldBundle\Enum\Widget;
 use Survos\MeiliBundle\Api\Filter\FacetsFieldSearchFilter;
 use Survos\MeiliBundle\Metadata\Facet;
 use Survos\MeiliBundle\Metadata\MeiliIndex;
-use Survos\StateBundle\Traits\MarkingInterface;
-use Survos\StateBundle\Traits\MarkingTrait;
+use App\Entity\Traits\MarkingTrait;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Attribute\SerializedName;
@@ -76,7 +75,7 @@ use Doctrine\DBAL\Types\Types;
     filterable: ['writersArray', 'publishersArray', 'year', 'lyricsLength', 'fileCount'],
     sortable: ['lyricsLength', 'year', 'title']
 )]
-class Song implements RouteParametersInterface, \Stringable, MarkingInterface
+class Song implements RouteParametersInterface, \Stringable
 {
     use RouteIdentityTrait;
     use MarkingTrait;

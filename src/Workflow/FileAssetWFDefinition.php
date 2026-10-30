@@ -1,29 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Workflow;
 
 use App\Entity\FileAsset;
-use Survos\StateBundle\Attribute\Place;
-use Survos\StateBundle\Attribute\Transition;
-use Survos\StateBundle\Attribute\Workflow;
+use Survos\WorkflowExtrasBundle\Attribute\AsWorkflow;
+use Survos\WorkflowExtrasBundle\Attribute\Place;
+use Survos\WorkflowExtrasBundle\Attribute\Transition;
 
-#[Workflow(supports: [FileAsset::class], name: self::WORKFLOW_NAME)]
+#[AsWorkflow(name: self::WORKFLOW_NAME, supports: [FileAsset::class], description: 'A file asset: probe it, then upload it')]
 class FileAssetWFDefinition
 {
-	public const WORKFLOW_NAME = 'FileAssetWorkflow';
+    public const WORKFLOW_NAME = 'FileAssetWorkflow';
 
-	#[Place(initial: true)]
-	public const PLACE_NEW = 'new';
+    #[Place(initial: true, description: 'File registered')]
+    public const PLACE_NEW = 'new';
 
-	#[Place]
-	public const PLACE_PROBED = 'probed';
+    #[Place(description: 'File probed')]
+    public const PLACE_PROBED = 'probed';
 
-	#[Place]
-	public const PLACE_UPLOADED = 'uploaded';
+    #[Place(description: 'File uploaded')]
+    public const PLACE_UPLOADED = 'uploaded';
 
-	#[Transition(from: [self::PLACE_NEW], to: self::PLACE_PROBED)]
-	public const TRANSITION_PROBE = 'probe';
+    #[Transition(from: self::PLACE_NEW, to: self::PLACE_PROBED, description: 'Probe the file')]
+    public const TRANSITION_PROBE = 'probe';
 
-	#[Transition(from: [self::PLACE_PROBED], to: self::PLACE_UPLOADED)]
-	public const TRANSITION_UPLOAD = 'upload';
+    #[Transition(from: self::PLACE_PROBED, to: self::PLACE_UPLOADED, description: 'Upload the file')]
+    public const TRANSITION_UPLOAD = 'upload';
 }
