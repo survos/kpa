@@ -52,7 +52,7 @@ final class ExportMasterSongListCommand
     public function __invoke(
         SymfonyStyle $io,
         #[Argument('path to the master song list .xlsx')]
-        string $source = '/media/tac/x10a/kpa-dropbox/Kid Pan Alley Dropbox/Songs-Recordings/-George Mason University archive working/-Master Song List.xlsx',
+        string $source,
         #[Option('output CSV path')]
         string $output = 'data/master-song-list.csv',
         #[Option('worksheet name')]

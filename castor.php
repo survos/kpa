@@ -57,19 +57,31 @@ function get_console(): array
 // bars) so slow stages like the bulk docx split are visible live.
 // ---------------------------------------------------------------------------
 
-const SONGS_DROPBOX_GMU       = '/media/tac/x10a/kpa-dropbox/Kid Pan Alley Dropbox/Songs-Recordings/-George Mason University archive working';
-const SONGS_LYRICS_BY_LOCATION = SONGS_DROPBOX_GMU . '/Lyrics KPA/Lyrics by location';
-const SONGS_LYRICS_INDIVIDUAL  = SONGS_DROPBOX_GMU . '/Lyrics KPA/Lyrics individual songs';
-const SONGS_RESIDENCY_CURRENT  = SONGS_DROPBOX_GMU . '/!!Residency documentation/Residencies current FY25-26';
-const SONGS_STAGING_DIR        = 'var/data';
-const SONGS_MASTER_CSV         = 'data/master-song-list.csv';
-const SONGS_AUDIO_JSONL        = 'data/audio.jsonl';
-const SONGS_RECORDINGS_ROOT    = '/media/tac/x10a/kpa-dropbox/Kid Pan Alley Dropbox/Songs-Recordings';
+const SONGS_STAGING_DIR = 'var/data';
+const SONGS_MASTER_CSV = 'data/master-song-list.csv';
+const SONGS_AUDIO_JSONL = 'data/audio.jsonl';
+
+/** Resolve the downloaded archive on this machine, rather than a fixed Linux mount. */
+function songs_recordings_root(): string
+{
+    $env = load_dot_env();
+    $root = trim($env['KPA_RECORDINGS_ROOT'] ?? '');
+    if ($root === '' || !is_dir($root)) {
+        throw new \RuntimeException('Set KPA_RECORDINGS_ROOT in .env.local to the downloaded Songs-Recordings directory.');
+    }
+
+    return rtrim($root, '/');
+}
+
+function songs_gmu_root(): string
+{
+    return songs_recordings_root() . '/-George Mason University archive working';
+}
 
 #[AsTask(namespace: 'songs', name: 'export-csv', description: 'Re-export the Master Song List .xlsx → data/master-song-list.csv')]
 function songs_export_csv(): void
 {
-    run([...get_console(), 'app:export-master-songlist-csv']);
+    run([...get_console(), 'app:export-master-songlist-csv', songs_gmu_root() . '/-Master Song List.xlsx']);
 }
 
 #[AsTask(namespace: 'songs', name: 'split-location', description: 'Bulk-split Lyrics KPA/Lyrics by location/*.docx → var/data/<slug>/<slug>-lyrics.cho (slow — Dropbox drive)')]
@@ -77,21 +89,21 @@ function songs_split_location(): void
 {
     io()->title('Bulk split: Lyrics by location');
     io()->note('Source is on the x10a drive — expect this to take a few minutes.');
-    run([...get_console(), 'app:split-lyrics-docx', SONGS_LYRICS_BY_LOCATION, '--force', '--no-preview']);
+    run([...get_console(), 'app:split-lyrics-docx', songs_gmu_root() . '/Lyrics KPA/Lyrics by location', '--force', '--no-preview']);
 }
 
 #[AsTask(namespace: 'songs', name: 'split-residency', description: 'Bulk-split current residency .docx files → var/data/')]
 function songs_split_residency(): void
 {
     io()->title('Bulk split: Residencies current FY25-26');
-    run([...get_console(), 'app:split-lyrics-docx', SONGS_RESIDENCY_CURRENT, '--force', '--no-preview']);
+    run([...get_console(), 'app:split-lyrics-docx', songs_gmu_root() . '/!!Residency documentation/Residencies current FY25-26', '--force', '--no-preview']);
 }
 
 #[AsTask(namespace: 'songs', name: 'split-individual', description: 'Bulk-split Lyrics KPA/Lyrics individual songs/*.docx → var/data/')]
 function songs_split_individual(): void
 {
     io()->title('Bulk split: Lyrics individual songs');
-    run([...get_console(), 'app:split-lyrics-docx', SONGS_LYRICS_INDIVIDUAL, '--force', '--no-preview']);
+    run([...get_console(), 'app:split-lyrics-docx', songs_gmu_root() . '/Lyrics KPA/Lyrics individual songs', '--force', '--no-preview']);
 }
 
 #[AsTask(namespace: 'songs', name: 'enrich', description: 'Drop <slug>-metadata.json next to each <slug>-lyrics.cho + create dirs for CSV-only songs')]
@@ -115,7 +127,7 @@ function songs_scan_audio(int $probe = 0): void
         // ffprobe runs per file over the Dropbox mount; it dominates the scan.
         io()->note(sprintf('Probe level %d — expect this to take much longer.', $probe));
     }
-    run([...get_console(), 'import:dir', SONGS_RECORDINGS_ROOT,
+    run([...get_console(), 'import:dir', songs_recordings_root(),
         '--output=' . SONGS_AUDIO_JSONL,
         '--extensions=mp3,wav,aif,aiff,flac,m4a,ogg,wma',
         '--exclude-dirs=Cache,History',

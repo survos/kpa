@@ -1,164 +1,101 @@
-# # ~~
+# Kid Pan Alley archive
 
-Archives for Kid Pan Alley
+KPA stores songs, lyrics, recordings, source files, and YouTube video metadata in Doctrine. EasyAdmin provides authenticated editing; SearchBundle queries an Elasticsearch projection of the catalog.
 
+## Development setup
 
-Also: https://github.com/kaimatt1/kid-pan
-
-
-## Installation
+The current baseline is PHP 8.5, Symfony 8.2.0-BETA1, API Platform 5, and EasyAdmin 5.9. The working branch is `main`.
 
 ```bash
-git clone git@github.com:tacman/kpa kpa && cd kpa
-echo "DATABASE_URL=sqlite:///%kernel.project_dir%/var/data.db" > .env.local
-echo "DATABASE_URL=sqlite:///%kernel.project_dir%/var/data_test.db" > .env.test
+git clone git@github.com:survos/kpa.git
+cd kpa
 composer install
-bin/console doctrine:schema:update --force
+```
+
+Configure `DATABASE_URL` and application credentials in `.env.local`; do not overwrite an existing file. The normal application database is PostgreSQL. Tests use an isolated in-memory SQLite database.
+
+For local bundle development, install from Packagist first, then link the local monorepo:
+
+```bash
+php ../mono/link "$PWD"
+php bin/console cache:clear
 symfony server:start -d
 symfony open:local
 ```
 
-```bash
-curl -k -s 'https://127.0.0.1:8010//meili/meiliAdmin/meili/indexes/kpa_song/search' \
-  -H 'Content-Type: application/json' \
-  --data-raw '{
-    "q":"gratitude",
-    "hybrid":{"embedder":"small","semanticRatio":0.3}
-  }' | jq '{estimatedTotalHits, hitsCount: (.hits|length)}'
+The current EZ header integration uses unpublished local changes in `../mono/bu/ez-bundle`; use the linker for this development setup. Review pending migrations and the target database before applying schema changes. Do not drop an existing database to reload the catalog.
 
+The homepage links to `/admin`. Anonymous visitors are redirected to `/login`; access requires `ROLE_ADMIN`. The dashboard currently exposes Songs and Files. `/ez-meili` is no longer the application dashboard.
+
+## Recovering and loading the catalog
+
+See [Songs import](docs/SongsImport.md) for source folders, extraction, ingestion, and verification.
+
+The expected source is the Kid Pan Alley Dropbox archive:
+
+```text
+Songs-Recordings/
+└── -George Mason University archive working/
+    ├── -Master Song List.xlsx
+    └── Lyrics KPA/
+        ├── Lyrics by location/
+        └── Lyrics individual songs/
 ```
 
+The old Linux source was under `/media/tac/x10a/kpa-dropbox/`. That is historical, not a portable default. On November 8, 2026, that archive was not located in the bounded directory search of the mounted Mac `/Volumes/X10`; Dropbox recovery still requires signing into the account containing the KPA files. Do not assume the Mac X10 and Linux x10a have identical contents.
 
-## Running tests
+Once downloaded, set the actual `Songs-Recordings` directory in `.env.local`:
+
+```dotenv
+KPA_RECORDINGS_ROOT="/absolute/path/to/Songs-Recordings"
+```
+
+Start with the spreadsheet and lyrics folders rather than rescanning all audio:
 
 ```bash
-bin/console doctrine:schema:update --force --env=test
-bin/console doctrine:fixtures:load -n --env=test
+castor songs:export-csv
+castor songs:split-location
+castor songs:split-individual
+castor songs:enrich
+php bin/console app:ingest-cho-dir var/data --dry --limit=10
+castor songs:ingest
+castor songs:status
+```
+
+Generated ChordPro files and metadata live in `var/data/<slug>/`. If that staging tree has already been recovered, reuse it and start with the dry-run ingestion step. Do not rerun extraction with `--force` over curated lyrics without reviewing the files first; the Castor split tasks currently use that flag.
+
+## Videos
+
+The existing YouTube loader is:
+
+```bash
+php bin/console app:load --video
+```
+
+It needs `YOUTUBE_API_KEY` and `YOUTUBE_CHANNEL`, fetches the channel through the YouTube API, and matches videos to existing songs. Load songs first. This is a live API import, not a local video-archive restore; it has not been exercised during the current archive recovery.
+
+## Elasticsearch
+
+Keep `survos/search-bundle` and `survos/elastic-bundle`. Configuration is in `config/packages/survos_search.yaml`: adapter `es`, prefix `kpa_`, connection from `ELASTICSEARCH_DSN`. The local default is `elasticsearch://127.0.0.1:9200`.
+
+After importing the database records:
+
+```bash
+php bin/console elastic:index:create app_song
+php bin/console elastic:index:populate app_song
+php bin/console elastic:index:create app_file_asset
+php bin/console elastic:index:populate app_file_asset
+php bin/console elastic:index:status
+```
+
+The homepage Search links open `/entity/app_song/search` and `/entity/app_file_asset/search`. These indexes were created locally but contained zero documents before data recovery. Ordinary reindexing does not need `--drop`.
+
+Semantic retrieval is not configured for KPA yet. SearchBundle's ES adapter supports vector/hybrid queries, but this application still needs an embedding profile, persisted vectors, and their ES projection. Installing the bundle does not enable semantic search automatically.
+
+## Tests
+
+```bash
 vendor/bin/phpunit
 ```
 
-## Search + Lyrics Indexing
-
-Use these commands when Song search results are stale, missing lyrics, or sorting/filtering fields changed.
-
-```bash
-# 1) (Optional) reset Song index settings/documents if the index is in a bad state
-bin/console meili:settings:update song --force --wait --reset
-
-# 2) Re-apply Song index settings (filterable/sortable/searchable fields)
-bin/console meili:settings:update song --force --wait
-
-# 3) Repopulate Song documents into Meili
-bin/console meili:populate song --sync --wait
-
-# 4) Sync local index metadata table (index_info)
-bin/console meili:registry:sync
-```
-
-Lyrics ingestion (DB-first):
-
-```bash
-# Build SongLyrics links from already-extracted FileAsset.lyricsCandidates
-bin/console app:link-lyrics
-
-# One-time backfill from legacy JSONL extraction file
-bin/console app:ingest-lyrics-jsonl data/lyrics.jsonl
-```
-
-Quick verification:
-
-```bash
-bin/console dbal:run-sql "SELECT COUNT(*) AS songs_with_lyrics FROM song WHERE lyrics IS NOT NULL AND lyrics <> ''"
-bin/console dbal:run-sql "SELECT index_name, document_count FROM index_info WHERE index_name='kpa_song'"
-```
-
-If browser templates throw `Twig function path is not configured`, ensure JS-Twig support is installed and routes are generated:
-
-```bash
-composer require survos/js-twig-bundle
-bin/console cache:clear
-```
-
-
-    usage here.
-
-## Database
-
-![Database Diagram](assets/db.svg)
-![Database Diagram](assets/er.svg)
-
-## MusicXML
-
-nice progression from simple
-https://www.music-for-music-teachers.com/twinkle-twinkle.html
-
-
-## Setup
-
-install csvkit (sudo apt install csvkit)
-convert the excel files to csv (in2csv kpa-songs.xlsx > songs.csv)
-so we don't need spreadsheet kit.
-
-
-```bash
-git clone git@github.com:survos/kidpanalley.git kpa && cd kpa
-git checkout tac
-composer install
-./c grid:index --reset
-
-
-bin/console d:d:drop --force
-bin/console d:d:create
-bin/console doctrine:schema:update --force --complete
-bin/console app:load-data
-bin/console grid:index
-symfony server:start -d
-symfony open:local --path=/song
-```
-
-## Testing
-
-```bash
-bin/console d:sch:update --force --env=test
-APP_ENV=test bin/create-admins.sh
-bin/console app:load --songs --video --env=test
-
-bin/console survos:crawl --env=test
-bin/console survos:crawl:smoke
-bin/console survos:make:crawl-tests
-
-vendor/bin/phpunit tests
-@todo: add survos_commands to survos_crawler.yaml ignore
-```
-Tools for KPA
-
-Load the exists assets (youtube and songs) via
-
-```bash
-bin/console app:load-data
-```
-
-Database Tables
-
-* Videos: from youtube now, eventually from Dropbox too.
-* Photos: Eventually from Dropbox
-* Schools: residencies
-* Songs: 5K from the spreadsheet.  Talented Clementine and Best Friends _could_ be added.
-* User: for permissions
-
-## Other projects
-
-// https://www.youtube.com/watch?v=NeRjdX06_n8&t=186s if it were a generalized video / transcript research site
-
-
-*build with survos/doc-bundle*
-
-## Ideas
-
-use ChordPro as canonical format
-
-* https://github.com/pathawks/Christmas-Songs
-* https://github.com/joeycortez42/worship/tree/master/songs
-* https://github.com/mattgraham/worship (OnSong format)
-
-Move to huggingface?
+The suite creates its own SQLite schema where needed; no manual fixture loading or development database reset is required. It covers admin access and API filters. Four older crawl/import tests are currently skipped.
