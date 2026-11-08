@@ -73,10 +73,12 @@ class Song implements RouteParametersInterface, \Stringable
     public const DOCTRINE_ROUTE = 'doctrine_songs';
 
     #[ORM\Column(type: Types::JSONB, nullable: true)]
+    #[Field(visible: false)]
     #[Ignore]
     public ?array $embedding = null;
 
     #[ORM\Column(length: 64, nullable: true)]
+    #[Field(visible: false)]
     #[Ignore]
     public ?string $embeddingFingerprint = null;
 

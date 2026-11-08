@@ -25,6 +25,11 @@ class SongCrudController extends BaseCrudController
             ->setVirtual(true)
             ->setSortable(false);
         foreach (parent::configureFields($pageName) as $field) {
+            // The legacy EZ fallback still asks EasyAdmin to infer every Doctrine column.
+            // Vector caches are internal search state, not editable catalog fields.
+            if (in_array($field->getAsDto()->getProperty(), ['embedding', 'embeddingFingerprint'], true)) {
+                continue;
+            }
             yield $field;
         }
     }

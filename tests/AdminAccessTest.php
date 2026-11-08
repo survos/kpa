@@ -46,11 +46,21 @@ final class AdminAccessTest extends WebTestCase
         $user = (new User())->setEmail('admin@example.test')->setPassword('unused')->setRoles(['ROLE_ADMIN']);
         $em->persist($user);
         $em->flush();
+        $em->getConnection()->insert('song', [
+            'id' => 'embedded-song',
+            'title' => 'Song with a vector cache',
+            'marking' => 'new',
+            'embedding' => json_encode(array_fill(0, 768, 0.1), JSON_THROW_ON_ERROR),
+            'embedding_fingerprint' => str_repeat('a', 64),
+        ]);
         $client->loginUser($user);
         $client->request('GET', '/admin');
         self::assertResponseRedirects('/admin/song');
         $client->followRedirect();
         self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('body', 'Song with a vector cache');
+        self::assertSelectorNotExists('[data-column="embedding"]');
+        self::assertSelectorNotExists('[data-column="embeddingFingerprint"]');
         $client->request('GET', '/admin/file-asset');
         self::assertResponseIsSuccessful();
     }
