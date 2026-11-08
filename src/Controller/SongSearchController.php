@@ -18,6 +18,12 @@ final class SongSearchController extends AbstractController
 {
     public function __construct(private SearchProvider $searches, private Searcher $searcher) {}
 
+    #[Route('/search', name: 'app_search', methods: ['GET'])]
+    public function faceted(): Response
+    {
+        return $this->render('song/faceted_search.html.twig');
+    }
+
     #[Route('/songs/search', name: 'song_search', methods: ['GET'])]
     public function __invoke(Request $request): Response
     {

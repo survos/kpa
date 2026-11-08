@@ -35,6 +35,7 @@ final class SongSearchPageTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSame(['lexical', 'vector', 'hybrid'], $modes);
         self::assertSelectorCount(3, 'article');
+        self::assertSelectorTextContains('article', 'Score: 1.000000');
         self::assertSelectorTextContains('article', 'Follow me & sing');
         self::assertSelectorTextNotContains('article', '{title:');
     }

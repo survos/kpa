@@ -16,7 +16,7 @@
     <button class="btn btn-primary">Search</button>
 </form>
 <p class="small text-muted">Temporary recovered catalog: 783 songs have lyrics; other matches rely on titles and metadata. Two suspect lyrics records are excluded from semantic results pending review.</p>
-<p class="small text-muted">Showing the top 12 matches in each selected mode.</p>
+<p class="small text-muted">Showing the top 12 matches in each selected mode. Scores use different scales across modes; compare rankings, not score values.</p>
 <div class="row">
 {% for name, result in results %}
     <section class="{{ mode == 'compare' ? 'col-lg-4' : 'col-lg-8' }}">
@@ -26,6 +26,7 @@
             {% set song = hit.data %}
             <article class="card mb-3"><div class="card-body">
                 <h3 class="card-title"><a href="{{ path('song_show', {songId: song.id}) }}">{{ song.title }}</a></h3>
+                <p class="small text-muted">Score: {{ hit.score|number_format(6) }}</p>
                 <p class="small text-muted">{{ song.school }}{% if song.year %} · {{ song.year }}{% endif %}</p>
                 <p>{{ excerpts[song.id]|default('No lyrics in the recovery export.')|striptags|slice(0, 260) }}{% if excerpts[song.id]|length > 260 %}…{% endif %}</p>
             </div></article>

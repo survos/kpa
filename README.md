@@ -133,3 +133,5 @@ Current recovery: 2,324 indexed songs, 2,322 persisted embeddings. A repeat embe
 Two unusually long lyrics records are preserved but excluded from vectors pending source review: `runn-0-running-with-the-moon-tonight` (6,502 characters) and `runn-0-running-with-the-moon-tonight-inspiration` (10,115). The downloaded CSV itself contains multiple drafts, production notes, and generated research in these fields. The temporary recovery guard flags lyrics longer than 6,000 characters; it does not truncate or rewrite the source.
 
 The additive migration `Version20261108160000` adds the vector cache columns. Review pending migrations before applying to an existing database. The code and data changes have only been exercised locally, not deployed.
+
+The integrated `/search` page provides Lexical, Semantic, and Hybrid tabs with shared facets. Semantic controls the cosine cutoff; Hybrid adds a semantic candidate limit. Scores are shown on both integrated results and the `/songs/search` comparison page. The local search-bundle integration is required until its shared changes are released. The homepage links to the integrated page.

@@ -92,7 +92,7 @@ final class AppMenu
 
         $theme = $this->contextService->getOption('theme');
         $this->add($menu, 'app_homepage');
-        $this->add($menu, 'song_search', label: 'Search songs');
+        $this->add($menu, 'app_search', label: 'Search songs');
             $this->add($menu, 'app_load_lyrics');
         if ( ($this->env==='dev') && $this->security->isGranted('ROLE_ADMIN')) {
             $this->add($menu, 'survos_commands');

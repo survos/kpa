@@ -22,6 +22,11 @@ final class SongSearch extends AbstractFieldSearch implements HitTemplateSearchI
     protected function getFieldClass(array $options = []): string { return Song::class; }
     public function getHitTemplate(): ?string { return $this->hitTemplate; }
 
+    public function createQuery(): \Survos\SearchBundle\Search\Query
+    {
+        return parent::createQuery()->setActiveSort(null);
+    }
+
     public function build(array $options = []): void
     {
         $this->setAdapterParameters([]);
@@ -44,7 +49,7 @@ final class SongSearch extends AbstractFieldSearch implements HitTemplateSearchI
         $parameters['mappings']['embedding'] = ['type' => 'dense_vector', 'dims' => SongEmbeddingService::DIMENSIONS, 'index' => true, 'similarity' => 'cosine'];
         $parameters['vectorDimensions'] = SongEmbeddingService::DIMENSIONS;
         $parameters['embeddingProvider'] = $this->embeddings;
-        $parameters['retrievalMode'] = $options['retrievalMode'] ?? 'hybrid';
+        $parameters['retrievalMode'] = $options['retrievalMode'] ?? 'lexical';
         $parameters['documentMapper'] = function (Song $song) use ($fields): array {
             $document = [];
             foreach ($fields as $field) {
@@ -55,5 +60,6 @@ final class SongSearch extends AbstractFieldSearch implements HitTemplateSearchI
             return $document;
         };
         $this->setAdapterParameters($parameters);
+        $this->addAvailableSort(null, 'Relevance');
     }
 }
