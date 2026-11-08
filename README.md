@@ -27,6 +27,18 @@ The current EZ header integration uses unpublished local changes in `../mono/bu/
 
 The homepage links to `/admin`. Anonymous visitors are redirected to `/login`; access requires `ROLE_ADMIN`. The dashboard currently exposes Songs and Files. `/ez-meili` is no longer the application dashboard.
 
+## Temporary CSV recovery
+
+The current local catalog was recovered from `~/Downloads/kpa-export.csv` on November 8, 2026: **2,324 songs, 783 with lyrics**. This is a temporary production export, not the authoritative GMU archive.
+
+```bash
+php bin/console app:import-song-export ~/Downloads/kpa-export.csv --dry-run
+php bin/console app:import-song-export ~/Downloads/kpa-export.csv
+php bin/console elastic:index:populate app_song
+```
+
+The importer preserves song IDs for future video associations, updates by ID, keeps existing values when export cells are empty, and recomputes lyric length. It ignores derived chorus/file counts, does not import videos or recordings, and bypasses legacy ORM indexing listeners. All database changes are transactional. Keep the CSV outside Git.
+
 ## Recovering and loading the catalog
 
 See [Songs import](docs/SongsImport.md) for source folders, extraction, ingestion, and verification.
@@ -88,7 +100,7 @@ php bin/console elastic:index:populate app_file_asset
 php bin/console elastic:index:status
 ```
 
-The homepage Search links open `/entity/app_song/search` and `/entity/app_file_asset/search`. These indexes were created locally but contained zero documents before data recovery. Ordinary reindexing does not need `--drop`.
+The homepage Search links open `/entity/app_song/search` and `/entity/app_file_asset/search`. The local song index now contains the 2,324 recovered songs; the file index remains empty. Ordinary reindexing does not need `--drop`.
 
 Semantic retrieval is not configured for KPA yet. SearchBundle's ES adapter supports vector/hybrid queries, but this application still needs an embedding profile, persisted vectors, and their ES projection. Installing the bundle does not enable semantic search automatically.
 
