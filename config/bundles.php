@@ -31,7 +31,6 @@ return [
     Inspector\Symfony\Bundle\InspectorBundle::class => ['all' => true],
     Jawira\DoctrineDiagramBundle\DoctrineDiagramBundle::class => ['dev' => true, 'test' => true],
     Survos\DocBundle\SurvosDocBundle::class => ['dev' => true, 'test' => true],
-    Survos\MeiliBundle\SurvosMeiliBundle::class => ['all' => true],
     Survos\CodeBundle\SurvosCodeBundle::class => ['dev' => true, 'test' => true],
     Survos\CiineBundle\SurvosCiineBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],

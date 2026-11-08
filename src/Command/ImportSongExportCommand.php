@@ -75,8 +75,7 @@ final class ImportSongExportCommand
             return Command::SUCCESS;
         }
 
-        // Recovery writes deliberately bypass ORM listeners: do not enqueue legacy Meili
-        // indexing or workflows. Rebuild the SearchBundle ES projection after the import.
+        // Bypass listeners during recovery. Rebuild the SearchBundle ES projection after the import.
         $db = $this->em->getConnection();
         $created = $updated = 0;
         $db->transactional(function () use ($db, $metadata, $rows, &$created, &$updated): void {

@@ -42,13 +42,10 @@ class AppController extends AbstractController
     public function homepage(
         EntityMetaRegistry $entityMetaRegistry,
         RouteMetaRegistry $routeMetaRegistry,
-        #[Autowire('%survos_meili.chat%')] array $chatConfig = [],
 //    #[Autowire('%kpa.version%')] ?string $applicationVersion = null, // was in bizkit_version
     )
     {
         $user = $this->getUser();
-        $workspaces = $chatConfig['workspaces'] ?? [];
-        $defaultWorkspace = $workspaces !== [] ? array_key_first($workspaces) : 'default';
         $entities = [];
 
         foreach ($entityMetaRegistry->getByGroup('Catalog') as $descriptor) {
@@ -65,7 +62,6 @@ class AppController extends AbstractController
                 'description' => $descriptor->description,
                 'count' => $this->em->getRepository($descriptor->class)->count([]),
                 'gridRoute' => $listRoute->name,
-                'meiliIndex' => strtolower($descriptor->getShortName()),
                 'order' => $descriptor->order,
             ];
         }
@@ -75,7 +71,6 @@ class AppController extends AbstractController
         return $this->render('app/homepage.html.twig', [
             'user' => $user,
             'dashboardEntities' => $entities,
-            'defaultWorkspace' => $defaultWorkspace,
         ]);
     }
 

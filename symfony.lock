@@ -283,19 +283,6 @@
     "survos/kit-bundle": {
         "version": "2.5.1"
     },
-    "survos/meili-bundle": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "2.0",
-            "ref": "203685352e56485cfb1d3b0fd2900e41d6bdc859"
-        },
-        "files": [
-            "config/packages/survos_meili.yaml",
-            "config/routes/survos_meili.yaml"
-        ]
-    },
     "survos/menu-bundle": {
         "version": "2.42.23"
     },
@@ -343,6 +330,15 @@
         "files": [
             "config/packages/ai.yaml"
         ]
+    },
+    "symfony/ai-ollama-platform": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "8d8a4c5ebfa1423d3e2a2c39cce16b0a270e81f0"
+        }
     },
     "symfony/asset-mapper": {
         "version": "8.0",

@@ -10,8 +10,9 @@ use App\Workflow\AudioWFDefinition;
 use App\Workflow\FileAssetWFDefinition;
 use Doctrine\ORM\Mapping as ORM;
 use Survos\FieldBundle\Attribute\EntityMeta;
+use Survos\FieldBundle\Attribute\Field;
+use Survos\FieldBundle\Enum\Widget;
 
-use Survos\MeiliBundle\Metadata\MeiliIndex;
 use ApiPlatform\Metadata\ApiFilter;
 use App\Entity\Traits\MarkingTrait;
 
@@ -27,10 +28,6 @@ use App\Entity\Traits\MarkingTrait;
     group: 'Catalog',
     label: 'Audio',
     description: 'Audio recordings and generated music metadata.'
-)]
-#[MeiliIndex(
-    ui: ['icon' => 'Audio'],
-    filterable: ['format', 'variant'],
 )]
 class Audio
 {
@@ -51,12 +48,15 @@ class Audio
         #[ORM\JoinColumn(nullable: false)]
         public Song $song,
         #[ORM\Column(length: 255)]
+        #[Field(searchable: true, sortable: true)]
         public string $title,
         #[ORM\Column(length: 16)]
+        #[Field(filterable: true, facet: true, widget: Widget::Select)]
         public string $format,
         #[ORM\Column(type: 'integer', nullable: true)]
         public ?int $size = null,
         #[ORM\Column(length: 32, nullable: true)]
+        #[Field(filterable: true, facet: true, widget: Widget::Select)]
         public ?string $variant = null,
     ) {
         $this->marking = AudioWFDefinition::PLACE_NEW;

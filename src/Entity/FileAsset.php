@@ -16,7 +16,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Survos\ApiGridBundle\Api\Filter\MultiFieldSearchFilter;
 use Survos\FieldBundle\Attribute\EntityMeta;
-use Survos\MeiliBundle\Metadata\MeiliIndex;
+use Survos\FieldBundle\Attribute\Field;
+use Survos\FieldBundle\Enum\Widget;
 use App\Entity\Traits\MarkingTrait;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -50,10 +51,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
     label: 'Files',
     description: 'Source documents, charts, audio, video, and imported file metadata.'
 )]
-#[MeiliIndex(
-    ui: ['icon' => 'FileAsset'],
-    filterable: ['type'],
-)]
 class FileAsset
 {
     use MarkingTrait;
@@ -69,18 +66,22 @@ class FileAsset
     public function __construct(
         #[ORM\Column(type: 'text')]
         #[Groups(['fileasset.csv'])]
+        #[Field(searchable: true)]
         public string $path,
         #[ORM\Column(length: 512)]
         #[Groups(['fileasset.csv'])]
+        #[Field(searchable: true)]
         public string $relativePath,
         #[ORM\Column(length: 255)]
         #[Groups(['fileasset.csv'])]
+        #[Field(searchable: true)]
         public string $filename,
         #[ORM\Column(length: 16)]
         #[Groups(['fileasset.csv'])]
         public string $extension,
         #[ORM\Column(length: 512, nullable: true)]
         #[Groups(['fileasset.csv'])]
+        #[Field(searchable: true)]
         public ?string $dirname = null,
         #[ORM\Column(type: 'integer', nullable: true)]
         #[Groups(['fileasset.csv'])]
@@ -93,6 +94,7 @@ class FileAsset
         public bool $isReadable = true,
         #[ORM\Column(length: 32)]
         #[Groups(['fileasset.csv'])]
+        #[Field(filterable: true, facet: true, widget: Widget::Select)]
         public string $type = 'other',
         #[ORM\Column(length: 255, nullable: true)]
         #[Groups(['fileasset.csv'])]

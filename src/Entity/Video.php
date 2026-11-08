@@ -12,7 +12,6 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Survos\ApiGridBundle\Api\Filter\MultiFieldSearchFilter;
-use Survos\ApiGridBundle\Attribute\MeiliId;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Survos\FieldBundle\Attribute\EntityMeta;
 use Survos\FieldBundle\Attribute\Field;
@@ -20,7 +19,6 @@ use Survos\FieldBundle\Attribute\RouteIdentity;
 use Survos\FieldBundle\Entity\RouteIdentityTrait;
 use Survos\FieldBundle\Enum\Widget;
 
-use Survos\MeiliBundle\Metadata\MeiliIndex;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[QueryParameter(key: 'title', filter: new PartialSearchFilter(), property: 'title', castToArray: false)]
@@ -32,16 +30,13 @@ use Symfony\Component\Serializer\Attribute\Groups;
     operations: [new Get(),
 
         new GetCollection(
-//            provider: MeiliSearchStateProvider::class,
         )],
     normalizationContext: ['groups' => ['video.read', 'rp']]
 )]
 #[RouteIdentity(field: 'youtubeId', key: 'videoId')]
 #[GetCollection(
     name: self::DOCTRINE_ROUTE,
-//    uriTemplate: "meili-videos", // was {indexName}
 //    uriVariables: ["indexName"],
-//    provider: MeiliSearchStateProvider::class,
     normalizationContext: [
         'groups' => ['video.read', 'rp'],
     ]
@@ -50,10 +45,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[Groups(['video.read'])]
 
-#[MeiliIndex(
-    ui: ['icon' => 'Video'],
-    filterable: ['school','year'],
-)]
 #[EntityMeta(
     icon: 'tabler:video',
     order: 20,
@@ -74,7 +65,7 @@ class Video implements RouteParametersInterface, \Stringable
     public private(set) ?int $id = null;
     #[ORM\Column(type: 'string', length: 32, nullable: true)]
     #[Groups('song.read')]
-    #[MeiliId]
+
     #[Field(searchable: true, sortable: true, order: 20)]
     public ?string $youtubeId = null;
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

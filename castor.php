@@ -12,12 +12,6 @@ function hello(): void
     io()->title(sprintf('Hello %s!', $currentUser));
 }
 
-#[AsTask(description: 'Start local docker services')]
-function start_services()
-{
-    run('sudo docker run --rm --name meili -d -p 7700:7700 -v $(pwd)/../meili_data:/meili_data getmeili/meilisearch:latest meilisearch');
-
-}
 #[AsTask(description: 'Purge and re-create the database')]
 function reset_database()
 {

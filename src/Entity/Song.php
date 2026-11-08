@@ -23,8 +23,6 @@ use Survos\FieldBundle\Attribute\RouteIdentity;
 use Survos\FieldBundle\Entity\RouteIdentityTrait;
 use Survos\FieldBundle\Enum\Widget;
 
-use Survos\MeiliBundle\Metadata\Facet;
-use Survos\MeiliBundle\Metadata\MeiliIndex;
 use App\Entity\Traits\MarkingTrait;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
@@ -67,19 +65,20 @@ use Doctrine\DBAL\Types\Types;
     label: 'Songs',
     description: 'Songs, lyrics, credits, recordings, and related media.'
 )]
-#[MeiliIndex(
-    ui: ['icon' => 'Song'],
-    persisted: ['id', 'title', 'chorus', 'year', 'school', 'lyrics', 'lyricsLength', 'writersArray', 'publishersArray', 'description', 'rp', 'fileCount'],
-    searchable: ['lyrics','title','chorus'],
-    filterable: ['writersArray', 'publishersArray', 'year', 'lyricsLength', 'fileCount'],
-    sortable: ['lyricsLength', 'year', 'title']
-)]
 class Song implements RouteParametersInterface, \Stringable
 {
     use RouteIdentityTrait;
     use MarkingTrait;
 
     public const DOCTRINE_ROUTE = 'doctrine_songs';
+
+    #[ORM\Column(type: Types::JSONB, nullable: true)]
+    #[Ignore]
+    public ?array $embedding = null;
+
+    #[ORM\Column(length: 64, nullable: true)]
+    #[Ignore]
+    public ?string $embeddingFingerprint = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Groups(['song.read', 'song.csv', 'searchable', 'video.read'])]
@@ -93,13 +92,13 @@ class Song implements RouteParametersInterface, \Stringable
 
     #[ORM\Column(type: 'integer', nullable: true)]
     #[Groups(['song.facet', 'song.read', 'song.csv', 'video.read', 'searchable'])]
-    #[Facet]
+
     #[Field(sortable: true, filterable: true, widget: Widget::Range, facet: true, order: 30)]
     public ?int $year = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Groups(['song.read', 'song.csv', 'video.read', 'searchable'])]
-    #[Facet]
+
     #[Field(searchable: true, filterable: true, widget: Widget::Select, facet: true, order: 40)]
     public ?string $school = null;
 
@@ -115,8 +114,7 @@ class Song implements RouteParametersInterface, \Stringable
 
     /**
      * First {start_of_chorus}…{end_of_chorus} block, derived from $lyrics.
-     * No DB column — computed on access. Indexed in Meili via the
-     * persisted/searchable arrays below so grids + search pick it up.
+     * Computed on access; shared Field metadata exposes it to grids and search.
      */
     #[Groups(['song.read', 'song.csv', 'searchable'])]
     #[Field(searchable: true, visible: true, order: 25)]
@@ -195,7 +193,7 @@ class Song implements RouteParametersInterface, \Stringable
     }
 
     #[Groups(['song.facet', 'song.read', 'song.csv'])]
-    #[Facet]
+
     #[Field(sortable: true, filterable: true, widget: Widget::Range, facet: true, order: 65)]
     public function getFileCount(): int
     {

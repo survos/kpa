@@ -25,7 +25,7 @@ symfony open:local
 
 The current EZ header integration uses unpublished local changes in `../mono/bu/ez-bundle`; use the linker for this development setup. Review pending migrations and the target database before applying schema changes. Do not drop an existing database to reload the catalog.
 
-The homepage links to `/admin`. Anonymous visitors are redirected to `/login`; access requires `ROLE_ADMIN`. The dashboard currently exposes Songs and Files. `/ez-meili` is no longer the application dashboard.
+The homepage links to `/admin`. Anonymous visitors are redirected to `/login`; access requires `ROLE_ADMIN`. The dashboard currently exposes Songs and Files.
 
 ## Temporary CSV recovery
 
@@ -34,7 +34,8 @@ The current local catalog was recovered from `~/Downloads/kpa-export.csv` on Nov
 ```bash
 php bin/console app:import-song-export ~/Downloads/kpa-export.csv --dry-run
 php bin/console app:import-song-export ~/Downloads/kpa-export.csv
-php bin/console elastic:index:populate app_song
+php bin/console app:songs:embed --no-debug
+php bin/console elastic:index:rebuild app_song --keep-old --no-debug
 ```
 
 The importer preserves song IDs for future video associations, updates by ID, keeps existing values when export cells are empty, and recomputes lyric length. It ignores derived chorus/file counts, does not import videos or recordings, and bypasses legacy ORM indexing listeners. All database changes are transactional. Keep the CSV outside Git.
@@ -111,3 +112,24 @@ vendor/bin/phpunit
 ```
 
 The suite creates its own SQLite schema where needed; no manual fixture loading or development database reset is required. It covers admin access and API filters. Four older crawl/import tests are currently skipped.
+
+## Keyword, semantic, and hybrid song search
+
+Open `/songs/search`. Choose Keyword, Semantic, Hybrid, or Compare all three (top 12 results per mode). The homepage Songs card links here. Try `shadow`, then `friendship and belonging` to compare literal words with meaning.
+
+Song, Video, FileAsset, Audio, and Lyrics use generic field-bundle attributes for search metadata. Meilisearch packages, configuration, worker, and UI integrations are removed. SearchBundle supplies the Elasticsearch adapters; the application specializes song vector indexing and retrieval without changing shared bundles.
+
+The local application database is PostgreSQL 18.4 (`kidpanalley`). Song vectors are stored durably in PostgreSQL JSONB, then projected into Elasticsearch as 768-dimensional cosine dense vectors. Retrieval uses Elasticsearch; this does not add a PostgreSQL vector-query engine. PHPUnit alone uses isolated SQLite.
+
+Embeddings use Ink/Folio's local Ollama model, `nomic-embed-text:latest`, with `search_document:` and `search_query:` prefixes. Configure `KPA_OLLAMA_URL`, `KPA_EMBED_MODEL`, and `KPA_EMBED_REVISION`; the revision is the installed model digest and is checked before generation. A fingerprint covers source text, model, revision, dimensions, and text preprocessing. Source changes invalidate cached vectors; reindexing never calls Ollama. Run the embedding command after imports/edits, then rebuild ES:
+
+```bash
+php bin/console app:songs:embed --no-debug
+php bin/console elastic:index:rebuild app_song --keep-old --no-debug
+```
+
+Current recovery: 2,324 indexed songs, 2,322 persisted embeddings. A repeat embedding run generated zero vectors and reused all 2,322. Only 783 source rows contain lyrics; the remainder embed titles and metadata.
+
+Two unusually long lyrics records are preserved but excluded from vectors pending source review: `runn-0-running-with-the-moon-tonight` (6,502 characters) and `runn-0-running-with-the-moon-tonight-inspiration` (10,115). The downloaded CSV itself contains multiple drafts, production notes, and generated research in these fields. The temporary recovery guard flags lyrics longer than 6,000 characters; it does not truncate or rewrite the source.
+
+The additive migration `Version20261108160000` adds the vector cache columns. Review pending migrations before applying to an existing database. The code and data changes have only been exercised locally, not deployed.

@@ -1,16 +1,2 @@
-{#{% extends '@EasyAdmin/page/content.html.twig' %}#}
-
-{% extends '@SurvosMeili/ez/dashboard.html.twig' %}
-
-{% block title %}Search Dashboard{% endblock %}
-
-{% block page_content %}
-
-
-
-    <h1>
-        Welcome to the KPA Search System!  We need a cool home page.
-    </h1>
-
-    {{ parent() }}
-{% endblock %}
+{% extends 'base.html.twig' %}
+{% block body %}<a href="{{ path('app_homepage') }}">KPA catalog</a>{% endblock %}

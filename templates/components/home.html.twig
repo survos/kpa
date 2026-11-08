@@ -42,17 +42,12 @@
                 <twig:block name="links">
                     <div class="demo-inline-spacing">
                         <a
-                            href="{{ path('meili_insta', { indexName: 'song' }) }}"
+                            href="{{ path('song_search') }}"
                             class="btn btn-outline-primary"
                         >
                             Search {{ songCount }} Songs
                         </a>
-                        <a
-                            href="{{ path('meili_chat', { indexName: 'song', workspace: workspace }) }}"
-                            class="btn btn-outline-secondary"
-                        >
-                            Chat Songs
-                        </a>
+
                     </div>
                 </twig:block>
             </twig:card>
@@ -109,17 +104,12 @@
                 <twig:block name="links">
                     <div class="demo-inline-spacing">
                         <a
-                            href="{{ path('meili_insta', { indexName: 'fileasset' }) }}"
+                            href="{{ path('survos_entity_ux_search', {code: 'app_file_asset'}) }}"
                             class="btn btn-outline-primary"
                         >
                             Search {{ fileAssetCount }} Files
                         </a>
-                        <a
-                            href="{{ path('meili_chat', { indexName: 'fileasset', workspace: workspace }) }}"
-                            class="btn btn-outline-secondary"
-                        >
-                            Chat Files
-                        </a>
+
                         <a
                             href="{{ path('file_asset_browse') }}"
                             class="btn btn-outline-info"
@@ -155,17 +145,12 @@
                         {% endfor %}
 
                         <a
-                            href="{{ path('meili_insta', { indexName: 'video' }) }}"
+                            href="{{ path('survos_entity_ux_search', {code: 'app_video'}) }}"
                             class="btn btn-outline-primary"
                         >
                             Search {{ videoCount }} Videos
                         </a>
-                        <a
-                            href="{{ path('meili_chat', { indexName: 'video', workspace: workspace }) }}"
-                            class="btn btn-outline-secondary"
-                        >
-                            Chat Videos
-                        </a>
+
 
                         {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ path('video_index') }}" class="btn btn-outline-danger">

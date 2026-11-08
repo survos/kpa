@@ -1,7 +1,7 @@
-{# Generated automatically from JSONL profile + Meilisearch settings.
+{# Generated automatically from JSONL profile + search field settings.
    Safe to edit; re-generating will overwrite.
 
-   Meilisearch settings:
+   search field settings:
 {
     "displayedAttributes": [
         "*"
@@ -104,8 +104,8 @@
 {% set ext = hit.extension ?? '' %}
 {% set isAudio = mime starts with 'audio/' or ext in ['mp3','m4a','wav','aac','flac','ogg'] %}
 {% set isImage = mime starts with 'image/' or ext in ['jpg','jpeg','png','gif','webp','bmp','tif','tiff','heic'] %}
-{% set audioUrl = (isAudio and filePath) ? path('meili_file_proxy', { path: filePath }) : null %}
-{% set imageUrl = (isImage and filePath) ? path('meili_file_proxy', { path: filePath }) : imageUrl %}
+{% set audioUrl = (isAudio and filePath) ? null : null %}
+{% set imageUrl = (isImage and filePath) ? null : imageUrl %}
 
 <div class="card h-100 shadow-sm border-0">
     <div class="card-body p-3">

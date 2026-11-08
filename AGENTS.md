@@ -478,7 +478,7 @@ This project uses:
 - **EasyAdmin** for administration interface
 - **Stimulus** for dynamic frontend interactions
 - **ChordPro** parsing for music notation
-- **MeiliSearch** for search functionality
+- **Elasticsearch** via survos/search-bundle, with generic field-bundle attributes
 
 When making changes:
 1. Run the lint commands in the "Build & Test Commands" section

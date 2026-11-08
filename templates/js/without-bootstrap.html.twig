@@ -1,10 +1,10 @@
 {# Neutral card (no Bootstrap classes) #}
-<div class="meili-card shadow">
-    <div class="meili-card-header" title="{{ hit.title|default('') }}">
+<div class="song-card shadow">
+    <div class="song-card-header" title="{{ hit.title|default('') }}">
         {{ hit._highlightResult.title.value|default(hit.title)|raw }}
     </div>
 
-    <div class="meili-card-body">
+    <div class="song-card-body">
         {# Videos (up to 3) #}
         {% set videos = hit.videos|default([]) %}
         {% if videos|length > 0 %}
@@ -30,7 +30,7 @@
                         </a>
                     {% endfor %}
                     {% if videos|length > 3 %}
-                        <span class="meili-badge">+{{ videos|length - 3 }} more</span>
+                        <span class="song-badge">+{{ videos|length - 3 }} more</span>
                     {% endif %}
                 </div>
             </div>
@@ -65,15 +65,13 @@
         </div>
     </div>
 
-    <div class="meili-card-footer">
+    <div class="song-card-footer">
     <span class="text-muted">
       {{ hit._highlightResult.type.value|default(hit.type|default(''))|raw }}
         {% if hit._rankingScore is defined and hit._rankingScore != 1 %}
             • score: {{ hit._rankingScore|number_format(2) }}
         {% endif %}
     </span>
-        <button class="meili-btn" data-action="survos--meili-bundle--json#modal" data-hit-id="{{ hit.id }}">
-            {{ icons.json|raw }} JSON
-        </button>
+
     </div>
 </div>

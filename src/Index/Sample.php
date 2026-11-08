@@ -12,7 +12,6 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use DateTimeImmutable;
-use Survos\MeiliBundle\Metadata\MeiliIndex;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 /**
@@ -25,12 +24,6 @@ use Symfony\Component\Serializer\Attribute\Groups;
 ])]
 #[QueryParameter(key: ':property', filter: new ExactFilter(), properties: [...self::FILTERABLE_FIELDS, ...self::SEARCHABLE_FIELDS])]
 #[QueryParameter(key: 'order[:property]', filter: new SortFilter(), properties: self::SORTABLE_FIELDS, castToArray: false)]
-//#[MeiliIndex(
-//	primaryKey: 'id',
-//	filterable: self::FILTERABLE_FIELDS,
-//	sortable: self::SORTABLE_FIELDS,
-//	searchable: self::SEARCHABLE_FIELDS,
-//)]
 final class Sample
 {
 	public const FILTERABLE_FIELDS = [

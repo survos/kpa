@@ -4,63 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dec10b4c79e604b98fbca73d0f01d5d5",
+    "content-hash": "2a82f6ddd1b503106ee7d3deb0bd1aa9",
     "packages": [
-        {
-            "name": "adbario/php-dot-notation",
-            "version": "3.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/adbario/php-dot-notation.git",
-                "reference": "aa09db5a7a365a8d2d8dd7edfa3cd501d1a8acb0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/adbario/php-dot-notation/zipball/aa09db5a7a365a8d2d8dd7edfa3cd501d1a8acb0",
-                "reference": "aa09db5a7a365a8d2d8dd7edfa3cd501d1a8acb0",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^7.4 || ^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^2.1",
-                "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.7"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "Adbar\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Riku Särkinen",
-                    "email": "riku@adbar.io"
-                }
-            ],
-            "description": "PHP dot notation access to arrays",
-            "homepage": "https://github.com/adbario/php-dot-notation",
-            "keywords": [
-                "ArrayAccess",
-                "dotnotation"
-            ],
-            "support": {
-                "issues": "https://github.com/adbario/php-dot-notation/issues",
-                "source": "https://github.com/adbario/php-dot-notation/tree/3.5.0"
-            },
-            "time": "2026-04-04T04:29:49+00:00",
-            "published-time": "2026-04-04T04:35:25+00:00"
-        },
         {
             "name": "api-platform/core",
             "version": "v5.0.6",
@@ -4711,89 +4656,6 @@
             },
             "time": "2026-10-18T14:29:29+00:00",
             "published-time": "2026-10-18T14:45:02+00:00"
-        },
-        {
-            "name": "meilisearch/meilisearch-php",
-            "version": "v2.0.0-beta.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/meilisearch/meilisearch-php.git",
-                "reference": "88d7d634143dff3cbef4969af519b5bbcd96e7f3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/meilisearch/meilisearch-php/zipball/88d7d634143dff3cbef4969af519b5bbcd96e7f3",
-                "reference": "88d7d634143dff3cbef4969af519b5bbcd96e7f3",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^8.1",
-                "php-http/discovery": "^1.19",
-                "psr/http-client": "^1.0",
-                "symfony/polyfill-php81": "^1.33"
-            },
-            "require-dev": {
-                "http-interop/http-factory-guzzle": "^1.2.0",
-                "php-cs-fixer/shim": "^3.59.3",
-                "phpstan/phpstan": "^2.0",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^10.5",
-                "symfony/http-client": "^5.4|^6.0|^7.0|^8.0"
-            },
-            "suggest": {
-                "guzzlehttp/guzzle": "Use Guzzle ^7 as HTTP client",
-                "http-interop/http-factory-guzzle": "Factory for guzzlehttp/guzzle",
-                "symfony/http-client": "Use Symfony Http client"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
-                "psr-4": {
-                    "Meilisearch\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Clémentine Urquizar",
-                    "email": "clementine@meilisearch.com"
-                },
-                {
-                    "name": "Bruno Casali",
-                    "email": "bruno@meilisearch.com"
-                },
-                {
-                    "name": "Laurent Cazanove",
-                    "email": "lau.cazanove@gmail.com"
-                },
-                {
-                    "name": "Tomas Norkūnas",
-                    "email": "norkunas.tom@gmail.com"
-                }
-            ],
-            "description": "PHP wrapper for the Meilisearch API",
-            "keywords": [
-                "api",
-                "client",
-                "instant",
-                "meilisearch",
-                "php",
-                "search"
-            ],
-            "support": {
-                "issues": "https://github.com/meilisearch/meilisearch-php/issues",
-                "source": "https://github.com/meilisearch/meilisearch-php/tree/v2.0.0-beta.8"
-            },
-            "time": "2026-10-07T08:52:11+00:00",
-            "published-time": "2026-10-07T09:33:40+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -9576,101 +9438,6 @@
             "published-time": "2026-10-13T13:45:56+00:00"
         },
         {
-            "name": "survos/meili-bundle",
-            "version": "2.44.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/survos/meili-bundle.git",
-                "reference": "7e67bb1229f251731b4cb844ce0e72b01aa8fc68"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/survos/meili-bundle/zipball/7e67bb1229f251731b4cb844ce0e72b01aa8fc68",
-                "reference": "7e67bb1229f251731b4cb844ce0e72b01aa8fc68",
-                "shasum": ""
-            },
-            "require": {
-                "adbario/php-dot-notation": "^3.3",
-                "ext-pdo": "*",
-                "meilisearch/meilisearch-php": "^2.0@beta",
-                "nyholm/psr7": "^1.8",
-                "php": "^8.5",
-                "survos/data-contracts": "^2.32",
-                "survos/field-bundle": "^2.5",
-                "survos/js-twig-bundle": "^2.5",
-                "survos/jsonl-bundle": "^2.5",
-                "survos/kit-bundle": "^2.5",
-                "survos/lingua-core": "^2.5",
-                "symfony/config": "^8.1",
-                "symfony/console": "^8.1",
-                "symfony/dependency-injection": "^8.1",
-                "symfony/http-kernel": "^8.1",
-                "symfony/property-access": "^8.1",
-                "symfony/stopwatch": "^8.1",
-                "symfony/string": "^8.1",
-                "symfony/ux-router": "^3.6",
-                "twig/twig": "^3.4|^4.0",
-                "zenstruck/bytes": "^1.0"
-            },
-            "require-dev": {
-                "devizzent/cebe-php-openapi": "^1.1",
-                "doctrine/doctrine-bundle": "^3.0",
-                "easycorp/easyadmin-bundle": "^4.26|^5.0",
-                "liquid/liquid": "^1.4",
-                "phpstan/phpstan": "^2.0",
-                "rector/rector": "^2.0",
-                "survos/babel-bundle": "^2.5",
-                "survos/inspection-bundle": "^2.5",
-                "survos/tabler-bundle": "^2.5",
-                "symfony/browser-kit": "^8.1",
-                "symfony/framework-bundle": "^8.1",
-                "symfony/http-client": "^8.1",
-                "symfony/intl": "^8.1",
-                "symfony/mcp-bundle": "^1.0.0-beta1",
-                "symfony/messenger": "^8.1",
-                "symfony/phpunit-bridge": "^8.1",
-                "symfony/twig-bundle": "^8.1",
-                "symfony/ux-chartjs": "^3",
-                "symfony/ux-twig-component": "^3",
-                "symfony/var-dumper": "^8.1",
-                "twig/extra-bundle": "^3.22",
-                "twig/intl-extra": "^3.22",
-                "yethee/tiktoken": "^1.0"
-            },
-            "suggest": {
-                "api-platform/core": "Required for admin dashboard integration",
-                "api-platform/doctrine-orm": "Leverage doctrine in api-platform",
-                "symfony/ai-agent": "Required for exposing Meilisearch as Symfony AI agent tools and loading the bundle tool classes",
-                "symfony/mcp-bundle": "Expose Meilisearch tools over MCP."
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "Survos\\MeiliBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Utilities for managing a meilisearch indexes",
-            "keywords": [
-                "symfony-ux"
-            ],
-            "support": {
-                "issues": "https://github.com/survos/meili-bundle/issues",
-                "source": "https://github.com/survos/meili-bundle/tree/2.44.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/kbond",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-10-26T16:09:36+00:00",
-            "published-time": "2026-10-26T16:09:43+00:00"
-        },
-        {
             "name": "survos/menu-bundle",
             "version": "2.42.23",
             "source": {
@@ -10775,6 +10542,94 @@
             ],
             "time": "2026-10-26T14:03:07+00:00",
             "published-time": "2026-10-26T14:11:27+00:00"
+        },
+        {
+            "name": "symfony/ai-ollama-platform",
+            "version": "v1.0.0-BETA1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/ai-ollama-platform.git",
+                "reference": "19605f1b01b1a0549354b8ac4d1a86751bb1f101"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/ai-ollama-platform/zipball/19605f1b01b1a0549354b8ac4d1a86751bb1f101",
+                "reference": "19605f1b01b1a0549354b8ac4d1a86751bb1f101",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/ai-platform": "^1.0",
+                "symfony/http-client": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^11.5.53",
+                "symfony/ai-decision-platform": "^1.0"
+            },
+            "type": "symfony-ai-platform",
+            "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/ai",
+                    "name": "symfony/ai"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\AI\\Platform\\Bridge\\Ollama\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christopher Hertel",
+                    "email": "mail@christopher-hertel.de"
+                },
+                {
+                    "name": "Oskar Stark",
+                    "email": "oskarstark@googlemail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Ollama platform bridge for Symfony AI",
+            "keywords": [
+                "Bridge",
+                "ai",
+                "local",
+                "ollama",
+                "platform"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/ai-ollama-platform/tree/v1.0.0-BETA1"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-10-26T14:03:07+00:00",
+            "published-time": "2026-10-26T14:08:57+00:00"
         },
         {
             "name": "symfony/ai-platform",
@@ -22944,19 +22799,17 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "meilisearch/meilisearch-php": 10
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.5",
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
         "ext-sqlite3": "*",
         "ext-xml": "*",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "php": "^8.5"
     },
     "platform-dev": {},
     "plugin-api-version": "2.11.0"

@@ -44,32 +44,6 @@ class LyricsCrudController extends BaseCrudController
             return '<pre>' . htmlspecialchars($value) . '</pre>';
         });
 
-        // Show formatted lyrics with chords using stimulus controller
-        yield Field::new('musicSheet', 'Music Sheet')
-            ->setVirtual(true)
-            ->formatValue(function ($value, $entity) {
-            if (!$entity->text) {
-                return '<div class="alert alert-warning">No ChordPro data available</div>';
-            }
-
-            $url = $this->urlGenerator->generate('meili_admin_app_lyrics_music', ['code' => $entity->code]);
-            return $url;
-            return sprintf('<a href="%s" class="btn btn-primary" target="_blank">View Music Sheet</a>', $url);
-        });
-
-    }
-
-    public function configureActions(Actions $actions): Actions
-    {
-        $actions = parent::configureActions($actions);
-        $myAction = Action::new('myAction', 'Lyrics', 'fa fa-link')
-            ->linkToRoute('meili_admin_app_lyrics_music', fn (Lyrics $entity) => ['code' => $entity->code])
-            ->displayIf(fn (Lyrics $entity) => $entity->text)
-        ; // optional
-
-        return $actions
-            ->add(Crud::PAGE_INDEX, $myAction)
-            ->add(Crud::PAGE_DETAIL, $myAction);
     }
 
     public static function getEntityFqcn(): string

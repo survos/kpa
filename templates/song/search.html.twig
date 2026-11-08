@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block page_title 'Search songs' %}
+{% block page_subtitle 'Kid Pan Alley catalog' %}
+{% block title %}Search songs{% endblock %}
+{% block body %}
+<p class="text-muted">Find words in the catalog, explore similar meanings, or combine both.</p>
+<form method="get" action="{{ path('song_search') }}" class="d-flex gap-2 mb-3">
+    <label class="visually-hidden" for="song-query">Search</label>
+    <input id="song-query" class="form-control" type="search" name="q" value="{{ q }}" maxlength="500" placeholder="Songs about friendship and belonging">
+    <label class="visually-hidden" for="song-mode">Search mode</label>
+    <select id="song-mode" class="form-select w-auto" name="mode">
+        {% for value, label in {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid', compare: 'Compare all three'} %}
+            <option value="{{ value }}" {{ mode == value ? 'selected' : '' }}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-primary">Search</button>
+</form>
+<p class="small text-muted">Temporary recovered catalog: 783 songs have lyrics; other matches rely on titles and metadata. Two suspect lyrics records are excluded from semantic results pending review.</p>
+<p class="small text-muted">Showing the top 12 matches in each selected mode.</p>
+<div class="row">
+{% for name, result in results %}
+    <section class="{{ mode == 'compare' ? 'col-lg-4' : 'col-lg-8' }}">
+        <h2>{{ {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid'}[name] }}</h2>
+        <p class="text-muted">{{ {lexical: 'Matches words in titles, lyrics, and metadata.', semantic: 'Matches meaning using saved song embeddings.', hybrid: 'Combines keyword and semantic rankings.'}[name] }}</p>
+        {% for hit in result.hits %}
+            {% set song = hit.data %}
+            <article class="card mb-3"><div class="card-body">
+                <h3 class="card-title"><a href="{{ path('song_show', {songId: song.id}) }}">{{ song.title }}</a></h3>
+                <p class="small text-muted">{{ song.school }}{% if song.year %} · {{ song.year }}{% endif %}</p>
+                <p>{{ excerpts[song.id]|default('No lyrics in the recovery export.')|striptags|slice(0, 260) }}{% if excerpts[song.id]|length > 260 %}…{% endif %}</p>
+            </div></article>
+        {% else %}
+            <p>No matches. Try a broader phrase.</p>
+        {% endfor %}
+    </section>
+{% endfor %}
+</div>
+{% endblock %}

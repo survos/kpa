@@ -51,7 +51,7 @@
                                 API Grid
                             </a>
                             {% if entity.code in ['app_song', 'app_file_asset'] %}
-                                <a href="{{ path('survos_entity_ux_search', {code: entity.code}) }}" class="btn btn-outline-primary">
+                                <a href="{{ entity.code == 'app_song' ? path('song_search') : path('survos_entity_ux_search', {code: entity.code}) }}" class="btn btn-outline-primary">
                                     Search
                                 </a>
                             {% endif %}

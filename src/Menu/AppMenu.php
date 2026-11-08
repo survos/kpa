@@ -8,8 +8,6 @@ use App\Entity\Video;
 use Survos\FieldBundle\Enum\Purpose;
 use Survos\FieldBundle\Registry\EntityMetaRegistry;
 use Survos\FieldBundle\Registry\RouteMetaRegistry;
-use Survos\MeiliBundle\Controller\MeiliAdminController;
-use Survos\MeiliBundle\Service\MeiliService;
 use Survos\TablerBundle\Event\MenuEvent;
 use Survos\TablerBundle\Menu\MenuBuilderTrait;
 use Survos\TablerBundle\Service\ContextService;
@@ -30,12 +28,10 @@ final class AppMenu
     public function __construct(
         #[Autowire('%kernel.environment%')] protected string $env,
         private ContextService                               $contextService,
-        private MeiliService                                 $meiliService,
         private EntityMetaRegistry                           $entityMetaRegistry,
         private RouteMetaRegistry                            $routeMetaRegistry,
 //        private DatatableService                                       $datatableService,
         // why is autowire required?
-//        #[Autowire(service: 'api_meili_service')] private MeiliService $meiliService,
         private ?AuthorizationCheckerInterface               $authorizationChecker = null,
         private ?Security                                    $security=null,
     )
@@ -96,6 +92,7 @@ final class AppMenu
 
         $theme = $this->contextService->getOption('theme');
         $this->add($menu, 'app_homepage');
+        $this->add($menu, 'song_search', label: 'Search songs');
             $this->add($menu, 'app_load_lyrics');
         if ( ($this->env==='dev') && $this->security->isGranted('ROLE_ADMIN')) {
             $this->add($menu, 'survos_commands');
@@ -141,7 +138,6 @@ final class AppMenu
         if (
 //            $this->isEnv('dev') ||
         $this->isGranted('ROLE_ADMIN')) {
-//            $this->add($menu, 'survos_meili_admin', external: true);
             $this->add($menu, 'app_publish');
             $subMenu = $this->addSubmenu($menu, '@commands');
             if ($this->env === 'dev') {
@@ -158,7 +154,6 @@ final class AppMenu
 
             $subMenu = $this->addSubmenu($menu, '@old');
             $this->add($subMenu, 'song_index', label: 'Songs (html)');
-//        $this->add($subMenu, 'song_browse', label: 'Songs-Meili');
 //        $this->add($subMenu, 'song_browse_with_doctrine', label: 'Songs-Doctine');
             $this->add($subMenu, 'video_browse', label: 'Youtube Videos');
 //        $this->add($menu, 'video_index'); // in-memory
