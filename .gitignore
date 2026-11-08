@@ -36,3 +36,6 @@ coverage
 /data/*.csv
 /kpa-seagate-8t.csv
 /.dokku-remote
+
+/kpa0
+/*.jsonl_*.lock

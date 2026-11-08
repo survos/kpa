@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87cc89862d362857985f5d8bd3c42b18",
+    "content-hash": "dec10b4c79e604b98fbca73d0f01d5d5",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -63,16 +63,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v4.4.7",
+            "version": "v5.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "062ca3b59ffbc4f7e2f349b8eb04c49cf202968e"
+                "reference": "0d47a378a07d5cc65a4e2e3f21a434614f9ba27b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/062ca3b59ffbc4f7e2f349b8eb04c49cf202968e",
-                "reference": "062ca3b59ffbc4f7e2f349b8eb04c49cf202968e",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/0d47a378a07d5cc65a4e2e3f21a434614f9ba27b",
+                "reference": "0d47a378a07d5cc65a4e2e3f21a434614f9ba27b",
                 "shasum": ""
             },
             "require": {
@@ -128,6 +128,7 @@
                 "api-platform/serializer": "self.version",
                 "api-platform/state": "self.version",
                 "api-platform/symfony": "self.version",
+                "api-platform/test": "self.version",
                 "api-platform/validator": "self.version"
             },
             "require-dev": {
@@ -148,7 +149,7 @@
                 "jangregor/phpstan-prophecy": "^2.1.11",
                 "justinrainbow/json-schema": "^6.5.2",
                 "laravel/framework": "^11.0 || ^12.0 || ^13.0",
-                "mcp/sdk": "^0.8",
+                "mcp/sdk": "^0.8 || ^0.9",
                 "orchestra/testbench": "^10.9 || ^11.0",
                 "phpspec/prophecy-phpunit": "^2.2",
                 "phpstan/extension-installer": "^1.1",
@@ -157,7 +158,7 @@
                 "phpstan/phpstan-doctrine": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-symfony": "^2.0",
-                "phpunit/phpunit": "^11.5 || ^12.2",
+                "phpunit/phpunit": "^11.5 || ^12.2 || ^13.0",
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^4.7",
                 "ramsey/uuid-doctrine": "^2.0",
@@ -181,10 +182,10 @@
                 "symfony/intl": "^7.4 || ^8.0",
                 "symfony/json-streamer": "^7.4 || ^8.0",
                 "symfony/maker-bundle": "^1.24",
-                "symfony/mcp-bundle": "^0.13",
+                "symfony/mcp-bundle": "^0.13 || ^0.15",
                 "symfony/mercure-bundle": "^0.5",
                 "symfony/messenger": "^7.4 || ^8.0",
-                "symfony/object-mapper": "^7.4 || ^8.0",
+                "symfony/object-mapper": "^7.4.4 || ^8.0.4",
                 "symfony/routing": "^7.4 || ^8.0",
                 "symfony/security-bundle": "^7.4 || ^8.0",
                 "symfony/security-core": "^7.4 || ^8.0",
@@ -201,6 +202,7 @@
             "suggest": {
                 "doctrine/mongodb-odm-bundle": "To support MongoDB. Only versions 4.0 and later are supported.",
                 "elasticsearch/elasticsearch": "To support Elasticsearch.",
+                "ext-deepclone": "To speed up the PHP files metadata cache with symfony/var-exporter 8.1+ (install symfony/deepclone with PIE).",
                 "opensearch-project/opensearch-php": "To support OpenSearch (^2.5).",
                 "phpstan/phpdoc-parser": "To support extracting metadata from PHPDoc.",
                 "psr/cache-implementation": "To use metadata caching.",
@@ -236,7 +238,7 @@
                     "dev-3.4": "3.4.x-dev",
                     "dev-4.1": "4.1.x-dev",
                     "dev-4.2": "4.2.x-dev",
-                    "dev-main": "4.4.x-dev"
+                    "dev-main": "5.0.x-dev"
                 }
             },
             "autoload": {
@@ -275,10 +277,10 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v4.4.7"
+                "source": "https://github.com/api-platform/core/tree/v5.0.6"
             },
-            "time": "2026-11-06T10:42:08+00:00",
-            "published-time": "2026-11-06T12:08:22+00:00"
+            "time": "2026-11-06T12:08:15+00:00",
+            "published-time": "2026-11-06T12:28:48+00:00"
         },
         {
             "name": "aws/aws-crt-php",
@@ -8009,22 +8011,22 @@
         },
         {
             "name": "survos/api-grid-bundle",
-            "version": "2.36.1",
+            "version": "2.43.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/survos/api-grid-bundle.git",
-                "reference": "0011b1d1430b44efb29ef9378af3bf6e6495606f"
+                "reference": "b780415c9c7b393c691dab8a8e35bd1bb403e57f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/survos/api-grid-bundle/zipball/0011b1d1430b44efb29ef9378af3bf6e6495606f",
-                "reference": "0011b1d1430b44efb29ef9378af3bf6e6495606f",
+                "url": "https://api.github.com/repos/survos/api-grid-bundle/zipball/b780415c9c7b393c691dab8a8e35bd1bb403e57f",
+                "reference": "b780415c9c7b393c691dab8a8e35bd1bb403e57f",
                 "shasum": ""
             },
             "require": {
-                "api-platform/symfony": "^4.1 || ^5.0",
+                "api-platform/symfony": "^5.0",
                 "doctrine/doctrine-bundle": "^3.0",
-                "doctrine/orm": "^3.3",
+                "doctrine/orm": "^3.7",
                 "doctrine/persistence": "^4.1",
                 "php": "^8.5",
                 "survos/field-bundle": "^2.5",
@@ -8036,11 +8038,12 @@
                 "symfony/dom-crawler": "^7.4||^8.1",
                 "symfony/http-kernel": "^7.4||^8.1",
                 "symfony/options-resolver": "^7.4||^8.1",
+                "symfony/ux-router": "^3.6",
                 "symfony/ux-twig-component": "^3",
                 "twig/twig": "^3.4|^4.0"
             },
             "require-dev": {
-                "api-platform/doctrine-orm": "^4.1 || ^5.0",
+                "api-platform/doctrine-orm": "^5.0",
                 "meilisearch/meilisearch-php": "^1.11",
                 "nyholm/psr7": "^1.8",
                 "phpstan/phpstan": "^2.0",
@@ -8093,7 +8096,7 @@
             ],
             "support": {
                 "issues": "https://github.com/survos/api-grid-bundle/issues",
-                "source": "https://github.com/survos/api-grid-bundle/tree/2.36.1"
+                "source": "https://github.com/survos/api-grid-bundle/tree/2.43.21"
             },
             "funding": [
                 {
@@ -8101,8 +8104,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-10T17:56:06+00:00",
-            "published-time": "2026-10-10T17:56:15+00:00"
+            "time": "2026-10-26T13:32:53+00:00",
+            "published-time": "2026-10-26T13:33:33+00:00"
         },
         {
             "name": "survos/atlas-bundle",
@@ -8253,22 +8256,22 @@
         },
         {
             "name": "survos/ciine-bundle",
-            "version": "2.33.0",
+            "version": "2.44.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/survos/ciine-bundle.git",
-                "reference": "8102e2222699ba6a5e08c94056a2a301856f23cf"
+                "reference": "e3ea855a3645651b4f43ca2b28927b8c891f571a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/survos/ciine-bundle/zipball/8102e2222699ba6a5e08c94056a2a301856f23cf",
-                "reference": "8102e2222699ba6a5e08c94056a2a301856f23cf",
+                "url": "https://api.github.com/repos/survos/ciine-bundle/zipball/e3ea855a3645651b4f43ca2b28927b8c891f571a",
+                "reference": "e3ea855a3645651b4f43ca2b28927b8c891f571a",
                 "shasum": ""
             },
             "require": {
-                "api-platform/doctrine-orm": "^4.2 || ^5.0",
+                "api-platform/doctrine-orm": "^5.0",
                 "doctrine/doctrine-bundle": "^3.0",
-                "doctrine/orm": "^3.3",
+                "doctrine/orm": "^3.7",
                 "php": "^8.5",
                 "sensiolabs/ansi-to-html": "^2.0",
                 "symfony/config": "^8.1",
@@ -8285,10 +8288,13 @@
             "require-dev": {
                 "phpstan/phpstan": "^2.0",
                 "phpunit/phpunit": "^13.0",
+                "playwright-php/playwright": "^1.5",
                 "survos/state-bundle": "^2.5",
                 "symfony/framework-bundle": "^8.1",
-                "symfony/panther": "^2.2",
                 "symfony/routing": "^8.1"
+            },
+            "suggest": {
+                "playwright-php/playwright": "Needed by ciine:screenshot (also run vendor/bin/playwright-install chromium)"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -8315,7 +8321,7 @@
             "description": "Symfony  tools for asciinema.org",
             "support": {
                 "issues": "https://github.com/survos/ciine-bundle/issues",
-                "source": "https://github.com/survos/ciine-bundle/tree/2.33.0"
+                "source": "https://github.com/survos/ciine-bundle/tree/2.44.0"
             },
             "funding": [
                 {
@@ -8323,8 +8329,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-18T11:32:17+00:00",
-            "published-time": "2026-09-23T14:46:58+00:00"
+            "time": "2026-10-26T16:09:43+00:00",
+            "published-time": "2026-10-26T16:09:51+00:00"
         },
         {
             "name": "survos/command-bundle",
@@ -10245,21 +10251,21 @@
         },
         {
             "name": "survos/tree-bundle",
-            "version": "2.36.1",
+            "version": "2.45.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/survos/tree-bundle.git",
-                "reference": "c10a4d084cf4614173b05a9056a19a5b60dc2951"
+                "reference": "3c7d1d8a86896e8e3ee7b93a4a44c3406ff0a007"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/survos/tree-bundle/zipball/c10a4d084cf4614173b05a9056a19a5b60dc2951",
-                "reference": "c10a4d084cf4614173b05a9056a19a5b60dc2951",
+                "url": "https://api.github.com/repos/survos/tree-bundle/zipball/3c7d1d8a86896e8e3ee7b93a4a44c3406ff0a007",
+                "reference": "3c7d1d8a86896e8e3ee7b93a4a44c3406ff0a007",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^3.0",
-                "doctrine/orm": "^3.4",
+                "doctrine/orm": "^3.7",
                 "doctrine/persistence": "^4.1",
                 "php": "^8.5",
                 "stof/doctrine-extensions-bundle": "^1.14",
@@ -10270,12 +10276,16 @@
                 "symfony/http-kernel": "^8.1",
                 "symfony/options-resolver": "^8.1",
                 "symfony/stimulus-bundle": "^3",
+                "symfony/ux-router": "^3.6",
                 "symfony/ux-twig-component": "^3",
                 "tacman/twig-tree-tag": "^3.0.1",
                 "twig/twig": "^3.4|^4.0"
             },
+            "conflict": {
+                "api-platform/core": "<5.0"
+            },
             "require-dev": {
-                "api-platform/core": "^3.2||^4.0 || ^5.0",
+                "api-platform/core": "^5.0",
                 "phpstan/phpstan": "^2.0",
                 "phpunit/phpunit": "^13.0",
                 "symfony/browser-kit": "^8.1",
@@ -10315,7 +10325,7 @@
             ],
             "support": {
                 "issues": "https://github.com/survos/tree-bundle/issues",
-                "source": "https://github.com/survos/tree-bundle/tree/2.36.1"
+                "source": "https://github.com/survos/tree-bundle/tree/2.45.23"
             },
             "funding": [
                 {
@@ -10323,8 +10333,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-10T17:56:07+00:00",
-            "published-time": "2026-10-10T17:56:16+00:00"
+            "time": "2026-11-03T02:37:27+00:00",
+            "published-time": "2026-11-03T02:37:37+00:00"
         },
         {
             "name": "survos/tui-extras-bundle",

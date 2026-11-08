@@ -9,7 +9,7 @@
     "scripts": {
         "dokku": {
             "predeploy": "bin/console importmap:install && bin/console asset-map:compile && bin/console  secrets:decrypt-to-local --force && bin/console doctrine:migrations:migrate -n --allow-no-migration",
-            "postdeploy": "bin/console about && cat .env"
+            "postdeploy": "bin/console about"
         }
     },
     "env": {

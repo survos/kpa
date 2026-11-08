@@ -16,7 +16,7 @@
         "ext-sqlite3": "*",
         "ext-xml": "*",
         "ext-zip": "*",
-        "api-platform/core": "^4.3",
+        "api-platform/core": "^5.0",
         "doctrine/doctrine-bundle": "^3.2.4",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.7",

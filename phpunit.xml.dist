@@ -4,6 +4,7 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.0/phpunit.xsd"
          backupGlobals="false"
          colors="true"
+         failOnDeprecation="true"
          failOnNotice="true"
          failOnWarning="true"
          stopOnFailure="true"
@@ -12,6 +13,7 @@
          >
 
 <php>
+    <server name="OMEKA_API_URL" value="https://omeka.example.test/api" force="true"/>
     <ini name="display_errors" value="1"/>
     <ini name="error_reporting" value="-1"/>
     <server name="APP_ENV" value="test" force="true"/>
@@ -37,6 +39,7 @@
 <!--          <directory>tests/Crawl</directory>-->
 <!--    </testsuite>-->
 <!--  </testsuites>-->
+<testsuites><testsuite name="KPA"><directory>tests</directory></testsuite></testsuites>
 <source ignoreSuppressionOfDeprecations="true" restrictNotices="true" restrictWarnings="true">
     <include>
         <!--            <directory suffix=".php">src</directory>-->

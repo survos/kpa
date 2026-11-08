@@ -12,9 +12,13 @@ class CrawlAsVisitorTest extends BaseVisitLinksTest
     {
         $hasAny = false;
 
-        foreach (parent::linksToVisit() as $dataset) {
-            $hasAny = true;
-            yield $dataset;
+        try {
+            foreach (parent::linksToVisit() as $dataset) {
+                $hasAny = true;
+                yield $dataset;
+            }
+        } finally {
+            self::ensureKernelShutdown();
         }
 
         if (!$hasAny) {

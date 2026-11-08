@@ -30,3 +30,24 @@ services:
     # please note that last definitions always *replace* previous ones
 #    Yectep\PhpSpreadsheetBundle\Factory:
 #        alias: phpoffice.spreadsheet
+
+    kpa.song.facets:
+        class: App\Api\Filter\FacetsFieldSearchFilter
+        arguments:
+            $properties: {school: null, year: null}
+        tags: [api_platform.filter]
+    kpa.video.facets:
+        class: App\Api\Filter\FacetsFieldSearchFilter
+        arguments:
+            $properties: {school: null, year: null}
+        tags: [api_platform.filter]
+    kpa.fileasset.facets:
+        class: App\Api\Filter\FacetsFieldSearchFilter
+        arguments:
+            $properties: {type: null}
+        tags: [api_platform.filter]
+    kpa.audio.facets:
+        class: App\Api\Filter\FacetsFieldSearchFilter
+        arguments:
+            $properties: {format: null, variant: null}
+        tags: [api_platform.filter]

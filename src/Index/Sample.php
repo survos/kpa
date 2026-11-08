@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Index;
 
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
+use App\Api\Filter\SortFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -23,9 +23,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 	new Get(normalizationContext: ["groups" => ["sample.read"]]),
 	new GetCollection(normalizationContext: ["groups" => ["sample.read"]]),
 ])]
-#[ApiFilter(filterClass: \ApiPlatform\Doctrine\Orm\Filter\SearchFilter::class, properties: self::FILTERABLE_FIELDS)]
-#[ApiFilter(filterClass: \ApiPlatform\Doctrine\Orm\Filter\SearchFilter::class, properties: self::SEARCHABLE_FIELDS)]
-#[ApiFilter(filterClass: \ApiPlatform\Doctrine\Orm\Filter\OrderFilter::class, properties: self::SORTABLE_FIELDS)]
+#[QueryParameter(key: ':property', filter: new ExactFilter(), properties: [...self::FILTERABLE_FIELDS, ...self::SEARCHABLE_FIELDS])]
+#[QueryParameter(key: 'order[:property]', filter: new SortFilter(), properties: self::SORTABLE_FIELDS, castToArray: false)]
 //#[MeiliIndex(
 //	primaryKey: 'id',
 //	filterable: self::FILTERABLE_FIELDS,
