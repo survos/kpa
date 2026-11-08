@@ -1,8 +1,6 @@
 survos_search:
-    # MUST be a literal, never %env(...)%: AutoEntitySearchPass resolves this against the
-    # adapters map at COMPILE time, when an env placeholder is still an unresolved string --
-    # the lookup misses, the DSN comes out NULL, and every search silently falls back to the
-    # Doctrine adapter. Switch engines by editing this line.
+    # Source records stay in Doctrine; SearchBundle queries the Elasticsearch projection.
     default_adapter: es
+    index_prefix: kpa_
     adapters:
         es: '%env(ELASTICSEARCH_DSN)%'

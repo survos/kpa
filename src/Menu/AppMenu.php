@@ -2,7 +2,6 @@
 
 namespace App\Menu;
 
-use App\Controller\Admin\MeiliDashboardController;
 use App\Entity\FileAsset;
 use App\Entity\Song;
 use App\Entity\Video;
@@ -53,7 +52,7 @@ final class AppMenu
     public function ourAuthMenu(MenuEvent $event): void
     {
         $menu = $event->getMenu();
-        $this->add($menu, MeiliDashboardController::DASHBOARD_ROUTE, label: "Dashboard");
+        $this->add($menu, 'admin', label: 'EasyAdmin');
 
         if ($this->security?->getUser()) {
             $this->add($menu, 'app_logout', label: 'Logout', icon: 'logout');
@@ -117,9 +116,7 @@ final class AppMenu
         }
         $menu = $event->getMenu();
         $this->add($menu, 'app_homepage');
-        $this->add($menu, 'admin');
-//        $this->add($menu, 'survos_meili_admin');
-        $this->add($menu, MeiliDashboardController::MEILI_ROUTE, label: "EZ");
+        $this->add($menu, 'admin', label: 'EasyAdmin');
 
         $contentMenu = $this->addSubmenu($menu, 'Content');
         foreach ($this->entityMetaRegistry->getByGroup('Catalog') as $entityMeta) {

@@ -39,7 +39,6 @@ class AppController extends AbstractController
     }
 
     #[Route(path: '/', name: 'app_homepage', methods: ['GET'])]
-    #[Route(path: '/admin', name: 'admin', methods: ['GET'])]
     public function homepage(
         EntityMetaRegistry $entityMetaRegistry,
         RouteMetaRegistry $routeMetaRegistry,
@@ -59,6 +58,7 @@ class AppController extends AbstractController
             }
 
             $entities[] = [
+                'code' => $descriptor->code,
                 'class' => $descriptor->class,
                 'label' => $descriptor->label,
                 'icon' => $descriptor->icon,

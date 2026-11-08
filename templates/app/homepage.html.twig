@@ -19,6 +19,9 @@
     {% set workspace = defaultWorkspace|default('default') %}
 
     <div class="mt-4 d-flex gap-2">
+        <a href="{{ path('admin') }}" class="btn btn-primary">
+            {{ ux_icon('tabler:settings') }} EasyAdmin
+        </a>
         <a href="/api/songs/export.csv" class="btn btn-outline-success" download>
             {{ ux_icon('tabler:file-download')|raw }} Download Song CSV
         </a>
@@ -47,12 +50,11 @@
                             <a href="{{ path(entity.gridRoute) }}" class="btn btn-info btn-lg fw-bold">
                                 API Grid
                             </a>
-                            <a href="{{ path('meili_insta', { indexName: entity.meiliIndex }) }}" class="btn btn-primary btn-lg fw-bold">
-                                Meili Search
-                            </a>
-                            <a href="{{ path('meili_chat', { indexName: entity.meiliIndex, workspace: workspace }) }}" class="btn btn-outline-secondary">
-                                Chat
-                            </a>
+                            {% if entity.code in ['app_song', 'app_file_asset'] %}
+                                <a href="{{ path('survos_entity_ux_search', {code: entity.code}) }}" class="btn btn-outline-primary">
+                                    Search
+                                </a>
+                            {% endif %}
                         </div>
                     </twig:block>
                 </twig:card>
