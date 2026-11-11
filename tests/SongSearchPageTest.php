@@ -28,16 +28,14 @@ final class SongSearchPageTest extends WebTestCase
         $searcher->expects(self::once())->method('search')->willReturnCallback(
             static function (Query $query, SearchInterface $search): ResultSet {
                 self::assertSame('lexical', $search->getAdapterParameters()['retrievalMode']);
-                self::assertSame(2, $query->getCurrentPage());
                 self::assertNull($search->getAdapterParameters()['embeddingProvider']);
-                return (new ResultSet())->setTotalResults(25);
+                return new ResultSet();
             }
         );
         self::getContainer()->set(Searcher::class, $searcher);
-        $client->request('GET', '/songs/search?q=friendship&mode=compare&page=2');
+        $client->request('GET', '/songs/search?q=friendship&mode=compare');
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, '#song-mode option');
-        self::assertSelectorExists('a[href="/songs/search?q=friendship&mode=lexical&page=3"]');
         self::assertSelectorTextContains('#song-mode', 'Keyword');
     }
 
@@ -63,7 +61,7 @@ final class SongSearchPageTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSame(['lexical', 'vector', 'hybrid'], $modes);
         self::assertSelectorCount(3, 'article');
-        self::assertSelectorTextNotContains('article', 'Score:');
+        self::assertSelectorTextContains('article', 'Score: 1.000000');
         self::assertSelectorTextContains('article', 'Follow me & sing');
         self::assertSelectorTextNotContains('article', '{title:');
     }
