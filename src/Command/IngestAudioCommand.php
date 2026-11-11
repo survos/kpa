@@ -28,6 +28,7 @@ final class IngestAudioCommand
         private readonly EntityManagerInterface $entityManager,
         private readonly SongRepository $songRepository,
         private readonly SongMatcher $songMatcher,
+        private readonly \App\Service\ArchivedAudioImporter $archivedAudioImporter,
         #[Autowire('%kernel.project_dir%')] private readonly string $projectDir,
     ) {
     }
@@ -44,7 +45,18 @@ final class IngestAudioCommand
         bool $reset = false,
         #[Option('audio scan JSONL used as the source of file facts (from import:dir)')]
         string $jsonl = 'data/audio.jsonl',
+        #[Option('Cached S3 JSON sidecars; reconnect remote recordings without local MP3 files')]
+        ?string $s3Manifest = null,
     ): int {
+        if ($s3Manifest !== null) {
+            if ($reset) {
+                $io->error('--reset is not supported for archived recordings.');
+                return Command::FAILURE;
+            }
+            $report = $this->archivedAudioImporter->import($s3Manifest, $dry, $limit);
+            $io->writeln(json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            return Command::SUCCESS;
+        }
         $absDir = str_starts_with($dir, '/') ? $dir : $this->projectDir . '/' . ltrim($dir, '/');
         if (!is_dir($absDir)) {
             $io->error(sprintf('Not a directory: %s', $absDir));

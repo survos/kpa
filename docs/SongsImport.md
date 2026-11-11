@@ -168,3 +168,35 @@ Only `lyrics` and `lyrics_length` changed. Song IDs, metadata, recordings and S3
 links were preserved. Ordinary Elasticsearch search was refreshed. AI generation,
 embeddings, dense summaries and generated keywords remain on hold; unresolved
 records still need source reconciliation and do not necessarily lack files.
+
+## Reconnect recordings already in S3 (no MP3 downloads)
+
+The historical local pipeline is `import:dir` → `app:link-audio` →
+`app:ingest-audio`. Its reusable listing is `data/audio.jsonl`; `SongMatcher`
+normalizes filenames and caches catalog titles. It expects local paths/symlinks.
+For recordings previously uploaded to `kpa-songs`, reuse their saved JSON
+sidecars instead. These already contain original paths, titles/tags, duration,
+and the S3 object key:
+
+```bash
+php bin/console app:scan-s3-audio --cache=var/archive-audio
+php bin/console app:ingest-audio --s3-manifest=var/archive-audio/manifest.json --dry
+php bin/console app:ingest-audio --s3-manifest=var/archive-audio/manifest.json
+```
+
+Scanning requires the configured AWS credentials. Production has these; use
+`--cache=/data/archive-audio` there for persistence across deployments. The cache
+contains only object listings and small JSON sidecars, keyed by S3 ETag. Repeat
+scans reuse unchanged sidecars. Copy the manifest to another environment to run
+the same associations without credentials or another remote scan.
+
+The remote branch of the existing audio ingester creates the same `FileAsset`
+and `Audio` entities, with an S3 playback URL. It never downloads/probes audio,
+re-uploads files, generates AI metadata, or changes song/lyric data. Existing URLs
+are skipped on reruns. Unlike the historical title-only fuzzy matcher, remote
+recovery requires a unique normalized title and rejects known year conflicts;
+ambiguous and unmatched files are reported for review. It does not claim every
+unique title is a verified identity. `--reset` is rejected in this mode.
+
+Confirmed example: `laur-2019-good-job-jack` matches the recording and guide-vocal
+sidecars in `good-job-jack/`, whose source paths and tags identify Laurel 2019.
