@@ -17,30 +17,15 @@ use Symfony\Component\Filesystem\Filesystem;
 #[AsCommand('app:export-master-songlist-csv', 'Convert the KPA "Master Song List" .xlsx (KPA Songs sheet) to a clean CSV with normalised headers')]
 final class ExportMasterSongListCommand
 {
-    /**
-     * Source column letters (1-indexed letters from the .xlsx) → clean snake_case CSV headers.
-     * Trailing empty columns (T..X) are dropped.
-     */
-    private const COLUMN_MAP = [
-        'A' => 'title',          // header in xlsx is misleadingly "Instrumentals" — actual data is the song title
-        'B' => 'writer',
-        'C' => 'school',
-        'D' => 'co_writer',
-        'E' => 'date',           // Excel serial → ISO YYYY-MM-DD
-        'F' => 'co_writer_assistant',
-        'G' => 'record_status',
-        'H' => 'recording',
-        'I' => 'publisher',
-        'J' => 'iswc',
-        'K' => 'isrc',
-        'L' => 'tuning',
-        'M' => 'ascap',
-        'N' => 'copyright',
-        'O' => 'midi',
-        'P' => 'category',       // header in xlsx is "s/I/k"
-        'Q' => 'year',
-        'R' => 'assist',
-        'S' => 'notes',
+    /** Source headers, not column positions: the archive inserts columns over time. */
+    private const HEADER_MAP = [
+        'instrumentals' => 'title', 'title' => 'title', 'writer' => 'writer',
+        'school' => 'school', 'co-writer' => 'co_writer', 'date' => 'date',
+        'co-writer/assistant' => 'co_writer_assistant', 'record status' => 'record_status',
+        'recording' => 'recording', 'program' => 'program', 'publisher' => 'publisher',
+        'iswc' => 'iswc', 'isrc' => 'isrc', 'tuning' => 'tuning', 'ascap' => 'ascap',
+        '©' => 'copyright', 'midi' => 'midi', 's/i/k' => 'category',
+        'year' => 'year', 'assist' => 'assist', 'notes' => 'notes',
     ];
 
     public function __construct(
@@ -76,10 +61,22 @@ final class ExportMasterSongListCommand
         }
 
         $lastRow = $worksheet->getHighestDataRow();
-        $columnLetters = array_keys(self::COLUMN_MAP);
-        $range = sprintf('%s1:%s%d', $columnLetters[0], end($columnLetters), $lastRow);
+        $range = sprintf('A1:%s%d', $worksheet->getHighestDataColumn(), $lastRow);
         $rows = $worksheet->rangeToArray($range, null, false, false);
 
+        $columns = [];
+        foreach ($rows[0] as $index => $header) {
+            $key = mb_strtolower(trim((string) $header));
+            if (isset(self::HEADER_MAP[$key])) {
+                $columns[self::HEADER_MAP[$key]] = $index;
+            }
+        }
+        if (!isset($columns['title'])) {
+            $io->error('No recognized song title header. Refusing a positional import.');
+            return Command::FAILURE;
+        }
+        // Keep year available even when a source only supplies year in its date column.
+        $columns['year'] ??= null;
         $written = 0;
         $skipped = 0;
         $fp = fopen($absOutput, 'w');
@@ -88,7 +85,7 @@ final class ExportMasterSongListCommand
             return Command::FAILURE;
         }
 
-        fputcsv($fp, array_values(self::COLUMN_MAP));
+        fputcsv($fp, [...array_keys($columns), 'sourceSheet', 'sourceRow'], ',', '"', '');
 
         foreach ($rows as $idx => $row) {
             // Row 1 is the source header; we replace it with our clean headers above.
@@ -96,20 +93,25 @@ final class ExportMasterSongListCommand
                 continue;
             }
 
-            $title = trim((string) ($row[0] ?? ''));
+            $title = trim((string) ($row[$columns['title']] ?? ''));
             if ($title === '') {
                 $skipped++;
                 continue;
             }
 
             $out = [];
-            $i = 0;
-            foreach (self::COLUMN_MAP as $field) {
-                $cell = $row[$i] ?? null;
-                $out[] = $this->normaliseCell($field, $cell);
-                $i++;
+            foreach ($columns as $field => $column) {
+                $cell = $column === null ? null : ($row[$column] ?? null);
+                $out[$field] = $this->normaliseCell($field, $cell);
             }
-            fputcsv($fp, $out);
+            $rawDate = isset($columns['date']) ? trim((string) ($row[$columns['date']] ?? '')) : '';
+            if (preg_match('/^(19|20)\d{2}$/D', $rawDate)) {
+                $out['date'] = '';
+                $out['year'] = $out['year'] !== '' ? $out['year'] : $rawDate;
+            } elseif ($out['year'] === '' && preg_match('/^(\d{4})-\d{2}-\d{2}$/D', $out['date'] ?? '', $match)) {
+                $out['year'] = $match[1];
+            }
+            fputcsv($fp, [...array_values($out), $sheet, $idx + 1], ',', '"', '');
             $written++;
         }
         fclose($fp);
@@ -130,7 +132,7 @@ final class ExportMasterSongListCommand
             return '';
         }
 
-        if ($field === 'date' && is_numeric($value) && (float) $value > 1000) {
+        if ($field === 'date' && is_numeric($value) && (float) $value > 10000) {
             try {
                 return ExcelDate::excelToDateTimeObject((float) $value)->format('Y-m-d');
             } catch (\Throwable) {

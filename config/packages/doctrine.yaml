@@ -2,7 +2,8 @@ doctrine:
     dbal:
         connections:
             default: &dbal_defaults
-                schema_filter: '~^(?!(?:_timescaledb_|timescaledb_|toolkit_))~'
+                # Preserve the legacy Meilisearch index registry during the ES transition.
+                schema_filter: '~^(?!(?:_timescaledb_|timescaledb_|toolkit_|index_info$))~'
                 logging: false
                 profiling_collect_backtrace: '%kernel.debug%'
                 url: '%env(resolve:DATABASE_URL)%'

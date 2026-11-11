@@ -23,7 +23,7 @@ symfony server:start -d
 symfony open:local
 ```
 
-The current EZ header integration uses unpublished local changes in `../mono/bu/ez-bundle`; use the linker for this development setup. Review pending migrations and the target database before applying schema changes. Do not drop an existing database to reload the catalog.
+Production uses the published bundle versions pinned in `composer.lock`; local symlinks are optional for bundle development. Review pending migrations and the target database before applying schema changes. Do not drop an existing database to reload the catalog.
 
 The homepage links to `/admin`. Anonymous visitors are redirected to `/login`; access requires `ROLE_ADMIN`. The dashboard currently exposes Songs and Files.
 
@@ -50,9 +50,10 @@ The expected source is the Kid Pan Alley Dropbox archive:
 Songs-Recordings/
 └── -George Mason University archive working/
     ├── -Master Song List.xlsx
-    └── Lyrics KPA/
-        ├── Lyrics by location/
-        └── Lyrics individual songs/
+    └── lyrics/
+        └── Lyrics KPA/
+            ├── Lyrics by location/
+            └── Lyrics individual songs/
 ```
 
 The old Linux source was under `/media/tac/x10a/kpa-dropbox/`. That is historical, not a portable default. On November 8, 2026, that archive was not located in the bounded directory search of the mounted Mac `/Volumes/X10`; Dropbox recovery still requires signing into the account containing the KPA files. Do not assume the Mac X10 and Linux x10a have identical contents.
@@ -101,7 +102,7 @@ php bin/console elastic:index:populate app_file_asset
 php bin/console elastic:index:status
 ```
 
-The homepage Search links open `/entity/app_song/search` and `/entity/app_file_asset/search`. The local song index now contains the 2,324 recovered songs; the file index remains empty. Ordinary reindexing does not need `--drop`.
+The homepage Search links open `/entity/app_song/search` and `/entity/app_file_asset/search`. The November 11 spreadsheet/lyrics import contains 2,560 catalog records (2,157 with nonempty lyrics; 403 missing lyrics); the file index remains empty. Ordinary reindexing does not need `--drop`.
 
 Semantic retrieval is not configured for KPA yet. SearchBundle's ES adapter supports vector/hybrid queries, but this application still needs an embedding profile, persisted vectors, and their ES projection. Installing the bundle does not enable semantic search automatically.
 
@@ -128,7 +129,7 @@ php bin/console app:songs:embed --no-debug
 php bin/console elastic:index:rebuild app_song --keep-old --no-debug
 ```
 
-Current recovery: 2,324 indexed songs, 2,322 persisted embeddings. A repeat embedding run generated zero vectors and reused all 2,322. Only 783 source rows contain lyrics; the remainder embed titles and metadata.
+The November 8 baseline had 2,324 indexed songs and 2,322 persisted embeddings. The November 11 raw-data recovery now has 2,560 songs and 2,157 nonempty lyrics. AI/embedding generation is on hold; existing baseline vectors have not been refreshed. Do not run `app:songs:embed` until the user resumes AI work.
 
 Two unusually long lyrics records are preserved but excluded from vectors pending source review: `runn-0-running-with-the-moon-tonight` (6,502 characters) and `runn-0-running-with-the-moon-tonight-inspiration` (10,115). The downloaded CSV itself contains multiple drafts, production notes, and generated research in these fields. The temporary recovery guard flags lyrics longer than 6,000 characters; it does not truncate or rewrite the source.
 

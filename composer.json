@@ -17,6 +17,8 @@
         "ext-ctype": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
+        "ext-pdo_pgsql": "*",
         "ext-sqlite3": "*",
         "ext-xml": "*",
         "ext-zip": "*",

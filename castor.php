@@ -83,7 +83,7 @@ function songs_split_location(): void
 {
     io()->title('Bulk split: Lyrics by location');
     io()->note('Source is on the x10a drive — expect this to take a few minutes.');
-    run([...get_console(), 'app:split-lyrics-docx', songs_gmu_root() . '/Lyrics KPA/Lyrics by location', '--force', '--no-preview']);
+    run([...get_console(), 'app:split-lyrics-docx', songs_gmu_root() . '/lyrics/Lyrics KPA/Lyrics by location', '--force', '--no-preview']);
 }
 
 #[AsTask(namespace: 'songs', name: 'split-residency', description: 'Bulk-split current residency .docx files → var/data/')]
@@ -97,7 +97,7 @@ function songs_split_residency(): void
 function songs_split_individual(): void
 {
     io()->title('Bulk split: Lyrics individual songs');
-    run([...get_console(), 'app:split-lyrics-docx', songs_gmu_root() . '/Lyrics KPA/Lyrics individual songs', '--force', '--no-preview']);
+    run([...get_console(), 'app:split-lyrics-docx', songs_gmu_root() . '/lyrics/Lyrics KPA/Lyrics individual songs', '--force', '--no-preview']);
 }
 
 #[AsTask(namespace: 'songs', name: 'enrich', description: 'Drop <slug>-metadata.json next to each <slug>-lyrics.cho + create dirs for CSV-only songs')]

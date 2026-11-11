@@ -5,7 +5,7 @@
         "php",
         "symfony"
     ],
-    "repository": "https://github.com/tacman/kpa",
+    "repository": "https://github.com/survos/kpa",
     "scripts": {
         "dokku": {
             "predeploy": "bin/console importmap:install && bin/console asset-map:compile && bin/console  secrets:decrypt-to-local --force && bin/console doctrine:migrations:migrate -n --allow-no-migration",
@@ -13,16 +13,17 @@
         }
     },
     "env": {
-        "SECRET_TOKEN": {
-            "description": "A secret key for verifying the integrity of signed cookies.",
-            "value": "secret"
+        "APP_ENV": {
+            "value": "prod"
+        },
+        "APP_DEBUG": {
+            "value": "0"
+        },
+        "WEB_CONCURRENCY": {
+            "value": "2"
         }
     },
     "image": "gliderlabs/herokuish",
-    "addons": [
-        "dokku-postgres",
-        "dokku-redis"
-    ],
     "buildpacks": [
         {
             "url": "https://github.com/heroku/heroku-buildpack-php.git"
