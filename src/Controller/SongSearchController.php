@@ -16,21 +16,25 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class SongSearchController extends AbstractController
 {
-    public function __construct(private SearchProvider $searches, private Searcher $searcher) {}
+    public function __construct(private SearchProvider $searches, private Searcher $searcher, private SongEmbeddingService $embeddings) {}
 
     #[Route('/search', name: 'app_search', methods: ['GET'])]
     public function faceted(): Response
     {
-        return $this->render('song/faceted_search.html.twig');
+        return $this->render('song/faceted_search.html.twig', ['aiEnabled' => $this->embeddings->enabled]);
     }
 
     #[Route('/songs/search', name: 'song_search', methods: ['GET'])]
     public function __invoke(Request $request): Response
     {
         $q = trim($request->query->getString('q'));
-        $mode = $request->query->getString('mode', 'hybrid');
+        $mode = $request->query->getString('mode', 'lexical');
         if (!in_array($mode, ['lexical', 'semantic', 'hybrid', 'compare'], true) || mb_strlen($q) > 500) {
             throw $this->createNotFoundException('Invalid search mode or query length.');
+        }
+        $aiEnabled = $this->embeddings->enabled;
+        if (!$aiEnabled) {
+            $mode = 'lexical';
         }
         $results = [];
         $excerpts = [];
@@ -45,6 +49,6 @@ final class SongSearchController extends AbstractController
                 $excerpts[$id] = SongEmbeddingService::cleanLyrics($text);
             }
         }
-        return $this->render('song/search.html.twig', compact('q', 'mode', 'results', 'excerpts'));
+        return $this->render('song/search.html.twig', compact('q', 'mode', 'results', 'excerpts', 'aiEnabled'));
     }
 }

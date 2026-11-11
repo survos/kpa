@@ -104,7 +104,7 @@ php bin/console elastic:index:status
 
 The homepage Search links open `/entity/app_song/search` and `/entity/app_file_asset/search`. The November 11 spreadsheet/lyrics import contains 2,560 catalog records (2,157 with nonempty lyrics; 403 missing lyrics); the file index remains empty. Ordinary reindexing does not need `--drop`.
 
-Semantic retrieval is not configured for KPA yet. SearchBundle's ES adapter supports vector/hybrid queries, but this application still needs an embedding profile, persisted vectors, and their ES projection. Installing the bundle does not enable semantic search automatically.
+Keyword search is active. Semantic/hybrid queries and embedding generation are paused with `KPA_AI_ENABLED=0` until raw catalog verification is complete. Re-enable only when explicitly requested.
 
 ## Tests
 

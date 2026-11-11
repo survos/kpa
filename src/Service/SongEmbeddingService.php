@@ -29,6 +29,7 @@ final class SongEmbeddingService implements EmbeddingProviderInterface
         private EntityManagerInterface $em,
         #[Autowire(env: 'KPA_EMBED_MODEL')] string $model,
         #[Autowire(env: 'KPA_EMBED_REVISION')] string $revision,
+        #[Autowire(env: 'bool:KPA_AI_ENABLED')] public readonly bool $enabled = false,
     ) {
         $this->profile = new EmbeddingProfile($model, self::DIMENSIONS, $revision, 'song-v3-clean-text');
     }
@@ -79,6 +80,9 @@ final class SongEmbeddingService implements EmbeddingProviderInterface
 
     private function generate(string $text): array
     {
+        if (!$this->enabled) {
+            throw new \RuntimeException('AI processing is paused pending raw catalog verification.');
+        }
         if (!$this->modelVerified) {
             $models = $this->http->request('GET', '/api/tags')->toArray()['models'] ?? [];
             $matches = array_filter($models, fn (array $m): bool => $m['name'] === $this->profile->model && $m['digest'] === $this->profile->revision);
@@ -98,6 +102,10 @@ final class SongEmbeddingService implements EmbeddingProviderInterface
     #[AsCommand('app:songs:embed', 'Persist missing or stale song embeddings; safely resume after interruption')]
     public function generateSongs(SymfonyStyle $io, #[Option('Maximum number of vectors to generate; zero means all')] int $limit = 0): int
     {
+        if (!$this->enabled) {
+            $io->error('AI processing is paused pending raw catalog verification.');
+            return Command::FAILURE;
+        }
         if ($limit < 0) {
             throw new \InvalidArgumentException('Limit must be zero or positive.');
         }

@@ -3,6 +3,6 @@
 {% block page_title 'Search songs' %}
 {% block page_subtitle 'Kid Pan Alley catalog' %}
 {% block body %}
-    <p><a href="{{ path('song_search', {mode: 'compare'}) }}">Compare keyword, semantic, and hybrid rankings</a></p>
+    {% if aiEnabled %}<p><a href="{{ path('song_search', {mode: 'compare'}) }}">Compare keyword, semantic, and hybrid rankings</a></p>{% endif %}
     <twig:Survos:Search:Layout name="app_song" :options="{hitTemplate: 'song/search_hit.html.twig', retrievalMode: 'lexical'}" :urlRewriting="true" />
 {% endblock %}

@@ -48,8 +48,8 @@ final class SongSearch extends AbstractFieldSearch implements HitTemplateSearchI
         $fields = $parameters['sourceFields'];
         $parameters['mappings']['embedding'] = ['type' => 'dense_vector', 'dims' => SongEmbeddingService::DIMENSIONS, 'index' => true, 'similarity' => 'cosine'];
         $parameters['vectorDimensions'] = SongEmbeddingService::DIMENSIONS;
-        $parameters['embeddingProvider'] = $this->embeddings;
-        $parameters['retrievalMode'] = $options['retrievalMode'] ?? 'lexical';
+        $parameters['embeddingProvider'] = $this->embeddings->enabled ? $this->embeddings : null;
+        $parameters['retrievalMode'] = $this->embeddings->enabled ? ($options['retrievalMode'] ?? 'lexical') : 'lexical';
         $parameters['documentMapper'] = function (Song $song) use ($fields): array {
             $document = [];
             foreach ($fields as $field) {

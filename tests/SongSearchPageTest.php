@@ -14,8 +14,34 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class SongSearchPageTest extends WebTestCase
 {
+    protected function tearDown(): void
+    {
+        unset($_ENV['KPA_AI_ENABLED']);
+        parent::tearDown();
+    }
+
+    public function testPausedAiForcesKeywordSearch(): void
+    {
+        $_ENV['KPA_AI_ENABLED'] = '0';
+        $client = self::createClient();
+        $searcher = $this->createMock(Searcher::class);
+        $searcher->expects(self::once())->method('search')->willReturnCallback(
+            static function (Query $query, SearchInterface $search): ResultSet {
+                self::assertSame('lexical', $search->getAdapterParameters()['retrievalMode']);
+                self::assertNull($search->getAdapterParameters()['embeddingProvider']);
+                return new ResultSet();
+            }
+        );
+        self::getContainer()->set(Searcher::class, $searcher);
+        $client->request('GET', '/songs/search?q=friendship&mode=compare');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorCount(1, '#song-mode option');
+        self::assertSelectorTextContains('#song-mode', 'Keyword');
+    }
+
     public function testComparisonUsesThreeModesAndRendersHydratedSongs(): void
     {
+        $_ENV['KPA_AI_ENABLED'] = '1';
         $client = self::createClient();
         $song = new Song('test-song');
         $song->title = 'My Shadow';

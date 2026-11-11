@@ -3,19 +3,19 @@
 {% block page_subtitle 'Kid Pan Alley catalog' %}
 {% block title %}Search songs{% endblock %}
 {% block body %}
-<p class="text-muted">Find words in the catalog, explore similar meanings, or combine both.</p>
+<p class="text-muted">Search song titles, lyrics, and catalog details.</p>
 <form method="get" action="{{ path('song_search') }}" class="d-flex gap-2 mb-3">
     <label class="visually-hidden" for="song-query">Search</label>
     <input id="song-query" class="form-control" type="search" name="q" value="{{ q }}" maxlength="500" placeholder="Songs about friendship and belonging">
     <label class="visually-hidden" for="song-mode">Search mode</label>
     <select id="song-mode" class="form-select w-auto" name="mode">
-        {% for value, label in {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid', compare: 'Compare all three'} %}
+        {% for value, label in (aiEnabled ? {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid', compare: 'Compare all three'} : {lexical: 'Keyword'}) %}
             <option value="{{ value }}" {{ mode == value ? 'selected' : '' }}>{{ label }}</option>
         {% endfor %}
     </select>
     <button class="btn btn-primary">Search</button>
 </form>
-<p class="small text-muted">Temporary recovered catalog: 783 songs have lyrics; other matches rely on titles and metadata. Two suspect lyrics records are excluded from semantic results pending review.</p>
+<p class="small text-muted">The catalog has been refreshed from the master spreadsheet and downloaded lyric documents.</p>
 <p class="small text-muted">Showing the top 12 matches in each selected mode. Scores use different scales across modes; compare rankings, not score values.</p>
 <div class="row">
 {% for name, result in results %}
