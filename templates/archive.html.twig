@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Explore the Kid Pan Alley song archive: songs, lyrics, and the schools and communities that helped create them.">
+    <title>{% block title %}Kid Pan Alley · Song archive{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('styles/archive.css') }}">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="archive-header wrap">
+    <a class="brand" href="{{ path('app_homepage') }}"><span class="brand-mark" aria-hidden="true">kpa<span>♪</span></span><span>Kid Pan Alley<small>The song archive</small></span></a>
+    <nav aria-label="Main navigation"><a href="{{ path('app_homepage') }}" {% if app.request.attributes.get('_route') == 'app_homepage' %}aria-current="page"{% endif %}>About the archive</a><a href="{{ path('song_search') }}" {% if app.request.attributes.get('_route') == 'song_search' %}aria-current="page"{% endif %}>Search songs <span aria-hidden="true">↗</span></a></nav>
+</header>
+<main id="main" class="wrap">{% block body %}{% endblock %}</main>
+<footer class="archive-footer wrap"><span>Kid Pan Alley · Songs made together.</span><a href="{{ path('app_homepage') }}">The song archive</a></footer>
+</body>
+</html>

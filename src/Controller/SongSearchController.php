@@ -19,9 +19,9 @@ final class SongSearchController extends AbstractController
     public function __construct(private SearchProvider $searches, private Searcher $searcher, private SongEmbeddingService $embeddings) {}
 
     #[Route('/search', name: 'app_search', methods: ['GET'])]
-    public function faceted(): Response
+    public function faceted(Request $request): Response
     {
-        return $this->render('song/faceted_search.html.twig', ['aiEnabled' => $this->embeddings->enabled]);
+        return $this->redirectToRoute('song_search', $request->query->all());
     }
 
     #[Route('/songs/search', name: 'song_search', methods: ['GET'])]
@@ -36,11 +36,12 @@ final class SongSearchController extends AbstractController
         if (!$aiEnabled) {
             $mode = 'lexical';
         }
+        $page = max(1, min(100, $request->query->getInt('page', 1)));
         $results = [];
         $excerpts = [];
         foreach ($mode === 'compare' ? ['lexical', 'semantic', 'hybrid'] : [$mode] as $name) {
             $search = $this->searches->getSearch('app_song')->create(['retrievalMode' => $name === 'semantic' ? 'vector' : $name]);
-            $query = $search->createQuery()->setQueryString($q)->setActiveSort(null)->setActiveHitsPerPage(12);
+            $query = $search->createQuery()->setQueryString($q)->setActiveSort(null)->setActiveHitsPerPage(12)->setCurrentPage($page);
             $results[$name] = $this->searcher->search($query, $search);
             foreach ($results[$name]->getHits() as $hit) {
                 $song = $hit->getData();
@@ -49,6 +50,6 @@ final class SongSearchController extends AbstractController
                 $excerpts[$id] = SongEmbeddingService::cleanLyrics($text);
             }
         }
-        return $this->render('song/search.html.twig', compact('q', 'mode', 'results', 'excerpts', 'aiEnabled'));
+        return $this->render('song/search.html.twig', compact('q', 'mode', 'results', 'excerpts', 'aiEnabled', 'page'));
     }
 }

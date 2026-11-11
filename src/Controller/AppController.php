@@ -39,39 +39,12 @@ class AppController extends AbstractController
     }
 
     #[Route(path: '/', name: 'app_homepage', methods: ['GET'])]
-    public function homepage(
-        EntityMetaRegistry $entityMetaRegistry,
-        RouteMetaRegistry $routeMetaRegistry,
-//    #[Autowire('%kpa.version%')] ?string $applicationVersion = null, // was in bizkit_version
-    )
+    public function homepage(): Response
     {
-        $user = $this->getUser();
-        $entities = [];
-
-        foreach ($entityMetaRegistry->getByGroup('Catalog') as $descriptor) {
-            $listRoute = $routeMetaRegistry->forEntityPurpose($descriptor->class, Purpose::List);
-            if ($listRoute === null) {
-                continue;
-            }
-
-            $entities[] = [
-                'code' => $descriptor->code,
-                'class' => $descriptor->class,
-                'label' => $descriptor->label,
-                'icon' => $descriptor->icon,
-                'description' => $descriptor->description,
-                'count' => $this->em->getRepository($descriptor->class)->count([]),
-                'gridRoute' => $listRoute->name,
-                'order' => $descriptor->order,
-            ];
-        }
-
-        usort($entities, static fn (array $a, array $b) => $a['order'] <=> $b['order']);
-
-        return $this->render('app/homepage.html.twig', [
-            'user' => $user,
-            'dashboardEntities' => $entities,
-        ]);
+        $stats = $this->em->getConnection()->fetchAssociative(
+            "SELECT COUNT(*) AS songs, COUNT(*) FILTER (WHERE NULLIF(TRIM(lyrics), '') IS NOT NULL) AS lyrics FROM song"
+        );
+        return $this->render('app/homepage.html.twig', ['stats' => $stats]);
     }
 
     private function loadLyrics($songs)

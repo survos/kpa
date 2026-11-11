@@ -1,65 +1,15 @@
-{% extends 'base.html.twig' %}
-
-{% block page_title 'KPA' %}
-{% block page_subtitle 'KPA Dashboard' %}
-
+{% extends 'archive.html.twig' %}
 {% block body %}
-    {% if app.user %}
-        <div class="mb-3">
-            <div class="text-muted small">Signed in as</div>
-            <div class="fw-semibold">{{ app.user.userIdentifier }}</div>
-
-            {# If you truly need all identifiers, make sure identifiers is iterable in your User implementation #}
-            {% if app.user.identifiers is defined %}
-                <pre class="mt-2 small text-muted">{{ app.user.identifiers|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
-            {% endif %}
-        </div>
-    {% endif %}
-
-    {% set workspace = defaultWorkspace|default('default') %}
-
-    <div class="mt-4 d-flex gap-2">
-        <a href="{{ path('admin') }}" class="btn btn-primary">
-            {{ ux_icon('tabler:settings') }} EasyAdmin
-        </a>
-        <a href="/api/songs/export.csv" class="btn btn-outline-success" download>
-            {{ ux_icon('tabler:file-download')|raw }} Download Song CSV
-        </a>
-        <a href="/api/file-assets/export.csv" class="btn btn-outline-success" download>
-            {{ ux_icon('tabler:file-download')|raw }} Download Files CSV
-        </a>
+<section class="hero">
+    <div>
+        <p class="eyebrow">A collection of shared imagination</p>
+        <h1>Small voices.<br>Big ideas.<br><em>Wonderful songs.</em></h1>
+        <p class="hero-copy">Welcome to the Kid Pan Alley archive. Discover songs created with children, songwriters, schools, and communities—each one a little piece of the world as they see it.</p>
+        <a class="button" href="{{ path('song_search') }}">Explore the songs <span aria-hidden="true">→</span></a>
     </div>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3 mt-4">
-        {% for entity in dashboardEntities %}
-            <div class="col">
-                <twig:card>
-                    <twig:block name="card_body">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="fs-1 lh-1 text-primary">{{ ux_icon(entity.icon)|raw }}</div>
-                            <div>
-                                <div class="text-light small fw-semibold">{{ entity.label }}</div>
-                                <div class="display-6 fw-bold">{{ entity.count|number_format }}</div>
-                                <div class="mt-2 text-muted small">{{ entity.description }}</div>
-                            </div>
-                        </div>
-                    </twig:block>
-
-                    <twig:block name="links">
-                        <div class="d-grid gap-2">
-                            <a href="{{ path(entity.gridRoute) }}" class="btn btn-info btn-lg fw-bold">
-                                API Grid
-                            </a>
-                            {% if entity.code in ['app_song', 'app_file_asset'] %}
-                                <a href="{{ entity.code == 'app_song' ? path('app_search') : path('survos_entity_ux_search', {code: entity.code}) }}" class="btn btn-outline-primary">
-                                    Search
-                                </a>
-                            {% endif %}
-                        </div>
-                    </twig:block>
-                </twig:card>
-            </div>
-        {% endfor %}
-    </div>
-
+    <div class="songbook" aria-hidden="true"><div class="songbook-label">KID PAN ALLEY<br>THE COLLECTED SONGS</div><div class="staff">♪<span>♫</span>♪</div><div class="songbook-title">A world of stories,<br>one song at a time.</div><div class="songbook-bottom">WORDS · MUSIC · IMAGINATION <span>↗</span></div></div>
+</section>
+<section class="archive-stats" aria-label="Archive at a glance"><div><strong>{{ stats.songs|number_format }}</strong><span>songs in the catalog</span></div><div><strong>{{ stats.lyrics|number_format }}</strong><span>songs with lyrics to explore</span></div><p>A growing record of creativity.<br>Preserved for discovery.</p></section>
+<section class="about-grid"><div><p class="eyebrow">Inside the archive</p><h2>Find a familiar song.<br>Discover a new perspective.</h2></div><div><p>From friendship and belonging to nature and everyday adventures, these songs give children’s ideas a place to be heard.</p><p>Explore song titles and lyrics, along with the schools, years, and songwriting credits recorded in the catalog. The collection brings together the master song list and original lyric documents; some songs are still awaiting their lyrics.</p><a class="text-link" href="{{ path('song_search') }}">Start your search <span aria-hidden="true">→</span></a></div></section>
+<section class="browse-topics"><p class="eyebrow">A few places to begin</p><div>{% for topic in ['Friendship', 'Dreams', 'Family', 'Nature'] %}<a href="{{ path('song_search', {q: topic}) }}">{{ topic }} <span aria-hidden="true">↗</span></a>{% endfor %}</div></section>
 {% endblock %}

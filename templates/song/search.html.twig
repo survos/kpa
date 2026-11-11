@@ -1,39 +1,22 @@
-{% extends 'base.html.twig' %}
-{% block page_title 'Search songs' %}
-{% block page_subtitle 'Kid Pan Alley catalog' %}
-{% block title %}Search songs{% endblock %}
+{% extends 'archive.html.twig' %}
+{% block title %}Search songs · Kid Pan Alley{% endblock %}
 {% block body %}
-<p class="text-muted">Search song titles, lyrics, and catalog details.</p>
-<form method="get" action="{{ path('song_search') }}" class="d-flex gap-2 mb-3">
-    <label class="visually-hidden" for="song-query">Search</label>
-    <input id="song-query" class="form-control" type="search" name="q" value="{{ q }}" maxlength="500" placeholder="Songs about friendship and belonging">
-    <label class="visually-hidden" for="song-mode">Search mode</label>
-    <select id="song-mode" class="form-select w-auto" name="mode">
-        {% for value, label in (aiEnabled ? {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid', compare: 'Compare all three'} : {lexical: 'Keyword'}) %}
-            <option value="{{ value }}" {{ mode == value ? 'selected' : '' }}>{{ label }}</option>
-        {% endfor %}
-    </select>
-    <button class="btn btn-primary">Search</button>
+<section class="search-heading"><p class="eyebrow">The song archive</p><h1>Find your next <em>discovery.</em></h1><p>Look for a title, a line you remember, or an idea you’re curious about.</p></section>
+<form method="get" action="{{ path('song_search') }}" class="search-form">
+    <label for="song-query">Search the archive</label>
+    <div class="search-controls"><input id="song-query" type="search" name="q" value="{{ q }}" maxlength="500" placeholder="Try friendship, a school, or a song title">
+    <label class="sr-only" for="song-mode">Search mode</label>
+    <select id="song-mode" name="mode">{% for value, label in (aiEnabled ? {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid', compare: 'Compare all three'} : {lexical: 'Keyword'}) %}<option value="{{ value }}" {{ mode == value ? 'selected' : '' }}>{{ label }}</option>{% endfor %}</select>
+    <button class="button">Search <span aria-hidden="true">→</span></button></div>
+    <p class="search-help">{% if aiEnabled %}Keyword finds matching words. Semantic explores meaning. Hybrid combines both.{% else %}Keyword searches titles, lyrics, and catalog details. Semantic and hybrid search are coming soon.{% endif %}</p>
 </form>
-<p class="small text-muted">The catalog has been refreshed from the master spreadsheet and downloaded lyric documents.</p>
-<p class="small text-muted">Showing the top 12 matches in each selected mode. Scores use different scales across modes; compare rankings, not score values.</p>
-<div class="row">
+<div class="results {{ mode == 'compare' ? 'results-compare' : '' }}">
 {% for name, result in results %}
-    <section class="{{ mode == 'compare' ? 'col-lg-4' : 'col-lg-8' }}">
-        <h2>{{ {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid'}[name] }}</h2>
-        <p class="text-muted">{{ {lexical: 'Matches words in titles, lyrics, and metadata.', semantic: 'Matches meaning using saved song embeddings.', hybrid: 'Combines keyword and semantic rankings.'}[name] }}</p>
-        {% for hit in result.hits %}
-            {% set song = hit.data %}
-            <article class="card mb-3"><div class="card-body">
-                <h3 class="card-title"><a href="{{ path('song_show', {songId: song.id}) }}">{{ song.title }}</a></h3>
-                <p class="small text-muted">Score: {{ hit.score|number_format(6) }}</p>
-                <p class="small text-muted">{{ song.school }}{% if song.year %} · {{ song.year }}{% endif %}</p>
-                <p>{{ excerpts[song.id]|default('No lyrics in the recovery export.')|striptags|slice(0, 260) }}{% if excerpts[song.id]|length > 260 %}…{% endif %}</p>
-            </div></article>
-        {% else %}
-            <p>No matches. Try a broader phrase.</p>
-        {% endfor %}
-    </section>
-{% endfor %}
+<section class="result-column" aria-label="{{ name }} results"><div class="results-heading"><h2>{{ q ? 'Results for “' ~ q ~ '”' : 'Explore the collection' }}</h2><span>{{ {lexical: 'Keyword', semantic: 'Semantic', hybrid: 'Hybrid'}[name] }} · {{ result.totalResults|number_format }} songs</span></div>
+{% for hit in result.hits %}{% set song = hit.data %}{% set excerpt = excerpts[song.id]|default('') %}
+<article class="song-result"><span class="result-number" aria-hidden="true">{{ '%02d'|format((page - 1) * 12 + loop.index) }}</span><div><p class="song-meta">{{ song.school ?: 'Kid Pan Alley' }}{% if song.year %} · {{ song.year }}{% endif %}</p><h3><a href="{{ path('song_show', {songId: song.id}) }}">{{ song.title }}</a></h3><p class="excerpt">{{ excerpt ? excerpt|slice(0, 260) ~ (excerpt|length > 260 ? '…' : '') : 'Lyrics are not yet available for this song.' }}</p></div><a class="song-arrow" href="{{ path('song_show', {songId: song.id}) }}" aria-label="Read {{ song.title }}">↗</a></article>
+{% else %}<div class="empty-state"><h3>No songs found just yet.</h3><p>Try fewer words, a different spelling, or a broader topic.</p><a href="{{ path('song_search') }}">Browse the collection →</a></div>{% endfor %}
+{% if mode != 'compare' and (page > 1 or result.totalResults > page * 12) %}<nav class="pagination" aria-label="Search result pages">{% if page > 1 %}<a href="{{ path('song_search', {q: q, mode: mode, page: page - 1}) }}">← Previous</a>{% endif %}<span>Page {{ page }}</span>{% if result.totalResults > page * 12 and page < 100 %}<a href="{{ path('song_search', {q: q, mode: mode, page: page + 1}) }}">Next →</a>{% endif %}</nav>{% endif %}
+</section>{% endfor %}
 </div>
 {% endblock %}
