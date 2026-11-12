@@ -60,6 +60,13 @@ final class SongEmbeddingTest extends KernelTestCase
         $document = ($parameters['documentMapper'])($song);
         self::assertNull($document['embedding']);
         self::assertSame('Example', $document['title']);
+        self::assertSame(0, $document['fileCount']);
+        self::assertSame('integer', $parameters['mappings']['fileCount']['type']);
+        self::assertSame('fileCount', $parameters['facetFields']['fileCount']);
+        self::assertSame('fileCount', $parameters['sortFields']['fileCount']);
+        $song->audios->add($this->createStub(\App\Entity\Audio::class));
+        $song->audios->add($this->createStub(\App\Entity\Audio::class));
+        self::assertSame(2, ($parameters['documentMapper'])($song)['fileCount']);
         self::assertArrayNotHasKey('embeddingFingerprint', $document);
     }
 }

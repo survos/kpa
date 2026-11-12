@@ -3,6 +3,11 @@
     <div class="card-body">
         <h2 class="card-title"><a href="{{ path('song_show', {songId: hit.id}) }}">{{ hit.title }}</a></h2>
         <p class="text-muted">{{ hit.school|default('') }}{% if hit.year|default(null) %} · {{ hit.year }}{% endif %}</p>
+        {% if hit.fileCount|default(0) > 0 %}
+            <p><a href="{{ path('song_show', {songId: hit.id}) }}">Listen · {{ hit.fileCount }} recording{{ hit.fileCount == 1 ? '' : 's' }}</a></p>
+        {% else %}
+            <p class="small text-muted">No recording linked yet</p>
+        {% endif %}
         {% set lyricsLength = hit.lyrics|default('')|trim|length %}
         <p class="small mb-0 {{ lyricsLength ? 'text-success' : 'text-muted' }}">
             {% if lyricsLength %}Lyrics: {{ lyricsLength|number_format }} characters{% else %}Lyrics missing{% endif %}

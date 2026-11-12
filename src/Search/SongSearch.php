@@ -45,6 +45,11 @@ final class SongSearch extends AbstractFieldSearch implements HitTemplateSearchI
         }
         $parameters['searchFields'] = array_values(array_unique($parameters['searchFields']));
         $parameters['sourceFields'] = array_values(array_unique($parameters['sourceFields']));
+        // Recording counts are computed from Audio links, not a mapped Doctrine column.
+        $parameters['sourceFields'][] = 'fileCount';
+        $parameters['mappings']['fileCount'] = ['type' => 'integer'];
+        $parameters['facetFields']['fileCount'] = 'fileCount';
+        $parameters['sortFields']['fileCount'] = 'fileCount';
         $fields = $parameters['sourceFields'];
         $parameters['mappings']['embedding'] = ['type' => 'dense_vector', 'dims' => SongEmbeddingService::DIMENSIONS, 'index' => true, 'similarity' => 'cosine'];
         $parameters['vectorDimensions'] = SongEmbeddingService::DIMENSIONS;
