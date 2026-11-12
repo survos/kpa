@@ -111,7 +111,8 @@ final class AppMenu
             return;
         }
         $menu = $event->getMenu();
-        $this->add($menu, 'app_homepage');
+        $this->add($menu, 'app_homepage', label: 'Archive home', icon: 'tabler:home');
+        $this->add($menu, 'app_search', label: 'Search songs', icon: 'tabler:search');
         $this->add($menu, 'admin', label: 'EasyAdmin');
 
         $contentMenu = $this->addSubmenu($menu, 'Content');
