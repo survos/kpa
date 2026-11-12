@@ -5,6 +5,5 @@
 {% block body %}
     <p><a href="{{ path('app_homepage') }}">← About the archive</a></p>
     <p class="text-muted">Explore the loaded catalog by title, lyrics, school, or year. The archive is still being assembled and checked.</p>
-    {% if aiEnabled %}<p><a href="{{ path('song_search', {mode: 'compare'}) }}">Compare keyword, semantic, and hybrid rankings</a></p>{% endif %}
-    <twig:Survos:Search:Layout name="app_song" :options="{hitTemplate: 'song/search_hit.html.twig', retrievalMode: 'lexical'}" :initialQuery="{query: app.request.query.get('q', '')}" :urlRewriting="true" />
+    <twig:Survos:Search:Layout name="app_song" :initialQuery="{query: app.request.query.get('q', '')}" :urlRewriting="true" />
 {% endblock %}

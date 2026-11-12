@@ -1,6 +1,0 @@
-<article class="card h-100"><div class="card-body">
-    <h3 class="card-title"><a href="{{ path('song_show', {songId: hit.id}) }}">{{ hit.title }}</a></h3>
-    {% if score is defined %}<p class="small text-muted">{% if hitMetadata.mode|default('') == 'semantic' %}Cosine similarity: {{ (score - 1)|number_format(4) }} · {% endif %}Score: {{ score|number_format(6) }}</p>{% endif %}
-    <p class="small text-muted">{{ hit.school }}{% if hit.year %} · {{ hit.year }}{% endif %}</p>
-    <p>{{ hit.chorus|default(hit.description)|default('')|striptags|slice(0, 260) }}</p>
-</div></article>
