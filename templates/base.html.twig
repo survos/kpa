@@ -46,11 +46,14 @@
   Keep legacy templates working by rendering a `body` block inside `content`.
 #}
 {% block content %}
+    <div class="mb-4">
+        {% block body %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block page_navigation %}
     <nav aria-label="Archive navigation" class="d-flex flex-wrap gap-3 mb-3">
         <a href="{{ path('app_homepage') }}">Archive home</a>
         <a href="{{ path('app_search') }}"{% if app.request.attributes.get('_route') == 'app_search' %} aria-current="page"{% endif %}>Search songs</a>
     </nav>
-    <div class="mb-4">
-        {% block body %}{% endblock %}
-    </div>
 {% endblock %}
