@@ -49,7 +49,17 @@ final class IngestAudioCommand
         ?string $s3Manifest = null,
         #[Option('Reviewed S3 key to song associations with source evidence')]
         ?string $reviewedMatches = null,
+        #[Option('Reviewed Dropbox file metadata with existing public playback links')]
+        ?string $dropboxManifest = null,
     ): int {
+        if ($dropboxManifest !== null) {
+            if ($reset || $s3Manifest !== null) {
+                $io->error('Dropbox metadata import cannot be combined with reset or an S3 manifest.');
+                return Command::FAILURE;
+            }
+            $io->writeln(json_encode($this->archivedAudioImporter->importDropbox($dropboxManifest, $dry), JSON_PRETTY_PRINT));
+            return Command::SUCCESS;
+        }
         if ($s3Manifest !== null) {
             if ($reset) {
                 $io->error('--reset is not supported for archived recordings.');

@@ -83,6 +83,55 @@ final class ArchivedAudioImporter
         if (!$dry) { $this->em->flush(); }
         return $report;
     }
+    /** Import reviewed Dropbox metadata with already-public, non-expiring playback links. */
+    public function importDropbox(string $manifest, bool $dry = true): array
+    {
+        $rows = json_decode((string) file_get_contents($manifest), true, 512, JSON_THROW_ON_ERROR);
+        $existing = array_fill_keys($this->em->getConnection()->fetchFirstColumn('SELECT path FROM file_asset'), true);
+        $report = ['created' => 0, 'existing' => 0, 'matches' => []];
+        foreach ($rows as $row) {
+            $link = $row['link'];
+            $url = $link['url'];
+            $parts = parse_url($url);
+            if (($link['audience'] ?? '') !== 'public' || !($link['allow_download'] ?? false)
+                || ($link['password_protected'] ?? false) || !empty($link['expires'])
+                || ($parts['scheme'] ?? '') !== 'https' || ($parts['host'] ?? '') !== 'www.dropbox.com'
+                || !preg_match('~^/(scl/fi|s)/~', $parts['path'] ?? '')
+                || !str_starts_with($row['ID'] ?? '', 'id:') || empty($row['evidence'])) {
+                throw new \InvalidArgumentException('Expected a reviewed recording with an existing public Dropbox file link.');
+            }
+            parse_str($parts['query'] ?? '', $query);
+            unset($query['dl']);
+            $query['raw'] = '1';
+            $url = 'https://www.dropbox.com'.$parts['path'].'?'.http_build_query($query);
+            if (isset($existing[$url])) { ++$report['existing']; continue; }
+            $song = $this->em->find(Song::class, $row['song']['id']);
+            if (!$song || $song->title !== $row['song']['title'] || $song->school !== $row['song']['school']) {
+                throw new \InvalidArgumentException('Stale reviewed Dropbox song association.');
+            }
+            $extension = strtolower(pathinfo($row['Name'], PATHINFO_EXTENSION));
+            if (!in_array($extension, ['mp3', 'm4a'], true)) {
+                throw new \InvalidArgumentException('Only reviewed MP3 and M4A recordings are supported.');
+            }
+            $asset = new FileAsset(path: $url, relativePath: $row['Path'], filename: $row['Name'],
+                extension: $extension, dirname: dirname($row['Path']), size: $row['Size'],
+                modifiedTime: strtotime($row['ModTime']), type: 'audio', school: $song->school,
+                mimeType: $extension === 'mp3' ? 'audio/mpeg' : 'audio/mp4',
+                probedData: ['archive' => ['provider' => 'dropbox', 'fileId' => $row['ID'],
+                    'sourcePath' => $row['Path'], 'matchEvidence' => $row['evidence'], 'publicLink' => $link]]);
+            if (!$dry) {
+                $this->em->persist($asset);
+                $this->em->persist(new Audio($asset, $song, (string) $song->title, $extension, $asset->size,
+                    self::variant($row['Name'], dirname($row['Path']))));
+            }
+            $existing[$url] = true;
+            ++$report['created'];
+            $report['matches'][] = ['songId' => $song->id, 'fileId' => $row['ID']];
+        }
+        if (!$dry) { $this->em->flush(); }
+        return $report;
+    }
+
     private static function variant(string $filename, string $dirname): ?string
     {
         $text = strtolower($filename.' '.$dirname);

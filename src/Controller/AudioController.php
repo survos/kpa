@@ -78,7 +78,7 @@ class AudioController extends AbstractController
     public function audioFile(Audio $audio): Response
     {
         // Uploaded → s3 holds the full public URL; hand it to the browser (native Range/seeking).
-        $url = $audio->fileAsset->s3 ?? null;
+        $url = $audio->fileAsset->getPlaybackUrl();
         if ($url) {
             return new RedirectResponse($url);
         }

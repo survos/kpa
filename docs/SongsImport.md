@@ -223,3 +223,19 @@ exception, keeps recording year on FileAsset, and never changes Song.year or
 lyrics. Keep the review file alongside the persistent S3 metadata cache, retain
 the dry-run/import reports, then rerun without `--dry`. Existing URLs remain
 idempotent and are not reassigned by this command.
+
+### Dropbox recordings with existing public playback links
+
+Metadata inventories can also be reviewed against catalog titles, school folders,
+and recording years. Keep complete source paths, Dropbox file IDs, sizes, dates,
+and match evidence in the review manifest. Working takes and stems are not final
+recordings. A title-only candidate is not an approved association.
+
+`app:ingest-audio --dropbox-manifest=reviewed-public-recordings.json --dry`
+validates the reviewed song identity and requires an existing public, downloadable,
+non-expiring file link. Run without `--dry` to create the existing FileAsset/Audio
+entities. The importer neither downloads media nor changes Dropbox permissions.
+It preserves Dropbox provenance and leaves the S3 upload field empty. The normal
+audio endpoint redirects to the public Dropbox stream; M4A uses `audio/mp4`.
+Repeated source URLs are skipped. Private files remain in the review inventory
+until a playback source is authorized and available.

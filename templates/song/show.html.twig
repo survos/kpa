@@ -26,15 +26,15 @@
                                     {% if app.environment == 'dev' %}
                                         {% set _mk = audio.fileAsset.marking %}
                                         <span class="badge ms-1 {{ _mk == 'uploaded' ? 'bg-green' : (_mk == 'probed' ? 'bg-yellow' : 'bg-secondary') }}">
-                                            {{ _mk }}{{ audio.fileAsset.s3 ? ' · S3' : ' · local' }}
+                                            {{ _mk }}{{ audio.fileAsset.s3 ? ' · S3' : (audio.fileAsset.playbackUrl ? ' · Dropbox' : ' · local') }}
                                         </span>
                                     {% endif %}
                                 </div>
                                 {% if audio.fileAsset %}
                                     {% set sourceDir = audio.fileAsset.dirname|replace({'/media/tac/x10a/kpa-dropbox/Kid Pan Alley Dropbox/Songs-Recordings/': ''}) %}
                                     <div class="bg-light rounded px-2 py-1 mb-1 small d-flex justify-content-between">
-                                        {% if audio.fileAsset.s3 %}
-                                            <a class="text-truncate me-2" href="{{ audio.fileAsset.s3 }}" target="_blank" rel="noopener">{{ audio.fileAsset.s3 }}</a>
+                                        {% if audio.fileAsset.playbackUrl %}
+                                            <a class="text-truncate me-2" href="{{ audio.fileAsset.playbackUrl }}" target="_blank" rel="noopener">{{ audio.fileAsset.playbackUrl }}</a>
                                         {% else %}
                                             <span class="text-muted text-truncate me-2">{{ sourceDir }}</span>
                                         {% endif %}
@@ -49,7 +49,7 @@
                                     </div>
                                 {% endif %}
                                 <audio controls preload="none" style="width: 100%;">
-                                    <source src="{{ path('audio_file', { id: audio.id }) }}" type="audio/mpeg">
+                                    <source src="{{ path('audio_file', { id: audio.id }) }}" type="{{ audio.fileAsset.mimeType|default('audio/mpeg') }}">
                                 </audio>
                             </div>
                         {% endfor %}

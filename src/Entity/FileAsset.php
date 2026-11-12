@@ -124,4 +124,16 @@ class FileAsset
     #[ORM\Column(length: 512, nullable: true)]
     #[Groups(['fileasset.csv'])]
     public ?string $s3 = null;
+    /** Existing public recording location; Dropbox URLs are stored as source paths. */
+    public function getPlaybackUrl(): ?string
+    {
+        if ($this->s3) {
+            return $this->s3;
+        }
+        if (str_starts_with($this->path, 'https://www.dropbox.com/scl/fi/')
+            || str_starts_with($this->path, 'https://www.dropbox.com/s/')) {
+            return $this->path;
+        }
+        return null;
+    }
 }
