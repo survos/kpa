@@ -236,6 +236,6 @@ validates the reviewed song identity and requires an existing public, downloadab
 non-expiring file link. Run without `--dry` to create the existing FileAsset/Audio
 entities. The importer neither downloads media nor changes Dropbox permissions.
 It preserves Dropbox provenance and leaves the S3 upload field empty. The normal
-audio endpoint redirects to the public Dropbox stream; M4A uses `audio/mp4`.
+audio endpoint redirects to the public Dropbox stream; M4A uses `audio/mp4` and WAV uses `audio/wav`.
 Repeated source URLs are skipped. Private files remain in the review inventory
 until a playback source is authorized and available.

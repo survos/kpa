@@ -110,13 +110,13 @@ final class ArchivedAudioImporter
                 throw new \InvalidArgumentException('Stale reviewed Dropbox song association.');
             }
             $extension = strtolower(pathinfo($row['Name'], PATHINFO_EXTENSION));
-            if (!in_array($extension, ['mp3', 'm4a'], true)) {
-                throw new \InvalidArgumentException('Only reviewed MP3 and M4A recordings are supported.');
+            if (!in_array($extension, ['mp3', 'm4a', 'wav'], true)) {
+                throw new \InvalidArgumentException('Only reviewed MP3, M4A and WAV recordings are supported.');
             }
             $asset = new FileAsset(path: $url, relativePath: $row['Path'], filename: $row['Name'],
                 extension: $extension, dirname: dirname($row['Path']), size: $row['Size'],
                 modifiedTime: strtotime($row['ModTime']), type: 'audio', school: $song->school,
-                mimeType: $extension === 'mp3' ? 'audio/mpeg' : 'audio/mp4',
+                mimeType: match ($extension) { 'mp3' => 'audio/mpeg', 'm4a' => 'audio/mp4', 'wav' => 'audio/wav' },
                 probedData: ['archive' => ['provider' => 'dropbox', 'fileId' => $row['ID'],
                     'sourcePath' => $row['Path'], 'matchEvidence' => $row['evidence'], 'publicLink' => $link]]);
             if (!$dry) {
