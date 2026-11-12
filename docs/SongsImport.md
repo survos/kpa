@@ -200,3 +200,26 @@ unique title is a verified identity. `--reset` is rejected in this mode.
 
 Confirmed example: `laur-2019-good-job-jack` matches the recording and guide-vocal
 sidecars in `good-job-jack/`, whose source paths and tags identify Laurel 2019.
+
+### Review recording dates and legacy S3 folder mistakes
+
+A recording tag's year is not necessarily the songwriting year. For reviewed
+matches, use original filenames, album/school folders, full ID3 titles, and
+identical-object evidence before relying on the historical S3 title directory.
+The older matcher strips leading numbers and treats periods as extensions;
+this conflates `98 Best Friends` with `Best Friends` and truncates titles such as
+`St. Mary's School`. Some S3 folders therefore contain unrelated recordings.
+Do not rename or move the archive objects to repair a catalog association.
+
+```bash
+php bin/console app:ingest-audio --s3-manifest=var/archive-audio/manifest.json \
+  --reviewed-matches=var/archive-audio/reviewed-matches.json --dry
+```
+
+The review JSON maps each full S3 object key to `songId`, `expectedTitle`,
+`sourceFilename`, a nonempty evidence `reason`, and optional `recordingSchool`.
+The importer checks the target title and source filename before applying an
+exception, keeps recording year on FileAsset, and never changes Song.year or
+lyrics. Keep the review file alongside the persistent S3 metadata cache, retain
+the dry-run/import reports, then rerun without `--dry`. Existing URLs remain
+idempotent and are not reassigned by this command.

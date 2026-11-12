@@ -47,13 +47,15 @@ final class IngestAudioCommand
         string $jsonl = 'data/audio.jsonl',
         #[Option('Cached S3 JSON sidecars; reconnect remote recordings without local MP3 files')]
         ?string $s3Manifest = null,
+        #[Option('Reviewed S3 key to song associations with source evidence')]
+        ?string $reviewedMatches = null,
     ): int {
         if ($s3Manifest !== null) {
             if ($reset) {
                 $io->error('--reset is not supported for archived recordings.');
                 return Command::FAILURE;
             }
-            $report = $this->archivedAudioImporter->import($s3Manifest, $dry, $limit);
+            $report = $this->archivedAudioImporter->import($s3Manifest, $dry, $limit, $reviewedMatches);
             $io->writeln(json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
             return Command::SUCCESS;
         }
