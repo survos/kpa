@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title show.title %}
+{% block page_subtitle 'Themed episodes of Kid Pan Alley songs, with the songs themselves' %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <p class="text-muted">Two synthetic hosts, PaulBot and CherylBot, introduce songs written by children with professional
+            songwriters, play an excerpt of each, and tell its story from the catalog.
+            <a href="{{ path('episode_feed') }}">RSS feed</a></p>
+        {% for episode in episodes %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title mb-1"><a href="{{ path('episode_show', {slug: episode.slug}) }}">{{ episode.title }}</a></h3>
+                    <p class="text-muted small mb-2">{{ episode.published|date('j F Y') }} · {{ (episode.seconds / 60)|round(0, 'floor') }}:{{ '%02d'|format(episode.seconds % 60) }} · {{ episode.songs|length }} songs</p>
+                    <p class="mb-2">{{ episode.summary }}</p>
+                    <audio controls preload="none" src="{{ path('episode_mp3', {slug: episode.slug}) }}" class="w-100"></audio>
+                </div>
+            </div>
+        {% else %}
+            <p>No episode yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

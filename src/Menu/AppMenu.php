@@ -94,6 +94,7 @@ final class AppMenu
         $this->add($menu, 'app_homepage');
         $this->add($menu, 'app_search', label: 'Search songs');
         $this->add($menu, 'ask', label: 'Ask');
+        $this->add($menu, 'episode_index', label: 'Podcast');
             $this->add($menu, 'app_load_lyrics');
         if ( ($this->env==='dev') && $this->security->isGranted('ROLE_ADMIN')) {
             $this->add($menu, 'survos_commands');
@@ -115,6 +116,7 @@ final class AppMenu
         $this->add($menu, 'app_homepage', label: 'Archive home', icon: 'tabler:home');
         $this->add($menu, 'app_search', label: 'Search songs', icon: 'tabler:search');
         $this->add($menu, 'ask', label: 'Ask', icon: 'tabler:message-chatbot');
+        $this->add($menu, 'episode_index', label: 'Podcast', icon: 'tabler:microphone');
         $this->add($menu, 'admin', label: 'EasyAdmin');
 
         $contentMenu = $this->addSubmenu($menu, 'Content');

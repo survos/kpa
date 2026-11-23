@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+    <title>{{ show.title }}</title>
+    <link>{{ url('episode_index') }}</link>
+    <atom:link href="{{ url('episode_feed') }}" rel="self" type="application/rss+xml"/>
+    <description>Themed episodes of songs written by children with professional songwriters through Kid Pan Alley: two synthetic hosts introduce each song, play an excerpt, and tell its story from the catalog.</description>
+    <language>en</language>
+    <itunes:author>Kid Pan Alley</itunes:author>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:category text="Kids &amp; Family"/>
+    {% for episode in episodes %}
+    <item>
+        <title>{{ episode.title }}</title>
+        <guid isPermaLink="false">kpa-episode-{{ episode.slug }}</guid>
+        <link>{{ url('episode_show', {slug: episode.slug}) }}</link>
+        <pubDate>{{ episode.published|date('r') }}</pubDate>
+        <description>{{ episode.summary }}{% for song in episode.songs %} · {{ song.title }} ({{ song.school }}{% if song.year %}, {{ song.year }}{% endif %}){% endfor %}</description>
+        <enclosure url="{{ url('episode_mp3', {slug: episode.slug}) }}" length="{{ episode.bytes }}" type="audio/mpeg"/>
+        <itunes:duration>{{ episode.seconds|round }}</itunes:duration>
+        <podcast:transcript url="{{ url('episode_vtt', {slug: episode.slug}) }}" type="text/vtt"/>
+    </item>
+    {% endfor %}
+</channel>
+</rss>

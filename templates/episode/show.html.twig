@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title episode.title %}
+{% block page_subtitle show.title ~ ' · ' ~ episode.published|date('j F Y') %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card mb-3">
+            <div class="card-body">
+                <p>{{ episode.summary }}</p>
+                <audio id="player" controls preload="metadata" class="w-100 mb-2">
+                    <source src="{{ path('episode_mp3', {slug: episode.slug}) }}" type="audio/mpeg">
+                    <track kind="captions" srclang="en" label="Transcript" src="{{ path('episode_vtt', {slug: episode.slug}) }}" default>
+                </audio>
+                <h4 class="mt-3">Chapters</h4>
+                <ol class="mb-0">
+                    {% for chapter in episode.chapters %}
+                        <li><a href="#" onclick="var p=document.getElementById('player'); p.currentTime={{ chapter.start }}; p.play(); return false;">{{ '%d:%02d'|format(chapter.start // 60, chapter.start % 60) }}</a> {{ chapter.title }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header"><h3 class="card-title">The songs</h3></div>
+            <ul class="list-group list-group-flush">
+                {% for song in episode.songs %}
+                    <li class="list-group-item">
+                        <a href="{{ song.url }}" class="fw-semibold">{{ song.title }}</a>
+                        <span class="text-muted">· {{ song.school }}{% if song.year %}, {{ song.year }}{% endif %}</span>
+                        {% if song.writers %}<div class="small">{{ song.writers }}</div>{% endif %}
+                        <div class="small text-muted">Excerpt {{ '%.1f'|format(song.excerpt[0]) }} s to {{ '%.1f'|format(song.excerpt[1]) }} s of <a href="{{ song.recording }}">the recording</a></div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <p class="small text-muted">
+            {% for host in episode.hosts %}{{ host.name }}{% if not loop.last %} and {% endif %}{% endfor %} are synthetic hosts with stock voices;
+            no real person's voice is cloned. Every fact comes from the Kid Pan Alley catalog.
+            <a href="{{ path('episode_vtt', {slug: episode.slug}) }}">Transcript</a> ·
+            <a href="{{ path('episode_index') }}">All episodes</a> · <a href="{{ path('episode_feed') }}">RSS</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
