@@ -8,3 +8,5 @@ survos_ai_embed:
     revision: '%env(KPA_EMBED_REVISION)%'
     url: '%env(KPA_OLLAMA_URL)%'
     cache_path: '%env(resolve:AI_EMBED_CACHE)%'
+    # KPA embeds locally (Ollama); the bundle's OpenAI batch client is never used
+    api_key: ''
