@@ -21,7 +21,6 @@ use Symfony\Component\Filesystem\Filesystem;
  * approved association (docs/SongsImport.md); a reviewer confirms it, and a public
  * link is created, before app:ingest-audio --dropbox-manifest imports it.
  */
-#[AsCommand('app:recordings:candidates', 'Draft recording candidates for songs without audio, for review')]
 final class RecordingCandidatesCommand
 {
     private const AUDIO = ['mp3', 'm4a', 'wav', 'aif', 'aiff', 'flac'];
@@ -43,6 +42,7 @@ final class RecordingCandidatesCommand
     ) {
     }
 
+    #[AsCommand('app:recordings:candidates', 'Draft recording candidates for songs without audio, for review')]
     #[AsAgentTool(description: "Draft recording candidates for catalog songs that have no audio: matches the Dropbox listing by normalized title, school in the folder path, year and title uniqueness, and writes candidates.json and candidates.csv for review (tier A strongest). Changes no record; imports nothing.", idempotent: true)]
     public function __invoke(
         SymfonyStyle $io,
