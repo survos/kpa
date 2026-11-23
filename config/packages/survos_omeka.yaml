@@ -1,7 +1,8 @@
 survos_omeka:
   clients:
     remote:
-      api_url: '%env(default::OMEKA_API_URL)%'
+      # Optional: with OMEKA_API_URL unset this is '' and app:omeka skips instead of failing.
+      api_url: '%env(string:default::OMEKA_API_URL)%'
       key_identity: '%env(default::OMEKA_REMOTE_KEY_IDENTITY)%'
       key_credential: '%env(default::OMEKA_REMOTE_KEY_CREDENTIAL)%'
 #    local:

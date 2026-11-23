@@ -71,6 +71,11 @@ final class OmekaCommand
         }
 
         $omeka = $this->omekaClients->get($client);
+        if ('' === $omeka->getApiUrl()) {
+            $io->warning(sprintf('Omeka client "%s" has no API URL. Set OMEKA_API_URL to sync to Omeka.', $client));
+            return Command::SUCCESS;
+        }
+
         $songTemplate = $omeka->getResourceTemplateByLabel('Song');
         if ($songTemplate === null) {
             $io->error('Missing Omeka resource template "Song".');
