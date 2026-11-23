@@ -160,3 +160,42 @@ php bin/console app:episode:write data/episodes/holidays.json --output=docs/epis
 ```
 
 The writer needs `MISTRAL_API_KEY` in `.env.local`.
+
+## Ask the catalog (chat) and MCP
+
+`/ask` answers questions about the catalog with a Mistral agent (`kpa_chat` in
+`config/packages/ai.yaml`, model `KPA_CHAT_MODEL`, prompt `config/prompts/kpa-chat.md`). The agent
+searches and reads songs through tools, and every song it names links to its page. Under each answer,
+"Looked up" lists the tool calls it made.
+
+The same tools are an MCP server, `src/Mcp/SongTools.php`:
+
+| Tool | What it returns |
+| --- | --- |
+| `find_songs` | songs closest in meaning to a question (cosine over the persisted song vectors, a boost when the title is named), optionally only with a recording or of one school |
+| `get_song` | credits, subtitle, chorus, full lyrics, and recordings with playable URLs (`aiGenerated` marks Suno and AI arrangements) |
+| `songs_by_school` | the songs of one school, optionally one year |
+| `catalog_stats` | exact counts |
+
+Connect over HTTP at `https://kpa.survos.com/mcp`, or over stdio with `php bin/console mcp:server kpa`.
+Commands marked `#[AsAgentTool]` (for example `app_recordings_candidates`) are listed too, but require
+`ROLE_ADMIN`.
+
+## The podcast
+
+`/episodes` is the podcast, with an RSS feed at `/episodes/feed.xml`. Each episode is written by
+`app:episode:write` and voiced and assembled by `app:episode:publish`:
+
+```bash
+php bin/console app:episode:write data/episodes/holidays.json --output=docs/episodes/holidays-script.md
+php bin/console app:episode:publish docs/episodes/holidays-script.json data/episodes/holidays.json holidays
+```
+
+Publishing voices every line with the host's stock voice (Mistral Voxtral, `KPA_VOICE_MODEL`); no real
+person's voice is cloned. It cuts each excerpt from its recording at the brief's timestamps, with a
+0.5 s fade in and a 1.5 s fade out, and levels voices and music to about -16 LUFS. It joins everything
+into `<slug>.mp3`, with chapters (one per song), a WebVTT transcript and `episode.json` (credits).
+
+The output goes to `KPA_EPISODES_DIR`. Publishing needs ffmpeg, so it runs on the workstation. Copy the
+folder to production's storage (`/var/lib/dokku/data/storage/kpa/episodes/<slug>/`, owner 32767),
+which the app sees as `/data/episodes`.

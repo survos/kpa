@@ -199,7 +199,7 @@ final class SongFinder
 
     private static function directive(string $lyrics, string $name): ?string
     {
-        return preg_match('/\{'.$name.':\s*([^}]*)\}/i', $lyrics, $m) ? trim($m[1]) : null;
+        return preg_match('/\{'.$name.':\s*([^}]*)\}/i', $lyrics, $m) ? trim(html_entity_decode($m[1], ENT_QUOTES | ENT_HTML5, 'UTF-8')) : null;
     }
 
     /** ChordPro to plain text: no directives, no chords, at most one blank line in a row. */
