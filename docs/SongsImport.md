@@ -239,3 +239,38 @@ It preserves Dropbox provenance and leaves the S3 upload field empty. The normal
 audio endpoint redirects to the public Dropbox stream; M4A uses `audio/mp4` and WAV uses `audio/wav`.
 Repeated source URLs are skipped. Private files remain in the review inventory
 until a playback source is authorized and available.
+
+### Draft candidates for songs without recordings
+
+As of 23 November 2026, 1,711 of 2,560 songs have no recording. Paul's `kpa-songs`
+bucket holds 618 MP3s, each with a sidecar: 596 are linked, and 22 are ambiguous, unmatched
+or have a year conflict. The other 633 linked recordings play from public Dropbox links.
+So any further recordings are in the Dropbox tree, and have to be reviewed and then uploaded
+to `kpa-songs`, or shared, before they can be linked.
+
+```bash
+php bin/console app:recordings:candidates var/recovery/2026-11-11/songs-recordings-inventory.json
+```
+
+It reads the `rclone lsjson` listing (missing a closing bracket is fine), skips files already
+linked, and writes `var/recovery/recording-candidates/candidates.{json,csv}`. It changes no
+record. It is also an MCP tool (`app_recordings_candidates`). The tiers:
+
+- **A**: exact normalized title, the song's school in the folder path, no year conflict, and
+  no other song with that title matches the folder.
+- **B**: exact title, unique in the catalog, no conflicting year, and no other school named
+  in the folder.
+- **C**: everything else: near-exact titles, shared titles, year conflicts, and files in
+  another artist's iTunes folder.
+
+Flags mark AIF files (they need converting to MP3 first), stems and working takes, Suno or
+AI arrangements, and folders that name another school.
+
+The 22 S3 exceptions show why every candidate needs a reviewer. The legacy matcher filed Patty
+Griffin's "Rain" under `skin/`, "numbers are my best friends" (Aiton 2006) under
+`my-pets-are-my-best-friends/`, and "if kids ruled the world" (Roosevelt 2008) under
+`if-i-ruled-the-world/`. Under `st/` are concert covers, musical cues and an untitled file.
+Only two of the 22 have strong evidence. They are drafted in
+`var/archive-audio/reviewed-matches.draft.json` (Kekaha 2023's "Cupid Shot His Arrow and
+Wounded Me" and the Grymes AI arrangement of "Waving Goodbye to Winter"), and the dry run
+accepts both.
