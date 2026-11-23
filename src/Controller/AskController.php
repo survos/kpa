@@ -42,6 +42,13 @@ final class AskController extends AbstractController
         return $this->render('ask/index.html.twig', ['turns' => $this->turns($this->conversation($request))]);
     }
 
+    /** How to connect an outside AI agent to the MCP server (like rsun's "Connect your assistant"). */
+    #[Route('/ask/connect', name: 'ask_connect', methods: ['GET'])]
+    public function connect(#[Autowire(env: 'KPA_PUBLIC_URL')] string $publicUrl): Response
+    {
+        return $this->render('ask/connect.html.twig', ['publicUrl' => rtrim($publicUrl, '/')]);
+    }
+
     #[Route('/ask', name: 'ask_post', methods: ['POST'])]
     public function ask(Request $request): RedirectResponse
     {

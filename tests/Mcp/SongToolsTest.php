@@ -100,6 +100,20 @@ final class SongToolsTest extends WebTestCase
         self::assertStringContainsString('No episode "nope"', $this->toolError('get_episode', ['slug' => 'nope']));
     }
 
+    public function testTheConnectPageNamesTheEndpointAndEveryTool(): void
+    {
+        $this->client->request('GET', '/ask/connect');
+        self::assertResponseIsSuccessful();
+        $page = (string) $this->client->getResponse()->getContent();
+        self::assertStringContainsString('https://kpa.survos.com/mcp', $page);
+        self::assertStringContainsString('claude mcp add --transport http kpa https://kpa.survos.com/mcp', $page);
+        foreach (array_column($this->rpc('tools/list')['tools'], 'name') as $tool) {
+            if (!in_array($tool, ['app_recordings_candidates', 'agent_calls'], true)) {
+                self::assertStringContainsString('<code>'.$tool.'</code>', $page, 'the page documents '.$tool);
+            }
+        }
+    }
+
     /** @return mixed the decoded JSON text of a successful tool call */
     private function tool(string $name, array $arguments = []): mixed
     {

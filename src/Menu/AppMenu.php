@@ -94,6 +94,7 @@ final class AppMenu
         $this->add($menu, 'app_homepage');
         $this->add($menu, 'app_search', label: 'Search songs');
         $this->add($menu, 'ask', label: 'Ask');
+        $this->add($menu, 'ask_connect', label: 'Connect your assistant');
         $this->add($menu, 'episode_index', label: 'Podcast');
             $this->add($menu, 'app_load_lyrics');
         if ( ($this->env==='dev') && $this->security->isGranted('ROLE_ADMIN')) {
@@ -116,6 +117,7 @@ final class AppMenu
         $this->add($menu, 'app_homepage', label: 'Archive home', icon: 'tabler:home');
         $this->add($menu, 'app_search', label: 'Search songs', icon: 'tabler:search');
         $this->add($menu, 'ask', label: 'Ask', icon: 'tabler:message-chatbot');
+        $this->add($menu, 'ask_connect', label: 'Connect your assistant', icon: 'tabler:plug-connected');
         $this->add($menu, 'episode_index', label: 'Podcast', icon: 'tabler:microphone');
         $this->add($menu, 'admin', label: 'EasyAdmin');
 

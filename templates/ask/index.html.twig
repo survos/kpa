@@ -40,7 +40,8 @@
         {% if turns|length %}
             <form method="post" action="{{ path('ask_reset') }}"><button class="btn btn-link btn-sm px-0">Start a new conversation</button></form>
         {% endif %}
-        <p class="small text-muted">Answers come from the catalog through the same tools as the MCP server at <code>{{ url('_mcp_endpoint_kpa') }}</code>.</p>
+        <p class="small text-muted">Answers come from the catalog through the same tools as the MCP server.
+            <a href="{{ path('ask_connect') }}">Connect your own assistant ↗</a></p>
     </div>
 </div>
 {% endblock %}
