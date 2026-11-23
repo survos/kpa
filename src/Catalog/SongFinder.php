@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Catalog;
 
 use App\Service\ChordProInspector;
-use App\Service\SongEmbeddingService;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Retrieval over the catalog, shared by the chat and the MCP server.
@@ -16,6 +16,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * persisted vector (Song::$embedding, the same vectors Elasticsearch holds), with a small
  * boost when the question names the title. Every answer is built from database rows, so a
  * fact the chat repeats can be traced to a song page.
+ *
+ * The unit vectors are cached, keyed on every song's embedding fingerprint: re-embedding a
+ * song, or adding one, makes a new key.
  */
 final class SongFinder
 {
@@ -23,11 +26,14 @@ final class SongFinder
 
     /** @var array<string, string>|null song id => packed unit vector */
     private ?array $vectors = null;
+    /** @var array<string, array<string, mixed>>|null */
+    private ?array $meta = null;
 
     public function __construct(
         private readonly Connection $db,
-        private readonly SongEmbeddingService $embeddings,
+        private readonly QueryEmbedder $embeddings,
         private readonly UrlGeneratorInterface $urls,
+        private readonly CacheInterface $cache,
     ) {
     }
 
@@ -44,7 +50,7 @@ final class SongFinder
         $scores = [];
         foreach ($this->vectors() as $id => $packed) {
             $row = $meta[$id] ?? null;
-            if (null === $row || ($withRecording && 0 === $row['recordings'])
+            if (null === $row || ($withRecording && 0 === (int) $row['recordings'])
                 || (null !== $school && !str_contains(mb_strtolower((string) $row['school']), mb_strtolower($school)))) {
                 continue;
             }
@@ -63,6 +69,37 @@ final class SongFinder
         }
 
         return $hits;
+    }
+
+    /**
+     * Songs whose lyrics or title contain a phrase, ignoring case and punctuation, with the
+     * lines that contain it. For exact words ("old man winter"); find() is for meaning.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function findPhrase(string $phrase, int $limit = 10): array
+    {
+        $needle = self::words($phrase);
+        if (mb_strlen($needle) < 3) {
+            throw new \InvalidArgumentException('Give a phrase of at least three letters.');
+        }
+        $hits = [];
+        foreach ($this->meta() as $row) {
+            $lines = [];
+            foreach (explode("\n", self::plain((string) $row['lyrics'])) as $line) {
+                if (str_contains(' '.self::words($line).' ', ' '.$needle.' ') || str_contains(self::words($line), $needle)) {
+                    $lines[] = trim($line);
+                }
+            }
+            $inTitle = str_contains(self::words((string) $row['title']), $needle);
+            if ([] !== $lines || $inTitle) {
+                $hits[] = $this->summary($row) + ['matches' => array_values(array_unique(array_slice($lines, 0, 3))), 'inTitle' => $inTitle];
+            }
+        }
+        // titles first, then the songs that repeat the phrase most
+        usort($hits, static fn (array $a, array $b) => [$b['inTitle'], count($b['matches'])] <=> [$a['inTitle'], count($a['matches'])]);
+
+        return array_slice($hits, 0, max(1, min(50, $limit)));
     }
 
     /** @return list<array<string, mixed>> songs of one school (partial, case-insensitive), optionally one year */
@@ -150,26 +187,30 @@ final class SongFinder
     /** @return array<string, array<string, mixed>> */
     private function meta(): array
     {
-        static $meta = null;
-
-        return $meta ??= array_column($this->db->fetchAllAssociative('SELECT s.id, s.title, s.school, s.year, s.writers, s.lyrics,
+        return $this->meta ??= array_column($this->db->fetchAllAssociative('SELECT s.id, s.title, s.school, s.year, s.writers, s.lyrics,
             (SELECT count(*) FROM audio a WHERE a.song_id = s.id) AS recordings FROM song s'), null, 'id');
     }
 
     /** @return array<string, string> */
     private function vectors(): array
     {
-        if (null === $this->vectors) {
-            $this->vectors = [];
+        if (null !== $this->vectors) {
+            return $this->vectors;
+        }
+        $fingerprints = $this->db->fetchAllKeyValue('SELECT id, embedding_fingerprint FROM song WHERE embedding IS NOT NULL ORDER BY id');
+        $key = 'kpa_song_vectors_'.hash('xxh128', serialize($fingerprints));
+
+        return $this->vectors = $this->cache->get($key, function (): array {
+            $vectors = [];
             foreach ($this->db->iterateKeyValue('SELECT id, embedding FROM song WHERE embedding IS NOT NULL') as $id => $json) {
-                $v = json_decode((string) $json, true);
+                $v = is_string($json) ? json_decode($json, true) : $json;
                 if (is_array($v) && [] !== $v) {
-                    $this->vectors[$id] = pack('g*', ...self::unit($v));
+                    $vectors[$id] = pack('g*', ...self::unit($v));
                 }
             }
-        }
 
-        return $this->vectors;
+            return $vectors;
+        });
     }
 
     /** @param array<float> $v @return list<float> */
@@ -209,6 +250,15 @@ final class SongFinder
         $text = preg_replace(['/^\{[^}]*\}\s*$/m', '/\[[^\]]*\]/'], '', $chordPro);
 
         return trim((string) preg_replace("/\n{3,}/", "\n\n", (string) $text));
+    }
+
+    /** Lowercase words only: "Old Man Winter's" and "old man winters" compare equal. */
+    private static function words(string $text): string
+    {
+        $text = mb_strtolower(html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $text = (string) preg_replace("/['’`]/u", '', $text);
+
+        return trim((string) preg_replace('/[^\p{L}\p{N}]+/u', ' ', $text));
     }
 
     private static function firstLines(string $lyrics): string

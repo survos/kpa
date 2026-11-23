@@ -1,0 +1,12 @@
+{
+    "slug": "sample",
+    "title": "A Sample Episode",
+    "summary": "One song about snow.",
+    "theme": "Snow",
+    "published": "2026-11-23T12:00:00+00:00",
+    "seconds": 42.0,
+    "bytes": 1000,
+    "hosts": [{"name": "PaulBot", "persona": "A synthetic host."}],
+    "chapters": [{"start": 0, "title": "Opening"}, {"start": 5.5, "title": "Snow Day"}],
+    "songs": [{"id": "test-snow-day", "title": "Snow Day", "school": "Test School", "year": 2020, "writers": null, "url": "https://kpa.survos.com/song/test-snow-day/", "recording": "https://example.test/snow.mp3", "excerpt": [3.0, 20.0]}]
+}

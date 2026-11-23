@@ -3,13 +3,15 @@ mcp:
     servers:
         kpa:
             name: Kid Pan Alley
-            description: Search and read the Kid Pan Alley catalog of songs written by children with professional songwriters, with lyrics, credits and recordings.
+            description: Search and read the Kid Pan Alley catalog of songs written by children with professional songwriters, with lyrics, credits, recordings and the podcast.
             instructions: >-
                 Kid Pan Alley brings children and professional songwriters together to write songs. The catalog has about 2,560
                 songs from schools since 1999. Start with find_songs for a theme or a question (it searches by meaning), or
                 songs_by_school for one school. get_song returns the credits, the full lyrics and playable recordings;
                 recordings marked aiGenerated are Suno or AI arrangements, not the children's performances.
+                Use search_lyrics to identify a song from exact words ("old man winter"); find_songs is for meaning.
                 Use catalog_stats for exact counts. "K.P. Alley" in the writers is a house credit, not a person.
+                The podcast: list_episodes, then get_episode for chapters, the songs played and the transcript.
             registry: 'App\Mcp\'
             transports:
                 stdio: true

@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * which the Elasticsearch index reads. Search queries go to the provider directly: the
  * cache file is locked by one process at a time, and a web request must not wait for it.
  */
-final class SongEmbeddingService implements EmbeddingProviderInterface
+final class SongEmbeddingService implements EmbeddingProviderInterface, \App\Catalog\QueryEmbedder
 {
     public const int DIMENSIONS = 768;
     public readonly EmbeddingProfile $profile;

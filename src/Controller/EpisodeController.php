@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Catalog\EpisodeCatalog;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -17,10 +18,10 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 final class EpisodeController extends AbstractController
 {
-    private const SLUG = '[a-z0-9][a-z0-9-]{1,80}';
+    private const SLUG = EpisodeCatalog::SLUG;
 
     public function __construct(
-        #[Autowire(env: 'resolve:KPA_EPISODES_DIR')] private readonly string $dir,
+        private readonly EpisodeCatalog $catalog,
         #[Autowire(param: 'kpa.episodes')] private readonly array $show,
     ) {
     }
@@ -64,28 +65,17 @@ final class EpisodeController extends AbstractController
     /** @return list<array<string, mixed>> newest first */
     private function episodes(): array
     {
-        $episodes = [];
-        foreach (glob($this->dir.'/*/episode.json') ?: [] as $file) {
-            $episodes[] = json_decode((string) file_get_contents($file), true, 512, \JSON_THROW_ON_ERROR);
-        }
-        usort($episodes, static fn (array $a, array $b) => $b['published'] <=> $a['published']);
-
-        return $episodes;
+        return $this->catalog->all();
     }
 
     /** @return array<string, mixed> */
     private function episode(string $slug): array
     {
-        return json_decode((string) file_get_contents($this->path($slug, 'episode.json')), true, 512, \JSON_THROW_ON_ERROR);
+        return $this->catalog->get($slug) ?? throw new NotFoundHttpException('No such episode.');
     }
 
     private function path(string $slug, string $file): string
     {
-        $path = $this->dir.'/'.$slug.'/'.$file;
-        if (!preg_match('/^'.self::SLUG.'$/', $slug) || !is_file($path)) {
-            throw new NotFoundHttpException('No such episode.');
-        }
-
-        return $path;
+        return $this->catalog->file($slug, $file) ?? throw new NotFoundHttpException('No such episode.');
     }
 }
