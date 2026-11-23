@@ -1,16 +1,16 @@
 {
-    "title": "Holiday Cheer from Kid Pan Alley",
+    "title": "The Kid Pan Alley Songbook: Three Holiday Songs",
     "opening": [
         {
             "host": "paulbot",
             "emotion": "excited",
-            "text": "From Thanksgiving to the end of winter, we’ve got three holiday anthems written by kids and pros together.",
+            "text": "Let’s kick off the holidays with three Kid Pan Alley classics!",
             "sources": []
         },
         {
             "host": "cherylbot",
             "emotion": "curious",
-            "text": "Let’s hear how a second grade class at Savoy turned gratitude into a chorus.",
+            "text": "From Thanksgiving gratitude to winter’s last wave—three songs, three seasons.",
             "sources": []
         }
     ],
@@ -21,31 +21,39 @@
                 {
                     "host": "paulbot",
                     "emotion": "happy",
-                    "text": "First up, a big, warm chorus from Savoy in 2016.",
+                    "text": "First up: a big, heartfelt chorus from a second grade class at Savoy in 2016.",
                     "sources": [
                         1
                     ]
                 },
                 {
                     "host": "cherylbot",
-                    "emotion": "neutral",
-                    "text": "It’s called Every Day Should Be a Thanksgiving, and here is the chorus.",
+                    "emotion": "confident",
+                    "text": "Written with Paul Reisler and Sahffi Lynne, here’s ‘Every Day Should Be A Thanksgiving’—",
                     "sources": [
                         1
                     ]
+                },
+                {
+                    "host": "paulbot",
+                    "emotion": "excited",
+                    "text": "and here is the chorus.",
+                    "sources": []
                 }
             ],
             "background": [
                 {
                     "host": "paulbot",
-                    "emotion": "excited",
-                    "text": "That’s the kind of line that makes a whole class cheer when they hear it back.",
-                    "sources": []
+                    "emotion": "happy",
+                    "text": "That chorus just swells with gratitude—love, family, service.",
+                    "sources": [
+                        1
+                    ]
                 },
                 {
                     "host": "cherylbot",
                     "emotion": "curious",
-                    "text": "Paul Reisler and Sahffi Lynne helped a second grade class at Savoy write it.",
+                    "text": "And it ends with a prayer when times are tough—pure second-grade wisdom.",
                     "sources": [
                         1
                     ]
@@ -53,7 +61,7 @@
                 {
                     "host": "paulbot",
                     "emotion": "confident",
-                    "text": "Now, let’s move from Thanksgiving to Christmas with a kindergarten class.",
+                    "text": "Next, we’re off to Christmas at Capitol Hill Montessori.",
                     "sources": []
                 }
             ]
@@ -64,25 +72,7 @@
                 {
                     "host": "cherylbot",
                     "emotion": "neutral",
-                    "text": "Next, a Capitol Hill Montessori kindergarten class from 2013.",
-                    "sources": [
-                        2
-                    ]
-                },
-                {
-                    "host": "paulbot",
-                    "emotion": "happy",
-                    "text": "They figured out how Santa gets in without a chimney, and here is the chorus.",
-                    "sources": [
-                        2
-                    ]
-                }
-            ],
-            "background": [
-                {
-                    "host": "cherylbot",
-                    "emotion": "curious",
-                    "text": "Paul Reisler and Lea Morris wrote it with the kids, and the solution is cookies on the porch.",
+                    "text": "Song two: a kindergarten class in 2013 had a very practical concern.",
                     "sources": [
                         2
                     ]
@@ -90,7 +80,39 @@
                 {
                     "host": "paulbot",
                     "emotion": "excited",
-                    "text": "Brilliant! Now, let’s fast-forward to the end of winter.",
+                    "text": "‘Going To My Cousins For Christmas’—written with Paul Reisler and Lea Morris—",
+                    "sources": [
+                        2
+                    ]
+                },
+                {
+                    "host": "cherylbot",
+                    "emotion": "sarcasm",
+                    "text": "because Santa needs a chimney, obviously.",
+                    "sources": []
+                }
+            ],
+            "background": [
+                {
+                    "host": "paulbot",
+                    "emotion": "happy",
+                    "text": "No chimney? No problem—just leave cookies on the porch!",
+                    "sources": [
+                        2
+                    ]
+                },
+                {
+                    "host": "cherylbot",
+                    "emotion": "confident",
+                    "text": "A Montessori solution from 2013.",
+                    "sources": [
+                        2
+                    ]
+                },
+                {
+                    "host": "paulbot",
+                    "emotion": "confident",
+                    "text": "Finally, winter’s farewell from Grymes Memorial.",
                     "sources": []
                 }
             ]
@@ -99,9 +121,17 @@
             "song": 3,
             "intro": [
                 {
+                    "host": "cherylbot",
+                    "emotion": "curious",
+                    "text": "Last song: fourth graders at Grymes Memorial in 2025.",
+                    "sources": [
+                        3
+                    ]
+                },
+                {
                     "host": "paulbot",
-                    "emotion": "happy",
-                    "text": "Finally, a 2025 goodbye to winter from Grymes Memorial School.",
+                    "emotion": "excited",
+                    "text": "‘Waving Goodbye to Winter’—written with Paul Reisler and Paddy Dougherty—",
                     "sources": [
                         3
                     ]
@@ -109,53 +139,45 @@
                 {
                     "host": "cherylbot",
                     "emotion": "neutral",
-                    "text": "It’s called Waving Goodbye to Winter, and here is the chorus.",
-                    "sources": [
-                        3
-                    ]
+                    "text": "here’s the chorus.",
+                    "sources": []
                 }
             ],
             "background": [
                 {
                     "host": "paulbot",
-                    "emotion": "excited",
-                    "text": "Old Man Winter retires, and summer takes over.",
+                    "emotion": "happy",
+                    "text": "Old Man Winter retires, summer arrives—complete with pollen and ice cream!",
                     "sources": [
                         3
                     ]
                 },
                 {
                     "host": "cherylbot",
-                    "emotion": "curious",
-                    "text": "Paul Reisler and Paddy Dougherty wrote it with the fourth graders.",
+                    "emotion": "confident",
+                    "text": "A 2025 anthem for the end of the school year.",
                     "sources": [
                         3
                     ]
-                },
-                {
-                    "host": "paulbot",
-                    "emotion": "confident",
-                    "text": "That’s our holiday trio.",
-                    "sources": []
                 }
             ]
         }
     ],
     "closing": [
         {
-            "host": "cherylbot",
-            "emotion": "neutral",
-            "text": "Kid Pan Alley’s archive keeps these songs alive for all of us.",
+            "host": "paulbot",
+            "emotion": "happy",
+            "text": "Three seasons, three songs—all from Kid Pan Alley’s archive.",
             "sources": [
                 4
             ]
         },
         {
-            "host": "paulbot",
-            "emotion": "happy",
-            "text": "Happy holidays, and keep singing!",
+            "host": "cherylbot",
+            "emotion": "neutral",
+            "text": "Happy holidays, everyone.",
             "sources": []
         }
     ],
-    "summary": "Three holiday songs from Kid Pan Alley: a 2016 Thanksgiving anthem by a Savoy second grade class with Paul Reisler and Sahffi Lynne, a 2013 Christmas song by a Capitol Hill Montessori kindergarten with Paul Reisler and Lea Morris, and a 2025 winter farewell by Grymes Memorial fourth graders with Paul Reisler and Paddy Dougherty."
+    "summary": "Three Kid Pan Alley holiday songs span Thanksgiving gratitude from a 2016 Savoy second grade class, a 2013 Capitol Hill Montessori kindergarten’s practical Christmas plan, and a 2025 Grymes Memorial fourth grade farewell to winter."
 }
