@@ -68,6 +68,7 @@
         "survos/workflow-extras-bundle": "^2.42.13",
         "survos/workflow-messenger-bundle": "^2.42.13",
         "symfony/ai-bundle": "^1.0.0-beta1",
+        "symfony/ai-mistral-platform": "^1.0.0-beta1",
         "symfony/ai-ollama-platform": "^1.0.0-beta1",
         "symfony/asset": "8.2.0-BETA1",
         "symfony/asset-mapper": "8.2.0-BETA1",

@@ -104,7 +104,7 @@ php bin/console elastic:index:status
 
 The homepage Search links open `/entity/app_song/search` and `/entity/app_file_asset/search`. The November 11 spreadsheet/lyrics import contains 2,560 catalog records (2,157 with nonempty lyrics; 403 missing lyrics); the file index remains empty. Ordinary reindexing does not need `--drop`.
 
-Keyword search is active. Semantic/hybrid queries and embedding generation are paused with `KPA_AI_ENABLED=0` until raw catalog verification is complete. Re-enable only when explicitly requested.
+Keyword, semantic and hybrid search are active. AI was resumed on November 23, 2026 (`KPA_AI_ENABLED=1`) for the themed episodes; set it to `0` to pause embedding generation and semantic queries again.
 
 ## Tests
 
@@ -129,10 +129,21 @@ php bin/console app:songs:embed --no-debug
 php bin/console elastic:index:rebuild app_song --keep-old --no-debug
 ```
 
-The November 8 baseline had 2,324 indexed songs and 2,322 persisted embeddings. The November 11 raw-data recovery now has 2,560 songs and 2,157 nonempty lyrics. AI/embedding generation is on hold; existing baseline vectors have not been refreshed. Do not run `app:songs:embed` until the user resumes AI work.
+The November 8 baseline had 2,324 indexed songs and 2,322 persisted embeddings. The November 11 raw-data recovery now has 2,560 songs and 2,157 nonempty lyrics. On November 23, 2026, `app:songs:embed` refreshed them: 2,559 of 2,560 songs have a vector (one is excluded pending lyrics review). The Elasticsearch rebuild that day failed because the host disk was above Elasticsearch's 90% high watermark, so the `kpa_song` alias still points to the November 12 index; rerun `elastic:index:rebuild app_song --keep-old` once disk space is freed.
 
 Two unusually long lyrics records are preserved but excluded from vectors pending source review: `runn-0-running-with-the-moon-tonight` (6,502 characters) and `runn-0-running-with-the-moon-tonight-inspiration` (10,115). The downloaded CSV itself contains multiple drafts, production notes, and generated research in these fields. The temporary recovery guard flags lyrics longer than 6,000 characters; it does not truncate or rewrite the source.
 
 The additive migration `Version20261108160000` adds the vector cache columns. Review pending migrations before applying to an existing database. The code and data changes have only been exercised locally, not deployed.
 
 The integrated `/search` page provides Lexical, Semantic, and Hybrid tabs with shared facets. Semantic controls the cosine cutoff; Hybrid adds a semantic candidate limit. Scores are shown on both integrated results and the `/songs/search` comparison page. The local search-bundle integration is required until its shared changes are released. The homepage links to the integrated page.
+
+## Themed episodes
+
+Two synthetic hosts, PaulBot and CherylBot, introduce KPA songs on a theme, play a short excerpt of each, and give its background from the catalog. See [docs/themed-episodes.md](docs/themed-episodes.md).
+
+```bash
+php bin/console app:episode:songs "winter holidays"                     # candidates by meaning, with their recordings
+php bin/console app:episode:write data/episodes/holidays.json --output=docs/episodes/holidays-script.md
+```
+
+The writer needs `MISTRAL_API_KEY` in `.env.local`.

@@ -18951,54 +18951,6 @@
                         "default": false,
                         "description": "Prepend {_locale} (constrained to kernel.enabled_locales) to this bundle's route prefix, e.g. /{_locale}/f instead of /f -- for bundles whose routes are meant to be shared/bookmarked, so the URL itself carries the locale instead of a query param."
                     },
-                    "authorities": {
-                        "$ref": "#/$defs/types/object_null",
-                        "additionalProperties": {
-                            "$ref": "#/$defs/types/object_null",
-                            "properties": {
-                                "issuer": {
-                                    "$ref": "#/$defs/types/string_null"
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
-                    "resources": {
-                        "$ref": "#/$defs/types/object_null",
-                        "additionalProperties": {
-                            "$ref": "#/$defs/types/object_null",
-                            "properties": {
-                                "enabled": {
-                                    "$ref": "#/$defs/types/boolean",
-                                    "default": true
-                                },
-                                "authority": {
-                                    "$ref": "#/$defs/types/string_null"
-                                },
-                                "path": {
-                                    "$ref": "#/$defs/types/string_null"
-                                },
-                                "resource": {
-                                    "$ref": "#/$defs/types/string_null"
-                                },
-                                "audiences": {
-                                    "$ref": "#/$defs/types/array_null",
-                                    "items": {
-                                        "$ref": "#/$defs/types/string_null"
-                                    },
-                                    "minItems": 1
-                                },
-                                "required_scopes": {
-                                    "$ref": "#/$defs/types/array_null",
-                                    "items": {
-                                        "$ref": "#/$defs/types/string_null"
-                                    },
-                                    "minItems": 1
-                                }
-                            },
-                            "additionalProperties": false
-                        }
-                    },
                     "providers": {
                         "$ref": "#/$defs/types/object_null",
                         "additionalProperties": {
@@ -19209,11 +19161,6 @@
                     "agent": {
                         "$ref": "#/$defs/types/object_null",
                         "properties": {
-                            "enabled": {
-                                "$ref": "#/$defs/types/boolean",
-                                "default": true,
-                                "description": "Register command tools with MCP. Disable for external corpus-only servers; console commands remain available."
-                            },
                             "token": {
                                 "$ref": "#/$defs/types/scalar",
                                 "default": null,
@@ -19227,7 +19174,6 @@
                         },
                         "additionalProperties": false,
                         "default": {
-                            "enabled": true,
                             "token": null,
                             "user": null
                         },

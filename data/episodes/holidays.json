@@ -1,0 +1,34 @@
+{
+    "theme": "Three holiday songs, from Thanksgiving to the end of winter",
+    "minutes": 2,
+    "hosts": ["paulbot", "cherylbot"],
+    "songs": [
+        {
+            "song": "savo-2016-every-day-should-be-a-thanksgiving",
+            "recording": "https://kpa-songs.s3.amazonaws.com/every-day-should-be-a-thanksgiving/every-day-should-be-a-thanksgiving-recording.mp3",
+            "start": 11.5,
+            "end": 31.0,
+            "lyrics": "Every day should be a Thanksgiving, every day we should give thanks for living, for love, for family, for those who've come before, for those who've served our country, we give thanks once more"
+        },
+        {
+            "song": "capi-2013-going-to-my-cousins-for-christmas",
+            "recording": "https://kpa-songs.s3.amazonaws.com/going-to-my-cousins-for-christmas/going-to-my-cousins-for-christmas-gv.mp3",
+            "start": 7.5,
+            "end": 25.5,
+            "lyrics": "I'm going to my cousin's for Christmas, cause they have a chimney for Santa to come down. If he came to my house, even if he knocked, he'd find that the doors will be locked"
+        },
+        {
+            "song": "grym-2024-waving-goodbye-to-winter",
+            "recording": "https://kpa-songs.s3.amazonaws.com/waving-goodbye-to-winter/waving-goodbye-to-winter-gv.mp3",
+            "start": 6.0,
+            "end": 28.5,
+            "lyrics": "I'm waving goodbye to winter and saying hello to the endless summer, Old Man Winter has just retired, he's getting too old for the cold, and he is ready to expire"
+        }
+    ],
+    "sources": [
+        {
+            "title": "Kid Pan Alley",
+            "notes": "Kid Pan Alley brings children and professional songwriters together to create songs collaboratively. Its archive preserves the songs, lyrics and recordings, and the words and stories that emerge from that work."
+        }
+    ]
+}
