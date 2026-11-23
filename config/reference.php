@@ -2020,6 +2020,17 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     routes_enabled?: bool|Param, // Set false to manage this bundle's routes manually in your app. Bundles exposing sensitive routes (e.g. running console commands) should default this off. // Default: true
  *     route_prefix?: scalar|Param|null, // URL prefix applied to all routes from this bundle. // Default: "/auth"
  *     locale_prefix?: bool|Param, // Prepend {_locale} (constrained to kernel.enabled_locales) to this bundle's route prefix, e.g. /{_locale}/f instead of /f -- for bundles whose routes are meant to be shared/bookmarked, so the URL itself carries the locale instead of a query param. // Default: false
+ *     authorities?: array<string, array{ // Default: []
+ *         issuer?: string|Param,
+ *     }>,
+ *     resources?: array<string, array{ // Default: []
+ *         enabled?: bool|Param, // Default: true
+ *         authority?: string|Param,
+ *         path?: string|Param,
+ *         resource?: string|Param,
+ *         audiences?: list<string|Param>,
+ *         required_scopes?: list<string|Param>,
+ *     }>,
  *     providers?: array<string, array{ // Default: []
  *         type?: scalar|Param|null, // Default: null
  *         client_id?: scalar|Param|null, // Default: null
@@ -2084,6 +2095,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         role?: scalar|Param|null, // checked unless public; null = ROLE_ADMIN // Default: null
  *     }>,
  *     agent?: array{ // Bearer-token sign-in for /mcp (see Survos\CommandBundle\Security\AgentTokenHandler).
+ *         enabled?: bool|Param, // Register command tools with MCP. Disable for external corpus-only servers; console commands remain available. // Default: true
  *         token?: scalar|Param|null, // e.g. %env(default::AGENT_TOKEN)%; unset = no token accepted // Default: null
  *         user?: scalar|Param|null, // user identifier the token signs in as, e.g. an admin email // Default: null
  *     },
@@ -2558,6 +2570,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         max_retries?: int|Param, // Retries on 429/5xx/transport errors, exponential backoff honoring Retry-After // Default: 5
  *         retry_delay_ms?: int|Param, // First retry delay; doubles each attempt, capped at 60s // Default: 2000
  *         headers?: array<string, scalar|Param|null>,
+ *     },
+ *     pdf_proxy?: array{
+ *         sources?: array<string, scalar|Param|null>,
+ *         cache_dir?: scalar|Param|null, // Where downloaded PDFs are kept, as <dir>/<source>/files/. Default: cache/omeka of the app's DataPaths, else the kernel cache. The files can always be fetched again // Default: null
+ *         max_bytes?: int|Param, // Default: 100000000
  *     },
  * }
  * @psalm-type SurvosApiGridConfig = array{

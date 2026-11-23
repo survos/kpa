@@ -17993,7 +17993,7 @@
                                 "default": [
                                     "%kernel.project_dir%",
                                     ".",
-                                    "/opt/homebrew/Cellar/php/8.5.12_1/share/php/pear"
+                                    "/opt/homebrew/Cellar/php@8.5/8.5.13/share/php@8.5/pear"
                                 ]
                             },
                             "sample_rate": {
@@ -18232,7 +18232,7 @@
                                         "default": [
                                             "%kernel.project_dir%",
                                             ".",
-                                            "/opt/homebrew/Cellar/php/8.5.12_1/share/php/pear"
+                                            "/opt/homebrew/Cellar/php@8.5/8.5.13/share/php@8.5/pear"
                                         ]
                                     }
                                 ]
@@ -18244,7 +18244,7 @@
                             "prefixes": [
                                 "%kernel.project_dir%",
                                 ".",
-                                "/opt/homebrew/Cellar/php/8.5.12_1/share/php/pear"
+                                "/opt/homebrew/Cellar/php@8.5/8.5.13/share/php@8.5/pear"
                             ],
                             "log_flush_threshold": null,
                             "enable_metrics": true,
@@ -18951,6 +18951,54 @@
                         "default": false,
                         "description": "Prepend {_locale} (constrained to kernel.enabled_locales) to this bundle's route prefix, e.g. /{_locale}/f instead of /f -- for bundles whose routes are meant to be shared/bookmarked, so the URL itself carries the locale instead of a query param."
                     },
+                    "authorities": {
+                        "$ref": "#/$defs/types/object_null",
+                        "additionalProperties": {
+                            "$ref": "#/$defs/types/object_null",
+                            "properties": {
+                                "issuer": {
+                                    "$ref": "#/$defs/types/string_null"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "resources": {
+                        "$ref": "#/$defs/types/object_null",
+                        "additionalProperties": {
+                            "$ref": "#/$defs/types/object_null",
+                            "properties": {
+                                "enabled": {
+                                    "$ref": "#/$defs/types/boolean",
+                                    "default": true
+                                },
+                                "authority": {
+                                    "$ref": "#/$defs/types/string_null"
+                                },
+                                "path": {
+                                    "$ref": "#/$defs/types/string_null"
+                                },
+                                "resource": {
+                                    "$ref": "#/$defs/types/string_null"
+                                },
+                                "audiences": {
+                                    "$ref": "#/$defs/types/array_null",
+                                    "items": {
+                                        "$ref": "#/$defs/types/string_null"
+                                    },
+                                    "minItems": 1
+                                },
+                                "required_scopes": {
+                                    "$ref": "#/$defs/types/array_null",
+                                    "items": {
+                                        "$ref": "#/$defs/types/string_null"
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
                     "providers": {
                         "$ref": "#/$defs/types/object_null",
                         "additionalProperties": {
@@ -19161,6 +19209,11 @@
                     "agent": {
                         "$ref": "#/$defs/types/object_null",
                         "properties": {
+                            "enabled": {
+                                "$ref": "#/$defs/types/boolean",
+                                "default": true,
+                                "description": "Register command tools with MCP. Disable for external corpus-only servers; console commands remain available."
+                            },
                             "token": {
                                 "$ref": "#/$defs/types/scalar",
                                 "default": null,
@@ -19174,6 +19227,7 @@
                         },
                         "additionalProperties": false,
                         "default": {
+                            "enabled": true,
                             "token": null,
                             "user": null
                         },
@@ -19803,6 +19857,34 @@
                             "max_retries": 5,
                             "retry_delay_ms": 2000,
                             "headers": []
+                        }
+                    },
+                    "pdf_proxy": {
+                        "$ref": "#/$defs/types/object_null",
+                        "properties": {
+                            "sources": {
+                                "$ref": "#/$defs/types/object_null",
+                                "additionalProperties": {
+                                    "$ref": "#/$defs/types/scalar"
+                                },
+                                "description": "Source name => URL prefix of an Omeka site's original files, e.g. jmu: https://omeka.lib.jmu.edu/erp/files/original/. Served at /omeka-pdf/<name>/<hash>.pdf"
+                            },
+                            "cache_dir": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": null,
+                                "description": "Where downloaded PDFs are kept, as <dir>/<source>/files/. Default: cache/omeka of the app's DataPaths, else the kernel cache. The files can always be fetched again"
+                            },
+                            "max_bytes": {
+                                "$ref": "#/$defs/types/integer",
+                                "minimum": 1,
+                                "default": 100000000
+                            }
+                        },
+                        "additionalProperties": false,
+                        "default": {
+                            "sources": [],
+                            "cache_dir": null,
+                            "max_bytes": 100000000
                         }
                     }
                 },
