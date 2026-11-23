@@ -15,7 +15,7 @@
                     <h3 class="card-title mb-1"><a href="{{ path('episode_show', {slug: episode.slug}) }}">{{ episode.title }}</a></h3>
                     <p class="text-muted small mb-2">{{ episode.published|date('j F Y') }} · {{ (episode.seconds / 60)|round(0, 'floor') }}:{{ '%02d'|format(episode.seconds % 60) }} · {{ episode.songs|length }} songs</p>
                     <p class="mb-2">{{ episode.summary }}</p>
-                    <audio controls preload="none" src="{{ path('episode_mp3', {slug: episode.slug}) }}" class="w-100"></audio>
+                    <audio controls preload="none" src="{{ path('episode_mp3', {slug: episode.slug, v: episode.published|date('U')}) }}" class="w-100"></audio>
                 </div>
             </div>
         {% else %}

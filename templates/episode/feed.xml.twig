@@ -16,7 +16,7 @@
         <link>{{ url('episode_show', {slug: episode.slug}) }}</link>
         <pubDate>{{ episode.published|date('r') }}</pubDate>
         <description>{{ episode.summary }}{% for song in episode.songs %} · {{ song.title }} ({{ song.school }}{% if song.year %}, {{ song.year }}{% endif %}){% endfor %}</description>
-        <enclosure url="{{ url('episode_mp3', {slug: episode.slug}) }}" length="{{ episode.bytes }}" type="audio/mpeg"/>
+        <enclosure url="{{ url('episode_mp3', {slug: episode.slug, v: episode.published|date('U')}) }}" length="{{ episode.bytes }}" type="audio/mpeg"/>
         <itunes:duration>{{ episode.seconds|round }}</itunes:duration>
         <podcast:transcript url="{{ url('episode_vtt', {slug: episode.slug}) }}" type="text/vtt"/>
     </item>
