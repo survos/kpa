@@ -10,3 +10,10 @@ survos_ai_embed:
     cache_path: '%env(resolve:AI_EMBED_CACHE)%'
     # KPA embeds locally (Ollama); the bundle's OpenAI batch client is never used
     api_key: ''
+    # the shared bucket: embed:push/pull for the cache, app:songs:vectors:* for the song vectors
+    s3:
+        bucket: '%env(EMBEDDINGS_S3_BUCKET)%'
+        region: '%env(EMBEDDINGS_S3_REGION)%'
+        endpoint: '%env(EMBEDDINGS_S3_ENDPOINT)%'
+        access_key: '%env(EMBEDDINGS_S3_ACCESS_KEY)%'
+        secret_key: '%env(EMBEDDINGS_S3_SECRET_KEY)%'

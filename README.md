@@ -124,6 +124,17 @@ The local application database is PostgreSQL 18.4 (`kidpanalley`). Song vectors 
 
 Embeddings use Ink/Folio's local Ollama model, `nomic-embed-text:latest`, with `search_document:` and `search_query:` prefixes. Configure `KPA_OLLAMA_URL`, `KPA_EMBED_MODEL`, and `KPA_EMBED_REVISION`; the revision is the installed model digest and is checked before generation. Vectors are generated and cached by [survos/ai-embed-bundle](https://github.com/survos/ai-embed-bundle) in a DuckDB file outside the catalog database (`AI_EMBED_CACHE`, default `var/embeddings/kpa.duckdb`; keep it on persistent storage). The cache is keyed by the model profile and the exact input text, so a database reload, a re-import or a reindex reuses every vector whose song text has not changed: `app:songs:embed` only calls Ollama for new or edited songs. `Song::$embedding` is the projection the Elasticsearch index reads; a fingerprint covers source text, model, revision, dimensions and text preprocessing, and the command re-projects any song whose fingerprint is stale. Search queries are embedded by the bundle's Ollama provider directly: the cache file is locked by one process at a time, and a web request must not wait for it.
 
+Production has neither Ollama-side generation nor DuckDB (the Heroku PHP buildpack has no `pdo_duckdb`), so vectors are made on a workstation and shipped through the shared bucket (`survos-embeddings` on Hetzner object storage, `EMBEDDINGS_S3_*`):
+
+```bash
+php bin/console app:songs:embed                        # workstation: generate what is missing
+php bin/console app:songs:vectors:export --push        # workstation: upload survos-sites/kpa/song-vectors.jsonl.gz
+php bin/console app:songs:vectors:import               # production: fill vectors whose song text is unchanged
+php bin/console elastic:index:rebuild app_song --keep-old
+```
+
+The import refuses an archive made with another embedding profile, and only writes a vector where the installation's own song text gives the same fingerprint. Semantic search defaults to a minimum similarity of 0.6 (`SongSearch`): Nomic scores most songs above 0.35 for any query.
+
 On November 23, 2026 the cache was seeded from the 2,559 vectors already on the songs, with no model call; a song whose vector was then cleared came back from the cache. Run the embedding command after imports/edits, then rebuild ES:
 
 ```bash

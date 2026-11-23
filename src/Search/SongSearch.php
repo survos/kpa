@@ -53,6 +53,8 @@ final class SongSearch extends AbstractFieldSearch implements HitTemplateSearchI
         $fields = $parameters['sourceFields'];
         $parameters['mappings']['embedding'] = ['type' => 'dense_vector', 'dims' => SongEmbeddingService::DIMENSIONS, 'index' => true, 'similarity' => 'cosine'];
         $parameters['vectorDimensions'] = SongEmbeddingService::DIMENSIONS;
+        // nomic-embed-text scores most songs above 0.35 for any query; 0.6 keeps the result count meaningful
+        $parameters['minimumSimilarity'] = 0.6;
         $parameters['embeddingProvider'] = $this->embeddings->enabled ? $this->embeddings : null;
         $parameters['retrievalMode'] = $this->embeddings->enabled ? ($options['retrievalMode'] ?? 'lexical') : 'lexical';
         $parameters['documentMapper'] = function (Song $song) use ($fields): array {
