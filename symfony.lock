@@ -358,15 +358,6 @@
             "ref": "900e107b11b561a6cffb55d4e43c5b1e123aaa63"
         }
     },
-    "symfony/ai-ollama-platform": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "0.1",
-            "ref": "8d8a4c5ebfa1423d3e2a2c39cce16b0a270e81f0"
-        }
-    },
     "symfony/ai-open-ai-platform": {
         "version": "1.0",
         "recipe": {
