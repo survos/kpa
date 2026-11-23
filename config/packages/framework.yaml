@@ -4,6 +4,9 @@ framework:
     #csrf_protection: true
     http_method_override: false
     handle_all_throwables: true
+    # Dokku's nginx (on the private Docker network) forwards the scheme: links and the feed stay https.
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port', 'x-forwarded-host']
     property_info:
         with_constructor_extractor: true
 
