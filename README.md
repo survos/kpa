@@ -129,7 +129,7 @@ php bin/console app:songs:embed --no-debug
 php bin/console elastic:index:rebuild app_song --keep-old --no-debug
 ```
 
-The November 8 baseline had 2,324 indexed songs and 2,322 persisted embeddings. The November 11 raw-data recovery now has 2,560 songs and 2,157 nonempty lyrics. On November 23, 2026, `app:songs:embed` refreshed them: 2,559 of 2,560 songs have a vector (one is excluded pending lyrics review). The Elasticsearch rebuild that day failed because the host disk was above Elasticsearch's 90% high watermark, so the `kpa_song` alias still points to the November 12 index; rerun `elastic:index:rebuild app_song --keep-old` once disk space is freed.
+The November 8 baseline had 2,324 indexed songs and 2,322 persisted embeddings. The November 11 raw-data recovery now has 2,560 songs and 2,157 nonempty lyrics. On November 23, 2026, `app:songs:embed` refreshed them: 2,559 of 2,560 songs have a vector (one is excluded pending lyrics review). `elastic:index:rebuild app_song --keep-old` then projected them into Elasticsearch (`kpa_song_20261123145849`). Elasticsearch refuses new indexes when the disk is above its 90% high watermark; with Podman, deleted volumes only free the Mac's disk after `podman machine ssh -- sudo fstrim -av`.
 
 Two unusually long lyrics records are preserved but excluded from vectors pending source review: `runn-0-running-with-the-moon-tonight` (6,502 characters) and `runn-0-running-with-the-moon-tonight-inspiration` (10,115). The downloaded CSV itself contains multiple drafts, production notes, and generated research in these fields. The temporary recovery guard flags lyrics longer than 6,000 characters; it does not truncate or rewrite the source.
 
