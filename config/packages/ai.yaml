@@ -1,14 +1,6 @@
-framework:
-    http_client:
-        scoped_clients:
-            kpa.ollama.client:
-                base_uri: '%env(KPA_OLLAMA_URL)%'
-                timeout: 60
-                max_duration: 90
+# Song embeddings go through survos/ai-embed-bundle (config/packages/survos_ai_embed.yaml), not this platform.
 ai:
     platform:
+        # the themed episodes' script writer (src/Episode/SongScriptWriter.php)
         mistral:
             api_key: '%env(MISTRAL_API_KEY)%'
-        ollama:
-            endpoint: '%env(KPA_OLLAMA_URL)%'
-            http_client: 'kpa.ollama.client'

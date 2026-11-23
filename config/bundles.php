@@ -63,4 +63,5 @@ return [
     Survos\WorkflowMessengerBundle\SurvosWorkflowMessengerBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     Survos\Tree\SurvosTreeBundle::class => ['all' => true],
+    Survos\AiEmbedBundle\SurvosAiEmbedBundle::class => ['all' => true],
 ];

@@ -9,27 +9,29 @@ use App\Search\SongSearch;
 use App\Service\SongEmbeddingService;
 use Doctrine\ORM\EntityManagerInterface;
 use Survos\SearchBundle\Search\SearchProvider;
-use Symfony\AI\Platform\PlatformInterface;
+use Survos\AiEmbedBundle\DuckDbEmbeddingCache;
+use Survos\AiEmbedBundle\EmbeddingProfile as VectorProfile;
+use Survos\AiEmbedBundle\EmbeddingProviderInterface as VectorProvider;
+use Survos\AiEmbedBundle\EmbeddingService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class SongEmbeddingTest extends KernelTestCase
 {
     public function testCachedVectorsInvalidateOnContentAndModelChangesWithoutCallingOllama(): void
     {
-        $platform = $this->createMock(PlatformInterface::class);
-        $platform->expects(self::never())->method('invoke');
-        $http = $this->createMock(HttpClientInterface::class);
-        $http->expects(self::never())->method('request');
+        $provider = $this->createMock(VectorProvider::class);
+        $provider->expects(self::never())->method('embed');
         $em = $this->createStub(EntityManagerInterface::class);
-        $service = new SongEmbeddingService($platform, $http, $em, 'nomic-embed-text:latest', 'revision1');
+        // the cache file is opened lazily: never here
+        $vectors = static fn (string $revision) => new EmbeddingService(new DuckDbEmbeddingCache(sys_get_temp_dir().'/kpa-never-opened.duckdb'), new VectorProfile('nomic-embed-text:latest', $revision), $provider);
+        $service = new SongEmbeddingService($vectors('revision1'), $provider, $em, 'nomic-embed-text:latest', 'revision1');
         $song = new Song('original-id');
         $song->title = 'Friendship';
         $song->lyrics = '{title: Friendship}\n[C]We stand together';
         $song->embedding = array_fill(0, 768, 0.1);
         $song->embeddingFingerprint = $service->profile->fingerprint($service::text($song));
         self::assertSame($song->embedding, $service->cachedVector($song));
-        $otherRevision = new SongEmbeddingService($platform, $http, $em, 'nomic-embed-text:latest', 'revision2');
+        $otherRevision = new SongEmbeddingService($vectors('revision2'), $provider, $em, 'nomic-embed-text:latest', 'revision2');
         self::assertNull($otherRevision->cachedVector($song));
         $song->lyrics = 'Changed lyrics';
         self::assertNull($service->cachedVector($song));

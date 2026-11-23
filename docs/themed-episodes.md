@@ -71,7 +71,7 @@ Rules the prompt (`config/prompts/episode-writer.md`) adds for this catalog:
 
 ### Choosing the songs for a theme
 
-`app:episode:songs "<theme>"` (`ThemeFinder`) embeds the theme with the same Ollama model as the songs (`SongEmbeddingService`, `search_query:` prefix). It ranks songs by cosine similarity against the vectors persisted on `Song::$embedding`. It only considers songs that have lyrics and at least one recording that isn't AI-generated. Each candidate is listed with its recordings: kind, length and URL.
+`app:episode:songs "<theme>"` (`ThemeFinder`) embeds the theme with the same Ollama model as the songs (`SongEmbeddingService`, `search_query:` prefix, through survos/ai-embed-bundle's provider). It ranks songs by cosine similarity against the vectors persisted on `Song::$embedding`. It only considers songs that have lyrics and at least one recording that isn't AI-generated. Each candidate is listed with its recordings: kind, length and URL.
 
 This reads Postgres, not Elasticsearch, so it works even when the search index is stale. For "winter holidays: Christmas, Hanukkah, Thanksgiving, snow", it ranks "There's Nothing Like Christmas", "On Christmas Day", "Four Seasons", "Waving Goodbye to Winter", "Christmas In July"… The ranking finds songs a keyword search misses ("Frosty's Cavern", "It's Only September (But Let It Snow)").
 

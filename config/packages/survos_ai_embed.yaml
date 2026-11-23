@@ -1,0 +1,10 @@
+# Song vectors are cached by survos/ai-embed-bundle, keyed by model profile and exact input:
+# a database reload or reindex reuses them instead of calling Ollama again.
+# Song::$embedding stays the projection that the Elasticsearch index reads.
+survos_ai_embed:
+    # registers the services; generation itself is gated by KPA_AI_ENABLED (SongEmbeddingService)
+    enabled: true
+    model: '%env(KPA_EMBED_MODEL)%'
+    revision: '%env(KPA_EMBED_REVISION)%'
+    url: '%env(KPA_OLLAMA_URL)%'
+    cache_path: '%env(resolve:AI_EMBED_CACHE)%'

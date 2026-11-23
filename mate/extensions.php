@@ -5,6 +5,23 @@
 // every other key is overwritten by Mate.
 
 return [
+    'survos/jsonl-bundle' => [
+        'enabled' => true,
+        'skills' => [
+            'survos-jsonl' => [
+                'enabled' => true,
+                'mode' => 'managed',
+                'state' => 'managed',
+                'source' => 'vendor/survos/jsonl-bundle/skills/survos-jsonl',
+                'source_hash' => 'sha256:b132a09e220aa0b7de2ae9745c6f3053dd36f055dc8950875bf96923959e1abd',
+                'hash' => 'sha256:40e6d8624e8eb99014b7b0df902c123e76a3b94bf5fb7d1a61129de9d6fefa00',
+                'targets' => [
+                    '.agents/skills/mate-survos-jsonl',
+                    '.claude/skills/mate-survos-jsonl',
+                ],
+            ],
+        ],
+    ],
     'symfony/ai-mate' => [
         'enabled' => true,
         'skills' => [

@@ -203,6 +203,12 @@
     "survos/admin-bundle": {
         "version": "2.10.3"
     },
+    "survos/ai-batch-bundle": {
+        "version": "2.45.71"
+    },
+    "survos/ai-embed-bundle": {
+        "version": "2.45.85"
+    },
     "survos/api-grid-bundle": {
         "version": "2.10.19"
     },
@@ -359,6 +365,15 @@
             "branch": "main",
             "version": "0.1",
             "ref": "8d8a4c5ebfa1423d3e2a2c39cce16b0a270e81f0"
+        }
+    },
+    "symfony/ai-open-ai-platform": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "1815c0412f5ef5da5f924ea5fe84ebd6a5422476"
         }
     },
     "symfony/asset-mapper": {
@@ -546,6 +561,18 @@
         "files": [
             "config/packages/routing.yaml",
             "config/routes.yaml"
+        ]
+    },
+    "symfony/scheduler": {
+        "version": "8.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "8.2",
+            "ref": "b77083bd73a4da995d904c6dda1b290aa582c02f"
+        },
+        "files": [
+            "config/packages/scheduler.yaml"
         ]
     },
     "symfony/security-bundle": {

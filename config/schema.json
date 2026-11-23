@@ -10284,7 +10284,7 @@
                         "$ref": "#/$defs/nodes/messenger"
                     },
                     "scheduler": {
-                        "$ref": "#/$defs/types/variable"
+                        "$ref": "#/$defs/nodes/scheduler"
                     },
                     "http_client": {
                         "$ref": "#/$defs/nodes/http_client"
@@ -14551,6 +14551,65 @@
                     "http_port": 80,
                     "https_port": 443,
                     "utf8": true
+                }
+            },
+            "scheduler": {
+                "anyOf": [
+                    {
+                        "$ref": "#/$defs/types/object_null",
+                        "properties": {
+                            "enabled": {
+                                "$ref": "#/$defs/types/boolean",
+                                "default": true
+                            },
+                            "use_messenger_routing": {
+                                "$ref": "#/$defs/types/boolean_null",
+                                "default": null,
+                                "description": "Whether scheduled messages are routed to the Messenger senders configured for their class, as any other dispatched message is. A class with no sender configured still runs in the scheduler worker, and a \"transports\" option set on a task still wins."
+                            },
+                            "schedules": {
+                                "$ref": "#/$defs/types/object_null",
+                                "additionalProperties": {
+                                    "$ref": "#/$defs/types/object_null",
+                                    "properties": {
+                                        "stateful": {
+                                            "$ref": "#/$defs/types/boolean",
+                                            "default": false,
+                                            "description": "Whether the schedule keeps its state in the \"cache.scheduler\" pool and, when locks are enabled, runs in only one worker at a time."
+                                        },
+                                        "cache_pool": {
+                                            "$ref": "#/$defs/types/scalar",
+                                            "default": null,
+                                            "description": "The cache pool that stores the state of the schedule, so that a restarted worker resumes where the previous one stopped."
+                                        },
+                                        "lock_factory": {
+                                            "$ref": "#/$defs/types/scalar",
+                                            "default": null,
+                                            "description": "The service ID of the lock factory used to run the schedule in only one worker at a time."
+                                        },
+                                        "process_only_last_missed_run": {
+                                            "$ref": "#/$defs/types/boolean",
+                                            "default": false,
+                                            "description": "Whether a task that missed several runs runs only once instead of once per missed run."
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                },
+                                "description": "Options of the schedules, keyed by schedule name, whether their tasks are declared with attributes or returned by a schedule provider."
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    {
+                        "type": [
+                            "boolean"
+                        ]
+                    }
+                ],
+                "default": {
+                    "enabled": true,
+                    "use_messenger_routing": null,
+                    "schedules": []
                 }
             },
             "security": {
@@ -18877,6 +18936,105 @@
                     "title": {
                         "$ref": "#/$defs/types/scalar",
                         "default": "Admin"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "survos_ai_embed": {
+                "$ref": "#/$defs/types/object_null",
+                "properties": {
+                    "enabled": {
+                        "$ref": "#/$defs/types/boolean",
+                        "default": false
+                    },
+                    "remote_storage": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": null
+                    },
+                    "s3": {
+                        "$ref": "#/$defs/types/object_null",
+                        "properties": {
+                            "bucket": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": ""
+                            },
+                            "region": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": "us-east-1"
+                            },
+                            "endpoint": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": ""
+                            },
+                            "prefix": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": ""
+                            },
+                            "access_key": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": ""
+                            },
+                            "secret_key": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": ""
+                            },
+                            "session_token": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": ""
+                            },
+                            "path_style": {
+                                "$ref": "#/$defs/types/boolean",
+                                "default": true
+                            }
+                        },
+                        "additionalProperties": false,
+                        "default": {
+                            "bucket": "",
+                            "region": "us-east-1",
+                            "endpoint": "",
+                            "prefix": "",
+                            "access_key": "",
+                            "secret_key": "",
+                            "session_token": "",
+                            "path_style": true
+                        }
+                    },
+                    "cache_path": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "%kernel.project_dir%/var/embeddings/cache.duckdb"
+                    },
+                    "provider": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "ollama"
+                    },
+                    "document_prefix": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "search_document: "
+                    },
+                    "query_prefix": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "search_query: "
+                    },
+                    "api_key": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "%env(default::OPENAI_API_KEY)%"
+                    },
+                    "model": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "nomic-embed-text:v1.5"
+                    },
+                    "revision": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f"
+                    },
+                    "dimensions": {
+                        "$ref": "#/$defs/types/integer",
+                        "minimum": 1,
+                        "default": 768
+                    },
+                    "url": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "http://localhost:11434"
                     }
                 },
                 "additionalProperties": false
@@ -24075,6 +24233,9 @@
         "router": {
             "$ref": "#/$defs/nodes/router"
         },
+        "scheduler": {
+            "$ref": "#/$defs/nodes/scheduler"
+        },
         "security": {
             "$ref": "#/$defs/nodes/security"
         },
@@ -24089,6 +24250,9 @@
         },
         "survos_admin": {
             "$ref": "#/$defs/nodes/survos_admin"
+        },
+        "survos_ai_embed": {
+            "$ref": "#/$defs/nodes/survos_ai_embed"
         },
         "survos_api_grid": {
             "$ref": "#/$defs/nodes/survos_api_grid"
@@ -24287,6 +24451,9 @@
                 "router": {
                     "$ref": "#/$defs/nodes/router"
                 },
+                "scheduler": {
+                    "$ref": "#/$defs/nodes/scheduler"
+                },
                 "security": {
                     "$ref": "#/$defs/nodes/security"
                 },
@@ -24302,6 +24469,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_embed": {
+                    "$ref": "#/$defs/nodes/survos_ai_embed"
                 },
                 "survos_api_grid": {
                     "$ref": "#/$defs/nodes/survos_api_grid"
@@ -24506,6 +24676,9 @@
                 "router": {
                     "$ref": "#/$defs/nodes/router"
                 },
+                "scheduler": {
+                    "$ref": "#/$defs/nodes/scheduler"
+                },
                 "security": {
                     "$ref": "#/$defs/nodes/security"
                 },
@@ -24524,6 +24697,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_embed": {
+                    "$ref": "#/$defs/nodes/survos_ai_embed"
                 },
                 "survos_api_grid": {
                     "$ref": "#/$defs/nodes/survos_api_grid"
@@ -24719,6 +24895,9 @@
                 "router": {
                     "$ref": "#/$defs/nodes/router"
                 },
+                "scheduler": {
+                    "$ref": "#/$defs/nodes/scheduler"
+                },
                 "security": {
                     "$ref": "#/$defs/nodes/security"
                 },
@@ -24734,6 +24913,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_embed": {
+                    "$ref": "#/$defs/nodes/survos_ai_embed"
                 },
                 "survos_api_grid": {
                     "$ref": "#/$defs/nodes/survos_api_grid"
@@ -24938,6 +25120,9 @@
                 "router": {
                     "$ref": "#/$defs/nodes/router"
                 },
+                "scheduler": {
+                    "$ref": "#/$defs/nodes/scheduler"
+                },
                 "security": {
                     "$ref": "#/$defs/nodes/security"
                 },
@@ -24952,6 +25137,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_embed": {
+                    "$ref": "#/$defs/nodes/survos_ai_embed"
                 },
                 "survos_api_grid": {
                     "$ref": "#/$defs/nodes/survos_api_grid"

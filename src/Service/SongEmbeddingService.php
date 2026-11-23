@@ -6,26 +6,30 @@ namespace App\Service;
 
 use App\Entity\Song;
 use Doctrine\ORM\EntityManagerInterface;
+use Survos\AiEmbedBundle\EmbeddingProviderInterface as VectorProvider;
+use Survos\AiEmbedBundle\EmbeddingService;
 use Survos\SearchBundle\Contract\EmbeddingProviderInterface;
 use Survos\SearchBundle\Search\EmbeddingProfile;
-use Symfony\AI\Platform\PlatformInterface;
-use Symfony\AI\Platform\Result\VectorResult;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Song vectors: generated and cached by survos/ai-embed-bundle (keyed by model profile and
+ * exact input, in a DuckDB file outside the catalog database), projected onto Song::$embedding,
+ * which the Elasticsearch index reads. Search queries go to the provider directly: the
+ * cache file is locked by one process at a time, and a web request must not wait for it.
+ */
 final class SongEmbeddingService implements EmbeddingProviderInterface
 {
     public const int DIMENSIONS = 768;
-    private bool $modelVerified = false;
     public readonly EmbeddingProfile $profile;
 
     public function __construct(
-        #[Autowire(service: 'ai.platform.ollama')] private PlatformInterface $platform,
-        #[Autowire(service: 'kpa.ollama.client')] private HttpClientInterface $http,
+        private EmbeddingService $vectors,
+        private VectorProvider $provider,
         private EntityManagerInterface $em,
         #[Autowire(env: 'KPA_EMBED_MODEL')] string $model,
         #[Autowire(env: 'KPA_EMBED_REVISION')] string $revision,
@@ -75,70 +79,79 @@ final class SongEmbeddingService implements EmbeddingProviderInterface
 
     public function embed(string $text): array
     {
-        return $this->generate('search_query: '.$text);
-    }
-
-    private function generate(string $text): array
-    {
         if (!$this->enabled) {
-            throw new \RuntimeException('AI processing is paused pending raw catalog verification.');
+            throw new \RuntimeException('AI is paused in this app (KPA_AI_ENABLED=0).');
         }
-        if (!$this->modelVerified) {
-            $models = $this->http->request('GET', '/api/tags')->toArray()['models'] ?? [];
-            $matches = array_filter($models, fn (array $m): bool => $m['name'] === $this->profile->model && $m['digest'] === $this->profile->revision);
-            if (!$matches) {
-                throw new \RuntimeException('Ollama model digest differs from KPA_EMBED_REVISION. Update the revision and regenerate embeddings before using this model.');
-            }
-            $this->modelVerified = true;
-        }
-        $result = $this->platform->invoke($this->profile->model, $text, ['truncate' => false])->getResult();
-        $vector = $result instanceof VectorResult ? ($result->getContent()[0] ?? null)?->getData() : null;
+        // the provider checks the installed model's digest against the pinned revision
+        $vector = $this->provider->embed([$this->vectors->profile->input($text, 'query')], $this->vectors->profile)[0] ?? null;
         if (!self::validVector($vector)) {
             throw new \UnexpectedValueException('Expected a finite, nonzero 768-dimensional embedding.');
         }
+
         return $vector;
     }
 
-    #[AsCommand('app:songs:embed', 'Persist missing or stale song embeddings; safely resume after interruption')]
+    #[AsCommand('app:songs:embed', 'Embed songs through the vector cache and project the vectors onto the songs; safely resumes')]
     public function generateSongs(SymfonyStyle $io, #[Option('Maximum number of vectors to generate; zero means all')] int $limit = 0): int
     {
         if (!$this->enabled) {
-            $io->error('AI processing is paused pending raw catalog verification.');
+            $io->error('AI is paused in this app (KPA_AI_ENABLED=0).');
             return Command::FAILURE;
         }
         if ($limit < 0) {
             throw new \InvalidArgumentException('Limit must be zero or positive.');
         }
-        $generated = $reused = $flagged = 0;
+
+        // 1. one cache request per song; a vector already projected and current seeds the cache, no model call
+        $requests = [];
+        $hits = $seeded = $flagged = 0;
         foreach ($this->em->createQuery('SELECT s FROM App\\Entity\\Song s ORDER BY s.id')->toIterable() as $song) {
             if (self::needsLyricsReview($song)) {
                 ++$flagged;
                 $io->writeln('Needs lyrics review (excluded from embeddings): '.$song->id);
                 $this->em->getConnection()->update('song', ['embedding' => null, 'embedding_fingerprint' => null], ['id' => $song->id]);
-                $this->em->detach($song);
-                continue;
-            }
-            $text = self::text($song);
-            if ($this->cachedVector($song) !== null) {
-                ++$reused;
-            } elseif ($text !== '') {
-                $vector = $this->generate('search_document: '.$text);
-                // Persist independently of indexing/workflow listeners. A later ES rebuild reads this cache.
-                $this->em->getConnection()->update('song', [
-                    'embedding' => json_encode($vector, JSON_THROW_ON_ERROR),
-                    'embedding_fingerprint' => $this->profile->fingerprint($text),
-                ], ['id' => $song->id]);
-                ++$generated;
-                if ($generated % 100 === 0) {
-                    $io->writeln(sprintf('Persisted %d vectors.', $generated));
+            } elseif ('' !== $text = self::text($song)) {
+                $request = $this->vectors->ensureEmbedding($text);
+                if ($request['cacheHit']) {
+                    ++$hits;
+                } elseif (null !== $projected = $this->cachedVector($song)) {
+                    $this->vectors->cache->complete([$request], [$projected], $this->vectors->profile);
+                    ++$seeded;
                 }
+                $requests[$song->id] = [$request['id'], $this->profile->fingerprint($text), $song->embeddingFingerprint];
             }
             $this->em->detach($song);
-            if ($limit > 0 && $generated >= $limit) {
-                break;
-            }
         }
-        $io->success(sprintf('Generated %d; reused %d cached embeddings; %d need lyrics review.', $generated, $reused, $flagged));
+
+        // 2. generate what the cache does not have yet
+        $generated = 0;
+        do {
+            $batch = $limit > 0 ? min(1000, $limit - $generated) : 1000;
+            $completed = $batch > 0 ? $this->vectors->consume(16, $batch)['completed'] : 0;
+            $generated += $completed;
+            if ($completed > 0) {
+                $io->writeln(sprintf('Generated %d vectors.', $generated));
+            }
+        } while ($completed > 0 && ($limit === 0 || $generated < $limit));
+
+        // 3. project the cached vectors onto the songs whose projection is missing or stale
+        $projected = $pending = 0;
+        foreach ($requests as $id => [$requestId, $fingerprint, $current]) {
+            if ($current === $fingerprint) {
+                continue;
+            }
+            if (null === $vector = $this->vectors->cache->vector($requestId, $this->vectors->profile)) {
+                ++$pending;
+                continue;
+            }
+            // persisted independently of indexing/workflow listeners; a later ES rebuild reads it
+            $this->em->getConnection()->update('song', ['embedding' => json_encode($vector, JSON_THROW_ON_ERROR), 'embedding_fingerprint' => $fingerprint], ['id' => $id]);
+            ++$projected;
+        }
+        $this->vectors->cache->close();
+
+        $io->success(sprintf('%d songs: %d cache hits, %d seeded from the songs, %d generated, %d projected, %d still pending; %d need lyrics review.', \count($requests), $hits, $seeded, $generated, $projected, $pending, $flagged));
+
         return Command::SUCCESS;
     }
 }
