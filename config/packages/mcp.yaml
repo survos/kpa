@@ -1,0 +1,18 @@
+# The Kid Pan Alley catalog over MCP: over HTTP at /mcp, or over stdio with `php bin/console mcp:server kpa`.
+mcp:
+    servers:
+        kpa:
+            name: Kid Pan Alley
+            description: Search and read the Kid Pan Alley catalog of songs written by children with professional songwriters, with lyrics, credits and recordings.
+            instructions: >-
+                Kid Pan Alley brings children and professional songwriters together to write songs. The catalog has about 2,560
+                songs from schools since 1999. Start with find_songs for a theme or a question (it searches by meaning), or
+                songs_by_school for one school. get_song returns the credits, the full lyrics and playable recordings;
+                recordings marked aiGenerated are Suno or AI arrangements, not the children's performances.
+                Use catalog_stats for exact counts. "K.P. Alley" in the writers is a house credit, not a person.
+            registry: 'App\Mcp\'
+            transports:
+                stdio: true
+            http:
+                path: /mcp
+                allowed_hosts: ['localhost', '127.0.0.1', 'kpa.wip', 'kpa.survos.com']

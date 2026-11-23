@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Ask the catalog' %}
+{% block page_subtitle 'Questions about Kid Pan Alley songs, answered from the catalog' %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        {% for turn in turns %}
+            <div class="card mb-3" {% if loop.last %}id="latest"{% endif %}>
+                <div class="card-header bg-light"><strong>{{ turn.question }}</strong></div>
+                <div class="card-body {{ turn.failed|default(false) ? 'text-danger' }}">
+                    {{ turn.html|raw }}
+                    {% if turn.tools|length %}
+                        <details class="small text-muted mt-2">
+                            <summary>Looked up {{ turn.tools|length }} time{{ turn.tools|length == 1 ? '' : 's' }}</summary>
+                            <ul class="mb-0">
+                                {% for call in turn.tools %}
+                                    <li><code>{{ call.name }}</code> {{ call.arguments|json_encode }}{% if call.results is not null %} → {{ call.results }} result{{ call.results == 1 ? '' : 's' }}{% endif %}{% if call.failed %} (failed){% endif %}</li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <p class="text-muted">Ask about themes, schools, lyrics or recordings. For example:
+                <em>Which songs are about grandparents?</em>, <em>What did Grymes write in 2024?</em>,
+                <em>Find a song about the ocean that has a recording.</em></p>
+        {% endfor %}
+
+        <form method="post" action="{{ path('ask_post') }}" class="card card-body mb-3"
+              onsubmit="this.querySelector('button[type=submit]').disabled = true; this.querySelector('button[type=submit]').textContent = 'Looking it up…';">
+            <label class="form-label" for="question">Your question</label>
+            <textarea class="form-control mb-2" id="question" name="question" rows="2" maxlength="1000" required autofocus></textarea>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Ask</button>
+            </div>
+        </form>
+        {% if turns|length %}
+            <form method="post" action="{{ path('ask_reset') }}"><button class="btn btn-link btn-sm px-0">Start a new conversation</button></form>
+        {% endif %}
+        <p class="small text-muted">Answers come from the catalog through the same tools as the MCP server at <code>{{ url('_mcp_endpoint_kpa') }}</code>.</p>
+    </div>
+</div>
+{% endblock %}

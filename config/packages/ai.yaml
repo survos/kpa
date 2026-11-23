@@ -4,3 +4,25 @@ ai:
         # the themed episodes' script writer (src/Episode/SongScriptWriter.php)
         mistral:
             api_key: '%env(MISTRAL_API_KEY)%'
+
+    # The catalog chat (/ask). Its tools call the MCP tools in src/Mcp/SongTools.php.
+    agent:
+        kpa_chat:
+            platform: 'ai.platform.mistral'
+            model: '%env(KPA_CHAT_MODEL)%'
+            prompt:
+                file: '%kernel.project_dir%/config/prompts/kpa-chat.md'
+            tools:
+                - service: 'App\Chat\Tool\FindSongs'
+                  name: 'find_songs'
+                  description: 'Find Kid Pan Alley songs closest in meaning to a question or theme. Arguments: question (plain words), limit (1-30), withRecording (only songs with a recording), school (part of a school name). Returns id, title, school, year, writers, recordings count, chorus start and link.'
+                - service: 'App\Chat\Tool\GetSong'
+                  name: 'get_song'
+                  description: 'Read one song by id: credits, subtitle naming the class, chorus, full lyrics, and recordings with URLs (aiGenerated marks Suno or AI arrangements).'
+                - service: 'App\Chat\Tool\SongsBySchool'
+                  name: 'songs_by_school'
+                  description: 'List the songs of one school (part of its name), optionally one year.'
+                - service: 'App\Chat\Tool\CatalogStats'
+                  name: 'catalog_stats'
+                  description: 'Exact catalog counts: songs, with lyrics, with recordings, years, schools. Use for how-many questions; never estimate from search results.'
+            max_tool_calls: 6

@@ -1,0 +1,4 @@
+mcp:
+    # The HTTP routes of the configured MCP servers.
+    resource: .
+    type: mcp

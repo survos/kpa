@@ -2,7 +2,8 @@ framework:
     router:
         # Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
         # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
-        #default_uri: http://localhost
+        # MCP over stdio and console commands link to the public site.
+        default_uri: '%env(KPA_PUBLIC_URL)%'
 
 when@prod:
     framework:
