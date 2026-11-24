@@ -64,4 +64,5 @@ return [
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     Survos\Tree\SurvosTreeBundle::class => ['all' => true],
     Survos\AiEmbedBundle\SurvosAiEmbedBundle::class => ['all' => true],
+    Survos\AiChatBundle\SurvosAiChatBundle::class => ['all' => true],
 ];

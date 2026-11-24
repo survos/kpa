@@ -105,7 +105,8 @@ final class SongToolsTest extends WebTestCase
         $this->client->request('GET', '/ask/connect');
         self::assertResponseIsSuccessful();
         $page = (string) $this->client->getResponse()->getContent();
-        self::assertStringContainsString('https://kpa.survos.com/mcp', $page);
+        self::assertStringContainsString('<code>https://kpa.survos.com/mcp</code>', $page);
+        self::assertStringNotContainsString('/mcp/mcp', $page);
         self::assertStringContainsString('claude mcp add --transport http kpa https://kpa.survos.com/mcp', $page);
         foreach (array_column($this->rpc('tools/list')['tools'], 'name') as $tool) {
             if (!in_array($tool, ['app_recordings_candidates', 'agent_calls'], true)) {

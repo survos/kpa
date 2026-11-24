@@ -40,6 +40,7 @@
         "spatie/flysystem-dropbox": "^3.1.0",
         "stevenmaguire/oauth2-dropbox": "^3.1",
         "survos/admin-bundle": "^2.10.19",
+        "survos/ai-chat-bundle": "^2.45.87",
         "survos/ai-embed-bundle": "^2.45.85",
         "survos/api-grid-bundle": "^2.10.19",
         "survos/auth-bundle": "^2.10.19",

@@ -206,6 +206,9 @@
     "survos/ai-batch-bundle": {
         "version": "2.45.71"
     },
+    "survos/ai-chat-bundle": {
+        "version": "2.45.86"
+    },
     "survos/ai-embed-bundle": {
         "version": "2.45.85"
     },
@@ -484,6 +487,15 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/mattermost-notifier": {
+        "version": "8.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.1",
+            "ref": "4ef2737ce2b73ffa6941da9d75101faa6205eb43"
+        }
+    },
     "symfony/mcp-bundle": {
         "version": "v0.9.0"
     },
@@ -509,6 +521,18 @@
         },
         "files": [
             "config/packages/monolog.yaml"
+        ]
+    },
+    "symfony/notifier": {
+        "version": "8.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "8.2",
+            "ref": "59a850f2e18e98b324e6bfcaf84081c0cef39426"
+        },
+        "files": [
+            "config/packages/notifier.yaml"
         ]
     },
     "symfony/panther": {

@@ -4,86 +4,39 @@
 {% block page_subtitle 'Use the Kid Pan Alley catalog from any agent that supports the Model Context Protocol (MCP)' %}
 
 {% block body %}
-{% set mcp = publicUrl ~ '/mcp' %}
 <div class="row justify-content-center">
 <div class="col-lg-9">
-    <p><a href="{{ path('ask') }}">← Ask the catalog</a></p>
-    <p class="lead">Search the songs, read lyrics and credits, play recordings and find podcast episodes from your own AI assistant.
-        The connector is read-only and needs no Kid Pan Alley account.</p>
-
-    <section class="card mb-3"><div class="card-body">
-        <h2>Connect by URL</h2>
-        <p>In your agent’s MCP settings, add a server named <strong>Kid Pan Alley</strong>. Choose <strong>Streamable HTTP</strong> and enter:</p>
-        <pre><code>{{ mcp }}</code></pre>
-        <p class="mb-0">Choose <strong>No authentication</strong> (or <strong>No sign in</strong>). Your AI provider may require a supported plan or workspace administrator approval.</p>
-    </div></section>
-
-    <section class="card mb-3"><div class="card-body">
-        <h2>Connect in Claude</h2>
-        <p><a class="btn btn-outline-primary" href="https://claude.ai/customize/connectors" target="_blank" rel="noopener">Open Claude connectors ↗</a></p>
-        <ol>
-            <li>Open <strong>Customize → Connectors</strong>, then <strong>+ Add → Add custom connector</strong>.</li>
-            <li>Name it <strong>Kid Pan Alley</strong> and paste <code>{{ mcp }}</code>.</li>
-            <li>Continue, choose <strong>No sign in</strong>, and finish adding it.</li>
-            <li>In a chat, open <strong>+ → Connectors</strong> and enable Kid Pan Alley.</li>
-        </ol>
-        <p class="mb-0">Team accounts may need an owner to add it first. <a href="https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp" target="_blank" rel="noopener">Claude’s setup guide</a>.</p>
-    </div></section>
-
-    <section class="card mb-3"><div class="card-body">
-        <h2>Connect in ChatGPT</h2>
-        <p><a class="btn btn-outline-primary" href="https://chatgpt.com/plugins" target="_blank" rel="noopener">Open ChatGPT plugins ↗</a></p>
-        <ol>
-            <li>Select <strong>+ → Add custom MCP server</strong>.</li>
-            <li>Name it <strong>Kid Pan Alley</strong>, set the server URL to <code>{{ mcp }}</code>, and choose <strong>No authentication</strong>.</li>
-            <li>Review the permissions, create the plugin, and install it.</li>
-            <li>In a new chat, type <strong>@</strong> and select <strong>Kid Pan Alley</strong>.</li>
-        </ol>
-        <p class="mb-0">Your workspace may restrict custom servers. Labels can vary by account. <a href="https://developers.openai.com/api/docs/guides/custom-mcp-server" target="_blank" rel="noopener">ChatGPT’s setup guide</a>.</p>
-    </div></section>
-
-    <section class="card mb-3"><div class="card-body">
-        <h2>Connect in Claude Code</h2>
-        <pre><code>claude mcp add --transport http kpa {{ mcp }}</code></pre>
-        <p class="mb-0">Then ask, for example, “Use kpa to find songs about the ocean that have a recording.”</p>
-    </div></section>
-
-    <section class="card mb-3"><div class="card-body">
-        <h2>For developers: connect through a local checkout</h2>
-        <p>For agents supporting stdio servers, use this configuration. Replace the console path with your KPA checkout, and use the absolute path to PHP if your desktop app cannot find it.</p>
-        <pre><code>{
-  "mcpServers": {
-    "kpa": {
-      "command": "php",
-      "args": [
-        "/absolute/path/to/kpa/bin/console",
-        "mcp:server",
-        "kpa",
-        "--no-debug",
-        "--no-interaction"
-      ]
-    }
-  }
-}</code></pre>
-        <p class="mb-0">The app reads its local database and AI configuration; you do not paste any provider keys into your agent. Your agent uses its own model to answer; <code>find_songs</code> embeds the question with the app’s embedding model (Ollama).</p>
-    </div></section>
-
-    <section class="card mb-3"><div class="card-body">
-        <h2>What your agent can do</h2>
-        <dl>
-            <dt><code>find_songs</code></dt><dd>Find songs by meaning: a theme or a question (“songs about grandparents”). Optionally only songs with a recording, or of one school.</dd>
-            <dt><code>search_lyrics</code></dt><dd>Find songs by exact words (“old man winter”), ignoring case and punctuation, with the lines that contain them.</dd>
-            <dt><code>get_song</code></dt><dd>Read a song by <code>id</code>: credits, the class that wrote it, chorus, full lyrics, and its recordings with playable links. Recordings marked <code>aiGenerated</code> are Suno or AI arrangements, not the children’s performances.</dd>
-            <dt><code>songs_by_school</code></dt><dd>List the songs of one school, optionally one year.</dd>
-            <dt><code>catalog_stats</code></dt><dd>Exact counts of songs, lyrics, recordings, years and schools.</dd>
-            <dt><code>list_episodes</code>, <code>get_episode</code></dt><dd>The Kid Pan Alley podcast: episodes, chapters, the songs each plays, audio links and transcripts.</dd>
-        </dl>
-        <p>These tools read the catalog; they do not change it. Unlike the <a href="{{ path('ask') }}">chat on this site</a>, an outside agent decides which tools to call.</p>
-        <h3>Try this prompt</h3>
-        <blockquote class="border-start ps-3">Use Kid Pan Alley to find three songs about winter holidays that have recordings. For each, give the school, the year and who wrote it, quote one line of the chorus, and link the song page. Then tell me whether any of them is in a podcast episode.</blockquote>
-        <p>For a quick connection check, ask your agent to call <code>get_song</code> with <code>id: grym-2024-waving-goodbye-to-winter</code>. It should return “Waving Goodbye to Winter”, Grymes Memorial School, with four recordings.</p>
-        <p class="text-secondary mb-0">“K.P. Alley” in the writers is a house credit, not a person. The catalog is still being assembled and checked.</p>
-    </div></section>
+    {% embed '@SurvosAiChat/mcp_connect.html.twig' with {
+        name: 'Kid Pan Alley',
+        endpoint: publicUrl ~ '/mcp',
+        server: 'kpa',
+        checkout: 'KPA',
+        back: {url: path('ask'), label: 'Ask the catalog'},
+        lead: 'Search the songs, read lyrics and credits, play recordings and find podcast episodes from your own AI assistant. The connector is read-only and needs no Kid Pan Alley account.',
+        claude_code_prompt: 'Use kpa to find songs about the ocean that have a recording.',
+        hidden_tools: ['app_recordings_candidates', 'agent_calls'],
+        tool_descriptions: {
+            find_songs: 'Find songs by meaning: a theme or a question (“songs about grandparents”). Optionally only songs with a recording, or of one school.',
+            search_lyrics: 'Find songs by exact words (“old man winter”), ignoring case and punctuation, with the lines that contain them.',
+            get_song: 'Read a song by <code>id</code>: credits, the class that wrote it, chorus, full lyrics, and its recordings with playable links. Recordings marked <code>aiGenerated</code> are Suno or AI arrangements, not the children’s performances.',
+            songs_by_school: 'List the songs of one school, optionally one year.',
+            catalog_stats: 'Exact counts of songs, lyrics, recordings, years and schools.',
+            list_episodes: 'The Kid Pan Alley podcast: its episodes, with audio links.',
+            get_episode: 'One podcast episode: chapters, the songs it plays and the transcript.',
+        },
+        prompt: 'Use Kid Pan Alley to find three songs about winter holidays that have recordings. For each, give the school, the year and who wrote it, quote one line of the chorus, and link the song page. Then tell me whether any of them is in a podcast episode.',
+        footnotes: ['“K.P. Alley” in the writers is a house credit, not a person. The catalog is still being assembled and checked.'],
+    } %}
+        {% block local_note %}
+            <p class="mb-0">The app reads its local database and AI configuration; you do not paste any provider keys into your agent. Your agent uses its own model to answer; <code>find_songs</code> embeds the question with the app’s embedding model (Ollama).</p>
+        {% endblock %}
+        {% block tools_note %}
+            <p>These tools read the catalog; they do not change it. Unlike the <a href="{{ path('ask') }}">chat on this site</a>, an outside agent decides which tools to call.</p>
+        {% endblock %}
+        {% block check %}
+            <p>For a quick connection check, ask your agent to call <code>get_song</code> with <code>id: grym-2024-waving-goodbye-to-winter</code>. It should return “Waving Goodbye to Winter”, Grymes Memorial School, with four recordings.</p>
+        {% endblock %}
+    {% endembed %}
 </div>
 </div>
 {% endblock %}

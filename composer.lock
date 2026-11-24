@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49c90cf38a9bf52f6018b75f36cef33c",
+    "content-hash": "a0b60fac0487f03d2550d1a00f058e80",
     "packages": [
         {
             "name": "api-platform/core",
@@ -8077,6 +8077,82 @@
             "published-time": "2026-11-20T12:57:03+00:00"
         },
         {
+            "name": "survos/ai-chat-bundle",
+            "version": "2.45.87",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/survos/ai-chat-bundle.git",
+                "reference": "33b7974ff98ae02ca95ab09a9f410e3fe98761ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/survos/ai-chat-bundle/zipball/33b7974ff98ae02ca95ab09a9f410e3fe98761ff",
+                "reference": "33b7974ff98ae02ca95ab09a9f410e3fe98761ff",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.4",
+                "survos/kit-bundle": "^2.5",
+                "symfony/ai-agent": "^1.0.0-beta1",
+                "symfony/console": "^8.1",
+                "symfony/framework-bundle": "^8.1",
+                "symfony/http-client": "^8.1",
+                "symfony/mattermost-notifier": "^8.0",
+                "symfony/notifier": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^13.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "symfony": {
+                    "require": "^8.1"
+                },
+                "branch-alias": {
+                    "dev-main": "2.10-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Survos\\AiChatBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tac Tacelosky",
+                    "email": "tacman@gmail.com"
+                }
+            ],
+            "description": "Expose Symfony AI agents over an OpenAI-compatible /v1/chat/completions endpoint so chat platforms (e.g. Mattermost Agents) can @-mention them. The bundle owns transport/auth/routing; each app supplies a thin ChatAgentResolver. Ships an mm:post demo command over the Symfony Mattermost notifier. Also ships the “connect your own AI agent” page for an app's MCP server.",
+            "keywords": [
+                "Agent",
+                "Mattermost",
+                "ai",
+                "chat",
+                "completions",
+                "notifier",
+                "openai",
+                "symfony",
+                "symfony-ux"
+            ],
+            "support": {
+                "issues": "https://github.com/survos/ai-chat-bundle/issues",
+                "source": "https://github.com/survos/ai-chat-bundle/tree/2.45.87"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/kbond",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-11-24T00:24:41+00:00",
+            "published-time": "2026-11-24T00:25:16+00:00"
+        },
+        {
             "name": "survos/ai-embed-bundle",
             "version": "2.45.85",
             "source": {
@@ -14169,6 +14245,78 @@
             "published-time": "2026-11-04T12:35:27+00:00"
         },
         {
+            "name": "symfony/mattermost-notifier",
+            "version": "v8.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mattermost-notifier.git",
+                "reference": "351d08817a1618ed0c6bd41424a718574ca89079"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mattermost-notifier/zipball/351d08817a1618ed0c6bd41424a718574ca89079",
+                "reference": "351d08817a1618ed0c6bd41424a718574ca89079",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4.1",
+                "symfony/http-client": "^7.4|^8.0",
+                "symfony/notifier": "^7.4|^8.0"
+            },
+            "type": "symfony-notifier-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Notifier\\Bridge\\Mattermost\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuele Panzeri",
+                    "email": "thepanz@gmail.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Mattermost Notifier Bridge",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "Mattermost",
+                "notifier"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/mattermost-notifier/tree/v8.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-05-29T05:06:50+00:00",
+            "published-time": "2026-05-29T08:51:20+00:00"
+        },
+        {
             "name": "symfony/mcp-bundle",
             "version": "v1.0.0-BETA1",
             "source": {
@@ -14612,6 +14760,95 @@
             ],
             "time": "2026-09-10T19:32:07+00:00",
             "published-time": "2026-09-12T21:35:28+00:00"
+        },
+        {
+            "name": "symfony/notifier",
+            "version": "v8.2.0-BETA1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/notifier.git",
+                "reference": "3cf6e4121c3be14ff30c55d84070aa28236993c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/3cf6e4121c3be14ff30c55d84070aa28236993c7",
+                "reference": "3cf6e4121c3be14ff30c55d84070aa28236993c7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.4.1",
+                "psr/log": "^1|^2|^3",
+                "symfony/deprecation-contracts": "^2.5|^3"
+            },
+            "conflict": {
+                "symfony/dependency-injection": "<8.2",
+                "symfony/event-dispatcher-contracts": "<2.5",
+                "symfony/http-client-contracts": "<2.5"
+            },
+            "require-dev": {
+                "symfony/clock": "^7.4|^8.0",
+                "symfony/config": "^7.4|^8.0",
+                "symfony/dependency-injection": "^8.2",
+                "symfony/event-dispatcher": "^6.4|^7.0|^8.0",
+                "symfony/event-dispatcher-contracts": "^2.5|^3",
+                "symfony/http-client": "^7.4|^8.0",
+                "symfony/http-client-contracts": "^2.5|^3",
+                "symfony/http-foundation": "^7.4|^8.0",
+                "symfony/messenger": "^7.4|^8.0",
+                "symfony/webhook": "^7.4|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Notifier\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Sends notifications via one or more channels (email, SMS, ...)",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "notification",
+                "notifier"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/notifier/tree/v8.2.0-BETA1"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-11-01T22:29:06+00:00",
+            "published-time": "2026-11-04T12:36:00+00:00"
         },
         {
             "name": "symfony/object-mapper",
