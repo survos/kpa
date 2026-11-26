@@ -1,0 +1,24 @@
+# The "Connect your own AI agent" page for the MCP server (config/packages/mcp.yaml), at /ask/connect.
+survos_ai_chat:
+    connect:
+        url: '%env(KPA_PUBLIC_URL)%'
+        back: {url: /ask, label: Ask the catalog}
+        name: Kid Pan Alley
+        server: kpa
+        checkout: KPA
+        lead: Search the songs, read lyrics and credits, play recordings and find podcast episodes from your own AI assistant. The connector is read-only and needs no Kid Pan Alley account.
+        claude_code_prompt: Use kpa to find songs about the ocean that have a recording.
+        hidden_tools: [app_recordings_candidates, agent_calls]
+        tool_descriptions:
+            find_songs: 'Find songs by meaning: a theme or a question (“songs about grandparents”). Optionally only songs with a recording, or of one school.'
+            search_lyrics: Find songs by exact words (“old man winter”), ignoring case and punctuation, with the lines that contain them.
+            get_song: 'Read a song by <code>id</code>: credits, the class that wrote it, chorus, full lyrics, and its recordings with playable links. Recordings marked <code>aiGenerated</code> are Suno or AI arrangements, not the children’s performances.'
+            songs_by_school: List the songs of one school, optionally one year.
+            catalog_stats: Exact counts of songs, lyrics, recordings, years and schools.
+            list_episodes: 'The Kid Pan Alley podcast: its episodes, with audio links.'
+            get_episode: 'One podcast episode: chapters, the songs it plays and the transcript.'
+        tools_note: These tools read the catalog; they do not change it. Unlike the chat on this site, an outside agent decides which tools to call.
+        prompt: Use Kid Pan Alley to find three songs about winter holidays that have recordings. For each, give the school, the year and who wrote it, quote one line of the chorus, and link the song page. Then tell me whether any of them is in a podcast episode.
+        check: 'For a quick connection check, ask your agent to call get_song with id grym-2024-waving-goodbye-to-winter. It should return “Waving Goodbye to Winter”, Grymes Memorial School, with four recordings.'
+        footnotes:
+            - '“K.P. Alley” in the writers is a house credit, not a person. The catalog is still being assembled and checked.'
