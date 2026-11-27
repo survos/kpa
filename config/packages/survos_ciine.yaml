@@ -1,4 +1,3 @@
-# ciine-bundle's controllers (/screenshots, /cine/{code}, /api/asciicasts, ...) aren't used here, and its
-# app_screenshots route would replace kpa's own /doc/screenshots page.
+# ciine-bundle's controllers (/cine/{code}, /api/asciicasts, /player/...) aren't used here.
 survos_ciine:
     routes_enabled: false
