@@ -6535,6 +6535,7 @@
                                         "description": "Keywords or phrases that trigger handoff to this agent"
                                     },
                                     "minProperties": 1,
+                                    "minItems": 1,
                                     "description": "Handoff rules mapping agent service IDs to trigger keywords"
                                 },
                                 "fallback": {
@@ -8585,10 +8586,1266 @@
                 "$ref": "#/$defs/types/object_null",
                 "properties": {
                     "dbal": {
-                        "$ref": "#/$defs/types/variable"
+                        "anyOf": [
+                            {
+                                "$ref": "#/$defs/types/object_null",
+                                "properties": {
+                                    "default_connection": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "types": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "anyOf": [
+                                                {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "properties": {
+                                                        "class": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                },
+                                                {
+                                                    "type": [
+                                                        "string"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "driver_schemes": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        },
+                                        "description": "Defines a driver for given URL schemes. Schemes being driver names cannot be redefined. However, other default schemes can be overwritten."
+                                    },
+                                    "connections": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/variable"
+                                        },
+                                        "minProperties": 1,
+                                        "minItems": 1
+                                    }
+                                },
+                                "patternProperties": {
+                                    "^type$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^driver_scheme$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^connection$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            {
+                                "$ref": "#/$defs/types/object_null",
+                                "properties": {
+                                    "default_connection": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "types": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "anyOf": [
+                                                {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "properties": {
+                                                        "class": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                },
+                                                {
+                                                    "type": [
+                                                        "string"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "driver_schemes": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        },
+                                        "description": "Defines a driver for given URL schemes. Schemes being driver names cannot be redefined. However, other default schemes can be overwritten."
+                                    },
+                                    "url": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "A URL with connection information; any parameter value parsed from this string will override explicitly set parameters"
+                                    },
+                                    "dbname": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "host": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Defaults to \"localhost\" at runtime."
+                                    },
+                                    "port": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Defaults to null at runtime."
+                                    },
+                                    "user": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Defaults to \"root\" at runtime."
+                                    },
+                                    "password": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Defaults to null at runtime."
+                                    },
+                                    "dbname_suffix": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Adds the given suffix to the configured database name, this option has no effects for the SQLite platform"
+                                    },
+                                    "application_name": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "charset": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "path": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "memory": {
+                                        "$ref": "#/$defs/types/boolean"
+                                    },
+                                    "unix_socket": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The unix socket to use for MySQL"
+                                    },
+                                    "persistent": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "description": "True to use as persistent connection for the ibm_db2 driver"
+                                    },
+                                    "protocol": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The protocol to use for the ibm_db2 driver (default to TCPIP if omitted)"
+                                    },
+                                    "service": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "description": "True to use SERVICE_NAME as connection parameter instead of SID for Oracle"
+                                    },
+                                    "servicename": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Overrules dbname parameter if given and used as SERVICE_NAME or SID connection parameter for Oracle depending on the service parameter."
+                                    },
+                                    "sessionMode": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The session mode to use for the oci8 driver"
+                                    },
+                                    "server": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The name of a running database server to connect to for SQL Anywhere."
+                                    },
+                                    "default_dbname": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Override the default database (postgres) to connect to for PostgreSQL connection."
+                                    },
+                                    "sslmode": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Determines whether or with what priority a SSL TCP/IP connection will be negotiated with the server for PostgreSQL."
+                                    },
+                                    "sslrootcert": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The name of a file containing SSL certificate authority (CA) certificate(s). If the file exists, the server's certificate will be verified to be signed by one of these authorities."
+                                    },
+                                    "sslcert": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The path to the SSL client certificate file for PostgreSQL."
+                                    },
+                                    "sslkey": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The path to the SSL client key file for PostgreSQL."
+                                    },
+                                    "sslcrl": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "The file name of the SSL certificate revocation list for PostgreSQL."
+                                    },
+                                    "pooled": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "description": "True to use a pooled server with the oci8/pdo_oracle driver"
+                                    },
+                                    "MultipleActiveResultSets": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "description": "Configuring MultipleActiveResultSets for the pdo_sqlsrv driver"
+                                    },
+                                    "instancename": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Optional parameter, complete whether to add the INSTANCE_NAME parameter in the connection. It is generally used to connect to an Oracle RAC server to select the name of a particular instance."
+                                    },
+                                    "connectstring": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "description": "Complete Easy Connect connection descriptor, see https://docs.oracle.com/database/121/NETAG/naming.htm.When using this option, you will still need to provide the user and password parameters, but the other parameters will no longer be used. Note that when using this parameter, the getHost and getPort methods from Doctrine\\DBAL\\Connection will no longer function as expected."
+                                    },
+                                    "driver": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "pdo_mysql"
+                                    },
+                                    "auto_commit": {
+                                        "$ref": "#/$defs/types/boolean"
+                                    },
+                                    "schema_filter": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "logging": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "default": true
+                                    },
+                                    "profiling": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "default": true
+                                    },
+                                    "profiling_collect_backtrace": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "default": false,
+                                        "description": "Enables collecting backtraces when profiling is enabled"
+                                    },
+                                    "profiling_collect_schema_errors": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "default": true,
+                                        "description": "Enables collecting schema errors when profiling is enabled"
+                                    },
+                                    "server_version": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "idle_connection_ttl": {
+                                        "$ref": "#/$defs/types/integer",
+                                        "default": 600
+                                    },
+                                    "driver_class": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "wrapper_class": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "keep_replica": {
+                                        "$ref": "#/$defs/types/boolean"
+                                    },
+                                    "options": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/variable"
+                                        }
+                                    },
+                                    "mapping_types": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        }
+                                    },
+                                    "default_table_options": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        },
+                                        "description": "This option is used by the schema-tool and affects generated SQL. Possible keys include 'charset','collation', and 'engine'."
+                                    },
+                                    "schema_manager_factory": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "doctrine.dbal.default_schema_manager_factory"
+                                    },
+                                    "result_cache": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "replicas": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/variable"
+                                        }
+                                    }
+                                },
+                                "patternProperties": {
+                                    "^type$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^driver_scheme$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^option$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^mapping_type$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^replica$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^default_table_option$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
                     },
                     "orm": {
-                        "$ref": "#/$defs/types/variable"
+                        "anyOf": [
+                            {
+                                "$ref": "#/$defs/types/object_null",
+                                "properties": {
+                                    "default_entity_manager": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "enable_native_lazy_objects": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "default": true,
+                                        "deprecated": true,
+                                        "description": "Deprecated since doctrine/doctrine-bundle 3.1: The \"enable_native_lazy_objects\" option is deprecated and will be removed in DoctrineBundle 4.0, as native lazy objects are now always enabled."
+                                    },
+                                    "controller_resolver": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "properties": {
+                                                    "enabled": {
+                                                        "$ref": "#/$defs/types/boolean",
+                                                        "default": true
+                                                    },
+                                                    "auto_mapping": {
+                                                        "$ref": "#/$defs/types/boolean",
+                                                        "default": false,
+                                                        "description": "Deprecated since doctrine/doctrine-bundle 3.1: The \"doctrine.orm.controller_resolver.auto_mapping.auto_mapping\" option is deprecated and will be removed in DoctrineBundle 4.0, as it only accepts `false` since 3.0.\n\nSet to true to enable using route placeholders as lookup criteria when the primary key doesn't match the argument name",
+                                                        "deprecated": true
+                                                    },
+                                                    "evict_cache": {
+                                                        "$ref": "#/$defs/types/boolean",
+                                                        "default": false,
+                                                        "description": "Set to true to fetch the entity from the database instead of using the cache, if any"
+                                                    }
+                                                },
+                                                "additionalProperties": false
+                                            },
+                                            {
+                                                "type": [
+                                                    "boolean"
+                                                ]
+                                            }
+                                        ],
+                                        "default": {
+                                            "enabled": true,
+                                            "auto_mapping": false,
+                                            "evict_cache": false
+                                        }
+                                    },
+                                    "entity_managers": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/object_null",
+                                            "properties": {
+                                                "query_cache_driver": {
+                                                    "anyOf": [
+                                                        {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "properties": {
+                                                                "type": {
+                                                                    "$ref": "#/$defs/types/scalar",
+                                                                    "default": null
+                                                                },
+                                                                "id": {
+                                                                    "$ref": "#/$defs/types/scalar"
+                                                                },
+                                                                "pool": {
+                                                                    "$ref": "#/$defs/types/scalar"
+                                                                }
+                                                            },
+                                                            "additionalProperties": false
+                                                        },
+                                                        {
+                                                            "type": [
+                                                                "string"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "default": {
+                                                        "type": null
+                                                    }
+                                                },
+                                                "metadata_cache_driver": {
+                                                    "anyOf": [
+                                                        {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "properties": {
+                                                                "type": {
+                                                                    "$ref": "#/$defs/types/scalar",
+                                                                    "default": null
+                                                                },
+                                                                "id": {
+                                                                    "$ref": "#/$defs/types/scalar"
+                                                                },
+                                                                "pool": {
+                                                                    "$ref": "#/$defs/types/scalar"
+                                                                }
+                                                            },
+                                                            "additionalProperties": false
+                                                        },
+                                                        {
+                                                            "type": [
+                                                                "string"
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "result_cache_driver": {
+                                                    "anyOf": [
+                                                        {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "properties": {
+                                                                "type": {
+                                                                    "$ref": "#/$defs/types/scalar",
+                                                                    "default": null
+                                                                },
+                                                                "id": {
+                                                                    "$ref": "#/$defs/types/scalar"
+                                                                },
+                                                                "pool": {
+                                                                    "$ref": "#/$defs/types/scalar"
+                                                                }
+                                                            },
+                                                            "additionalProperties": false
+                                                        },
+                                                        {
+                                                            "type": [
+                                                                "string"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "default": {
+                                                        "type": null
+                                                    }
+                                                },
+                                                "entity_listeners": {
+                                                    "$ref": "#/$defs/types/variable"
+                                                },
+                                                "connection": {
+                                                    "$ref": "#/$defs/types/scalar"
+                                                },
+                                                "class_metadata_factory_name": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": "Doctrine\\ORM\\Mapping\\ClassMetadataFactory"
+                                                },
+                                                "default_repository_class": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": "Doctrine\\ORM\\EntityRepository"
+                                                },
+                                                "auto_mapping": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": false
+                                                },
+                                                "auto_discover_entities": {
+                                                    "$ref": "#/$defs/types/boolean_null",
+                                                    "default": null,
+                                                    "description": "Registers all entity classes discovered by the container scan, removing the need for explicit \"mappings\". When not set, enabled if neither \"mappings\" nor \"auto_mapping\" is configured and Symfony 8.2 and doctrine/orm 3.6 are available."
+                                                },
+                                                "naming_strategy": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": "doctrine.orm.naming_strategy.default"
+                                                },
+                                                "quote_strategy": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": "doctrine.orm.quote_strategy.default"
+                                                },
+                                                "typed_field_mapper": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": "doctrine.orm.typed_field_mapper.default"
+                                                },
+                                                "entity_listener_resolver": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": null
+                                                },
+                                                "fetch_mode_subselect_batch_size": {
+                                                    "$ref": "#/$defs/types/scalar"
+                                                },
+                                                "use_schema_editor_api": {
+                                                    "$ref": "#/$defs/types/boolean_null",
+                                                    "default": null,
+                                                    "description": "Set to \"true\" or \"false\" to explicitly opt in or out of the schema editor API for schema generation. Requires doctrine/dbal 4.5 or higher and doctrine/orm 3.8 or higher."
+                                                },
+                                                "repository_factory": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": "doctrine.orm.container_repository_factory"
+                                                },
+                                                "schema_ignore_classes": {
+                                                    "$ref": "#/$defs/types/array_null",
+                                                    "items": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    }
+                                                },
+                                                "validate_xml_mapping": {
+                                                    "$ref": "#/$defs/types/boolean",
+                                                    "default": false,
+                                                    "description": "Set to \"true\" to opt-in to the new mapping driver mode that was added in Doctrine ORM 2.14 and will be mandatory in ORM 3.0. See https://github.com/doctrine/orm/pull/6728."
+                                                },
+                                                "second_level_cache": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "properties": {
+                                                        "region_cache_driver": {
+                                                            "anyOf": [
+                                                                {
+                                                                    "$ref": "#/$defs/types/object_null",
+                                                                    "properties": {
+                                                                        "type": {
+                                                                            "$ref": "#/$defs/types/scalar",
+                                                                            "default": null
+                                                                        },
+                                                                        "id": {
+                                                                            "$ref": "#/$defs/types/scalar"
+                                                                        },
+                                                                        "pool": {
+                                                                            "$ref": "#/$defs/types/scalar"
+                                                                        }
+                                                                    },
+                                                                    "additionalProperties": false
+                                                                },
+                                                                {
+                                                                    "type": [
+                                                                        "string"
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "default": {
+                                                                "type": null
+                                                            }
+                                                        },
+                                                        "region_lock_lifetime": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "default": 60
+                                                        },
+                                                        "log_enabled": {
+                                                            "$ref": "#/$defs/types/boolean",
+                                                            "default": true
+                                                        },
+                                                        "region_lifetime": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "default": 3600
+                                                        },
+                                                        "enabled": {
+                                                            "$ref": "#/$defs/types/boolean",
+                                                            "default": true
+                                                        },
+                                                        "factory": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        },
+                                                        "regions": {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "additionalProperties": {
+                                                                "$ref": "#/$defs/types/object_null",
+                                                                "properties": {
+                                                                    "cache_driver": {
+                                                                        "anyOf": [
+                                                                            {
+                                                                                "$ref": "#/$defs/types/object_null",
+                                                                                "properties": {
+                                                                                    "type": {
+                                                                                        "$ref": "#/$defs/types/scalar",
+                                                                                        "default": null
+                                                                                    },
+                                                                                    "id": {
+                                                                                        "$ref": "#/$defs/types/scalar"
+                                                                                    },
+                                                                                    "pool": {
+                                                                                        "$ref": "#/$defs/types/scalar"
+                                                                                    }
+                                                                                },
+                                                                                "additionalProperties": false
+                                                                            },
+                                                                            {
+                                                                                "type": [
+                                                                                    "string"
+                                                                                ]
+                                                                            }
+                                                                        ],
+                                                                        "default": {
+                                                                            "type": null
+                                                                        }
+                                                                    },
+                                                                    "lock_path": {
+                                                                        "$ref": "#/$defs/types/scalar",
+                                                                        "default": "%kernel.cache_dir%/doctrine/orm/slc/filelock"
+                                                                    },
+                                                                    "lock_lifetime": {
+                                                                        "$ref": "#/$defs/types/scalar",
+                                                                        "default": 60
+                                                                    },
+                                                                    "type": {
+                                                                        "$ref": "#/$defs/types/scalar",
+                                                                        "default": "default"
+                                                                    },
+                                                                    "lifetime": {
+                                                                        "$ref": "#/$defs/types/scalar",
+                                                                        "default": null
+                                                                    },
+                                                                    "service": {
+                                                                        "$ref": "#/$defs/types/scalar"
+                                                                    },
+                                                                    "name": {
+                                                                        "$ref": "#/$defs/types/scalar"
+                                                                    }
+                                                                },
+                                                                "additionalProperties": false
+                                                            }
+                                                        },
+                                                        "loggers": {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "additionalProperties": {
+                                                                "$ref": "#/$defs/types/object_null",
+                                                                "properties": {
+                                                                    "name": {
+                                                                        "$ref": "#/$defs/types/scalar"
+                                                                    },
+                                                                    "service": {
+                                                                        "$ref": "#/$defs/types/scalar"
+                                                                    }
+                                                                },
+                                                                "additionalProperties": false
+                                                            }
+                                                        }
+                                                    },
+                                                    "patternProperties": {
+                                                        "^region$": {
+                                                            "$ref": "#/$defs/types/variable"
+                                                        },
+                                                        "^logger$": {
+                                                            "$ref": "#/$defs/types/variable"
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                },
+                                                "hydrators": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "additionalProperties": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    }
+                                                },
+                                                "mappings": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "additionalProperties": {
+                                                        "anyOf": [
+                                                            {
+                                                                "$ref": "#/$defs/types/object_null",
+                                                                "properties": {
+                                                                    "mapping": {
+                                                                        "$ref": "#/$defs/types/scalar",
+                                                                        "default": true
+                                                                    },
+                                                                    "type": {
+                                                                        "$ref": "#/$defs/types/scalar"
+                                                                    },
+                                                                    "dir": {
+                                                                        "$ref": "#/$defs/types/scalar"
+                                                                    },
+                                                                    "alias": {
+                                                                        "$ref": "#/$defs/types/scalar",
+                                                                        "deprecated": true,
+                                                                        "description": "Deprecated since doctrine/doctrine-bundle 3.4: The \"doctrine.orm.entity_managers..mappings..alias.alias\" option is deprecated and will be removed in DoctrineBundle 4.0, as Doctrine ORM no longer supports entity namespace aliases."
+                                                                    },
+                                                                    "prefix": {
+                                                                        "$ref": "#/$defs/types/scalar"
+                                                                    },
+                                                                    "is_bundle": {
+                                                                        "$ref": "#/$defs/types/boolean"
+                                                                    }
+                                                                },
+                                                                "additionalProperties": false
+                                                            },
+                                                            {
+                                                                "type": [
+                                                                    "string",
+                                                                    "boolean"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                "dql": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "properties": {
+                                                        "string_functions": {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "additionalProperties": {
+                                                                "$ref": "#/$defs/types/scalar"
+                                                            }
+                                                        },
+                                                        "numeric_functions": {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "additionalProperties": {
+                                                                "$ref": "#/$defs/types/scalar"
+                                                            }
+                                                        },
+                                                        "datetime_functions": {
+                                                            "$ref": "#/$defs/types/object_null",
+                                                            "additionalProperties": {
+                                                                "$ref": "#/$defs/types/scalar"
+                                                            }
+                                                        }
+                                                    },
+                                                    "patternProperties": {
+                                                        "^string_function$": {
+                                                            "$ref": "#/$defs/types/variable"
+                                                        },
+                                                        "^numeric_function$": {
+                                                            "$ref": "#/$defs/types/variable"
+                                                        },
+                                                        "^datetime_function$": {
+                                                            "$ref": "#/$defs/types/variable"
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                },
+                                                "filters": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "additionalProperties": {
+                                                        "$ref": "#/$defs/types/variable"
+                                                    },
+                                                    "description": "Register SQL Filters in the entity manager"
+                                                },
+                                                "identity_generation_preferences": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "additionalProperties": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    },
+                                                    "description": "Configures the preferences for identity generation when using the AUTO strategy. Valid values are \"SEQUENCE\" or \"IDENTITY\"."
+                                                }
+                                            },
+                                            "patternProperties": {
+                                                "^schema_ignore_class$": {
+                                                    "anyOf": [
+                                                        {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        },
+                                                        {
+                                                            "$ref": "#/$defs/types/array_null",
+                                                            "items": {
+                                                                "$ref": "#/$defs/types/scalar"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "^hydrator$": {
+                                                    "$ref": "#/$defs/types/variable"
+                                                },
+                                                "^mapping$": {
+                                                    "$ref": "#/$defs/types/variable"
+                                                },
+                                                "^filter$": {
+                                                    "$ref": "#/$defs/types/variable"
+                                                },
+                                                "^identity_generation_preference$": {
+                                                    "$ref": "#/$defs/types/variable"
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "default": {
+                                                "query_cache_driver": {
+                                                    "type": null
+                                                },
+                                                "result_cache_driver": {
+                                                    "type": null
+                                                },
+                                                "class_metadata_factory_name": "Doctrine\\ORM\\Mapping\\ClassMetadataFactory",
+                                                "default_repository_class": "Doctrine\\ORM\\EntityRepository",
+                                                "auto_mapping": false,
+                                                "auto_discover_entities": null,
+                                                "naming_strategy": "doctrine.orm.naming_strategy.default",
+                                                "quote_strategy": "doctrine.orm.quote_strategy.default",
+                                                "typed_field_mapper": "doctrine.orm.typed_field_mapper.default",
+                                                "entity_listener_resolver": null,
+                                                "use_schema_editor_api": null,
+                                                "repository_factory": "doctrine.orm.container_repository_factory",
+                                                "schema_ignore_classes": [],
+                                                "validate_xml_mapping": false,
+                                                "hydrators": [],
+                                                "mappings": [],
+                                                "filters": [],
+                                                "identity_generation_preferences": []
+                                            }
+                                        },
+                                        "minProperties": 1,
+                                        "minItems": 1
+                                    },
+                                    "resolve_target_entities": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        }
+                                    }
+                                },
+                                "patternProperties": {
+                                    "^entity_manager$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^resolve_target_entity$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    }
+                                },
+                                "additionalProperties": false
+                            },
+                            {
+                                "$ref": "#/$defs/types/object_null",
+                                "properties": {
+                                    "default_entity_manager": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "enable_native_lazy_objects": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "default": true,
+                                        "deprecated": true,
+                                        "description": "Deprecated since doctrine/doctrine-bundle 3.1: The \"enable_native_lazy_objects\" option is deprecated and will be removed in DoctrineBundle 4.0, as native lazy objects are now always enabled."
+                                    },
+                                    "controller_resolver": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "properties": {
+                                                    "enabled": {
+                                                        "$ref": "#/$defs/types/boolean",
+                                                        "default": true
+                                                    },
+                                                    "auto_mapping": {
+                                                        "$ref": "#/$defs/types/boolean",
+                                                        "default": false,
+                                                        "description": "Deprecated since doctrine/doctrine-bundle 3.1: The \"doctrine.orm.controller_resolver.auto_mapping.auto_mapping\" option is deprecated and will be removed in DoctrineBundle 4.0, as it only accepts `false` since 3.0.\n\nSet to true to enable using route placeholders as lookup criteria when the primary key doesn't match the argument name",
+                                                        "deprecated": true
+                                                    },
+                                                    "evict_cache": {
+                                                        "$ref": "#/$defs/types/boolean",
+                                                        "default": false,
+                                                        "description": "Set to true to fetch the entity from the database instead of using the cache, if any"
+                                                    }
+                                                },
+                                                "additionalProperties": false
+                                            },
+                                            {
+                                                "type": [
+                                                    "boolean"
+                                                ]
+                                            }
+                                        ],
+                                        "default": {
+                                            "enabled": true,
+                                            "auto_mapping": false,
+                                            "evict_cache": false
+                                        }
+                                    },
+                                    "resolve_target_entities": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        }
+                                    },
+                                    "query_cache_driver": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "properties": {
+                                                    "type": {
+                                                        "$ref": "#/$defs/types/scalar",
+                                                        "default": null
+                                                    },
+                                                    "id": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    },
+                                                    "pool": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    }
+                                                },
+                                                "additionalProperties": false
+                                            },
+                                            {
+                                                "type": [
+                                                    "string"
+                                                ]
+                                            }
+                                        ],
+                                        "default": {
+                                            "type": null
+                                        }
+                                    },
+                                    "metadata_cache_driver": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "properties": {
+                                                    "type": {
+                                                        "$ref": "#/$defs/types/scalar",
+                                                        "default": null
+                                                    },
+                                                    "id": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    },
+                                                    "pool": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    }
+                                                },
+                                                "additionalProperties": false
+                                            },
+                                            {
+                                                "type": [
+                                                    "string"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "result_cache_driver": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "properties": {
+                                                    "type": {
+                                                        "$ref": "#/$defs/types/scalar",
+                                                        "default": null
+                                                    },
+                                                    "id": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    },
+                                                    "pool": {
+                                                        "$ref": "#/$defs/types/scalar"
+                                                    }
+                                                },
+                                                "additionalProperties": false
+                                            },
+                                            {
+                                                "type": [
+                                                    "string"
+                                                ]
+                                            }
+                                        ],
+                                        "default": {
+                                            "type": null
+                                        }
+                                    },
+                                    "entity_listeners": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "connection": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "class_metadata_factory_name": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "Doctrine\\ORM\\Mapping\\ClassMetadataFactory"
+                                    },
+                                    "default_repository_class": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "Doctrine\\ORM\\EntityRepository"
+                                    },
+                                    "auto_mapping": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": false
+                                    },
+                                    "auto_discover_entities": {
+                                        "$ref": "#/$defs/types/boolean_null",
+                                        "default": null,
+                                        "description": "Registers all entity classes discovered by the container scan, removing the need for explicit \"mappings\". When not set, enabled if neither \"mappings\" nor \"auto_mapping\" is configured and Symfony 8.2 and doctrine/orm 3.6 are available."
+                                    },
+                                    "naming_strategy": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "doctrine.orm.naming_strategy.default"
+                                    },
+                                    "quote_strategy": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "doctrine.orm.quote_strategy.default"
+                                    },
+                                    "typed_field_mapper": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "doctrine.orm.typed_field_mapper.default"
+                                    },
+                                    "entity_listener_resolver": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": null
+                                    },
+                                    "fetch_mode_subselect_batch_size": {
+                                        "$ref": "#/$defs/types/scalar"
+                                    },
+                                    "use_schema_editor_api": {
+                                        "$ref": "#/$defs/types/boolean_null",
+                                        "default": null,
+                                        "description": "Set to \"true\" or \"false\" to explicitly opt in or out of the schema editor API for schema generation. Requires doctrine/dbal 4.5 or higher and doctrine/orm 3.8 or higher."
+                                    },
+                                    "repository_factory": {
+                                        "$ref": "#/$defs/types/scalar",
+                                        "default": "doctrine.orm.container_repository_factory"
+                                    },
+                                    "schema_ignore_classes": {
+                                        "$ref": "#/$defs/types/array_null",
+                                        "items": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        }
+                                    },
+                                    "validate_xml_mapping": {
+                                        "$ref": "#/$defs/types/boolean",
+                                        "default": false,
+                                        "description": "Set to \"true\" to opt-in to the new mapping driver mode that was added in Doctrine ORM 2.14 and will be mandatory in ORM 3.0. See https://github.com/doctrine/orm/pull/6728."
+                                    },
+                                    "second_level_cache": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "properties": {
+                                            "region_cache_driver": {
+                                                "anyOf": [
+                                                    {
+                                                        "$ref": "#/$defs/types/object_null",
+                                                        "properties": {
+                                                            "type": {
+                                                                "$ref": "#/$defs/types/scalar",
+                                                                "default": null
+                                                            },
+                                                            "id": {
+                                                                "$ref": "#/$defs/types/scalar"
+                                                            },
+                                                            "pool": {
+                                                                "$ref": "#/$defs/types/scalar"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    },
+                                                    {
+                                                        "type": [
+                                                            "string"
+                                                        ]
+                                                    }
+                                                ],
+                                                "default": {
+                                                    "type": null
+                                                }
+                                            },
+                                            "region_lock_lifetime": {
+                                                "$ref": "#/$defs/types/scalar",
+                                                "default": 60
+                                            },
+                                            "log_enabled": {
+                                                "$ref": "#/$defs/types/boolean",
+                                                "default": true
+                                            },
+                                            "region_lifetime": {
+                                                "$ref": "#/$defs/types/scalar",
+                                                "default": 3600
+                                            },
+                                            "enabled": {
+                                                "$ref": "#/$defs/types/boolean",
+                                                "default": true
+                                            },
+                                            "factory": {
+                                                "$ref": "#/$defs/types/scalar"
+                                            },
+                                            "regions": {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "additionalProperties": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "properties": {
+                                                        "cache_driver": {
+                                                            "anyOf": [
+                                                                {
+                                                                    "$ref": "#/$defs/types/object_null",
+                                                                    "properties": {
+                                                                        "type": {
+                                                                            "$ref": "#/$defs/types/scalar",
+                                                                            "default": null
+                                                                        },
+                                                                        "id": {
+                                                                            "$ref": "#/$defs/types/scalar"
+                                                                        },
+                                                                        "pool": {
+                                                                            "$ref": "#/$defs/types/scalar"
+                                                                        }
+                                                                    },
+                                                                    "additionalProperties": false
+                                                                },
+                                                                {
+                                                                    "type": [
+                                                                        "string"
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "default": {
+                                                                "type": null
+                                                            }
+                                                        },
+                                                        "lock_path": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "default": "%kernel.cache_dir%/doctrine/orm/slc/filelock"
+                                                        },
+                                                        "lock_lifetime": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "default": 60
+                                                        },
+                                                        "type": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "default": "default"
+                                                        },
+                                                        "lifetime": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "default": null
+                                                        },
+                                                        "service": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        },
+                                                        "name": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                }
+                                            },
+                                            "loggers": {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "additionalProperties": {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "properties": {
+                                                        "name": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        },
+                                                        "service": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                }
+                                            }
+                                        },
+                                        "patternProperties": {
+                                            "^region$": {
+                                                "$ref": "#/$defs/types/variable"
+                                            },
+                                            "^logger$": {
+                                                "$ref": "#/$defs/types/variable"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "hydrators": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        }
+                                    },
+                                    "mappings": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "anyOf": [
+                                                {
+                                                    "$ref": "#/$defs/types/object_null",
+                                                    "properties": {
+                                                        "mapping": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "default": true
+                                                        },
+                                                        "type": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        },
+                                                        "dir": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        },
+                                                        "alias": {
+                                                            "$ref": "#/$defs/types/scalar",
+                                                            "deprecated": true,
+                                                            "description": "Deprecated since doctrine/doctrine-bundle 3.4: The \"doctrine.orm.entity_managers..mappings..alias.alias\" option is deprecated and will be removed in DoctrineBundle 4.0, as Doctrine ORM no longer supports entity namespace aliases."
+                                                        },
+                                                        "prefix": {
+                                                            "$ref": "#/$defs/types/scalar"
+                                                        },
+                                                        "is_bundle": {
+                                                            "$ref": "#/$defs/types/boolean"
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                },
+                                                {
+                                                    "type": [
+                                                        "string",
+                                                        "boolean"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "dql": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "properties": {
+                                            "string_functions": {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "additionalProperties": {
+                                                    "$ref": "#/$defs/types/scalar"
+                                                }
+                                            },
+                                            "numeric_functions": {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "additionalProperties": {
+                                                    "$ref": "#/$defs/types/scalar"
+                                                }
+                                            },
+                                            "datetime_functions": {
+                                                "$ref": "#/$defs/types/object_null",
+                                                "additionalProperties": {
+                                                    "$ref": "#/$defs/types/scalar"
+                                                }
+                                            }
+                                        },
+                                        "patternProperties": {
+                                            "^string_function$": {
+                                                "$ref": "#/$defs/types/variable"
+                                            },
+                                            "^numeric_function$": {
+                                                "$ref": "#/$defs/types/variable"
+                                            },
+                                            "^datetime_function$": {
+                                                "$ref": "#/$defs/types/variable"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    "filters": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/variable"
+                                        },
+                                        "description": "Register SQL Filters in the entity manager"
+                                    },
+                                    "identity_generation_preferences": {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "additionalProperties": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        },
+                                        "description": "Configures the preferences for identity generation when using the AUTO strategy. Valid values are \"SEQUENCE\" or \"IDENTITY\"."
+                                    }
+                                },
+                                "patternProperties": {
+                                    "^resolve_target_entity$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^schema_ignore_class$": {
+                                        "anyOf": [
+                                            {
+                                                "$ref": "#/$defs/types/scalar"
+                                            },
+                                            {
+                                                "$ref": "#/$defs/types/array_null",
+                                                "items": {
+                                                    "$ref": "#/$defs/types/scalar"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "^hydrator$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^mapping$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^filter$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    "^identity_generation_preference$": {
+                                        "$ref": "#/$defs/types/variable"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
                     }
                 },
                 "additionalProperties": false
@@ -10293,7 +11550,7 @@
                         "$ref": "#/$defs/nodes/mailer"
                     },
                     "notifier": {
-                        "$ref": "#/$defs/types/variable"
+                        "$ref": "#/$defs/nodes/notifier"
                     },
                     "rate_limiter": {
                         "$ref": "#/$defs/types/variable"
@@ -10392,7 +11649,7 @@
                                     },
                                     "save_path": {
                                         "$ref": "#/$defs/types/scalar",
-                                        "description": "Defaults to \"%kernel.cache_dir%/sessions\" if the \"handler_id\" option is not null."
+                                        "description": "Defaults to \"%kernel.share_dir%/sessions\" if the \"handler_id\" option is not null."
                                     },
                                     "metadata_update_threshold": {
                                         "$ref": "#/$defs/types/integer",
@@ -11035,7 +12292,7 @@
                                             "properties": {
                                                 "scope": {
                                                     "$ref": "#/$defs/types/scalar",
-                                                    "description": "The regular expression that the request URL must match before adding the other options. When none is provided, the base URI is used instead."
+                                                    "description": "The regular expression that the request URL must match before adding the other options. When none is provided, the base URI is used instead. The regular expression should end with a \"/\", for example \"https://api\\.github\\.com/\", so that it doesn't match other hosts."
                                                 },
                                                 "base_uri": {
                                                     "$ref": "#/$defs/types/scalar",
@@ -12133,7 +13390,7 @@
                                                 "additionalProperties": {
                                                     "$ref": "#/$defs/types/scalar"
                                                 },
-                                                "description": "Recipient PGP public keys, as a map of email address to public key file path. Cannot be used together with \"repository\"."
+                                                "description": "Recipient PGP public keys, as a map of email address to the path of a file holding exactly one key with a user ID for that address. Cannot be used together with \"repository\"."
                                             },
                                             "binary": {
                                                 "$ref": "#/$defs/types/scalar",
@@ -12168,7 +13425,7 @@
                                             "hide_recipients": {
                                                 "$ref": "#/$defs/types/boolean",
                                                 "default": false,
-                                                "description": "Hide every recipient's key ID in the encrypted message (gpg --hidden-recipient). Recipients listed in the Bcc header are always hidden regardless of this option; set it to true to also hide To and Cc recipients."
+                                                "description": "Hide every recipient's key ID in the encrypted message (gpg --hidden-recipient-file). Recipients listed in the Bcc header are always hidden regardless of this option; set it to true to also hide To and Cc recipients."
                                             },
                                             "on_missing_key": {
                                                 "anyOf": [
@@ -14415,6 +15672,130 @@
                 },
                 "additionalProperties": false
             },
+            "notifier": {
+                "anyOf": [
+                    {
+                        "$ref": "#/$defs/types/object_null",
+                        "properties": {
+                            "enabled": {
+                                "$ref": "#/$defs/types/boolean",
+                                "default": true
+                            },
+                            "message_bus": {
+                                "$ref": "#/$defs/types/scalar",
+                                "default": null,
+                                "description": "The message bus to use. Defaults to the default bus if the Messenger component is installed."
+                            },
+                            "chatter_transports": {
+                                "$ref": "#/$defs/types/object_null",
+                                "additionalProperties": {
+                                    "$ref": "#/$defs/types/scalar"
+                                }
+                            },
+                            "texter_transports": {
+                                "$ref": "#/$defs/types/object_null",
+                                "additionalProperties": {
+                                    "$ref": "#/$defs/types/scalar"
+                                }
+                            },
+                            "notification_on_failed_messages": {
+                                "$ref": "#/$defs/types/boolean",
+                                "default": false
+                            },
+                            "channel_policy": {
+                                "$ref": "#/$defs/types/object_null",
+                                "additionalProperties": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/$defs/types/array_null",
+                                            "items": {
+                                                "$ref": "#/$defs/types/scalar"
+                                            }
+                                        },
+                                        {
+                                            "type": [
+                                                "string"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "admin_recipients": {
+                                "$ref": "#/$defs/types/array_null",
+                                "items": {
+                                    "$ref": "#/$defs/types/object_null",
+                                    "properties": {
+                                        "email": {
+                                            "$ref": "#/$defs/types/scalar"
+                                        },
+                                        "phone": {
+                                            "$ref": "#/$defs/types/scalar",
+                                            "default": ""
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            }
+                        },
+                        "patternProperties": {
+                            "^chatter_transport$": {
+                                "$ref": "#/$defs/types/variable"
+                            },
+                            "^texter_transport$": {
+                                "$ref": "#/$defs/types/variable"
+                            },
+                            "^admin_recipient$": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/$defs/types/object_null",
+                                        "properties": {
+                                            "email": {
+                                                "$ref": "#/$defs/types/scalar"
+                                            },
+                                            "phone": {
+                                                "$ref": "#/$defs/types/scalar",
+                                                "default": ""
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    },
+                                    {
+                                        "$ref": "#/$defs/types/array_null",
+                                        "items": {
+                                            "$ref": "#/$defs/types/object_null",
+                                            "properties": {
+                                                "email": {
+                                                    "$ref": "#/$defs/types/scalar"
+                                                },
+                                                "phone": {
+                                                    "$ref": "#/$defs/types/scalar",
+                                                    "default": ""
+                                                }
+                                            },
+                                            "additionalProperties": false
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    {
+                        "type": [
+                            "boolean"
+                        ]
+                    }
+                ],
+                "default": {
+                    "enabled": true,
+                    "message_bus": null,
+                    "chatter_transports": [],
+                    "texter_transports": [],
+                    "notification_on_failed_messages": false,
+                    "channel_policy": [],
+                    "admin_recipients": []
+                }
+            },
             "property_access": {
                 "anyOf": [
                     {
@@ -14664,7 +16045,8 @@
                                     "!php/enum Symfony\\Component\\Security\\Http\\Authentication\\ExposeSecurityLevel::AccountStatus",
                                     "account_status",
                                     "!php/enum Symfony\\Component\\Security\\Http\\Authentication\\ExposeSecurityLevel::All",
-                                    "all"
+                                    "all",
+                                    null
                                 ]
                             },
                             {
@@ -14795,6 +16177,7 @@
                             ]
                         },
                         "minProperties": 1,
+                        "minItems": 1,
                         "examples": [
                             {
                                 "App\\Entity\\User1": "auto",
@@ -15022,6 +16405,7 @@
                             "additionalProperties": false
                         },
                         "minProperties": 1,
+                        "minItems": 1,
                         "examples": [
                             {
                                 "my_memory_provider": {
@@ -16522,8 +17906,7 @@
                                                                             "$ref": "#/$defs/types/array_null",
                                                                             "items": {
                                                                                 "$ref": "#/$defs/types/scalar"
-                                                                            },
-                                                                            "minItems": 1
+                                                                            }
                                                                         },
                                                                         {
                                                                             "type": [
@@ -16531,7 +17914,7 @@
                                                                             ]
                                                                         }
                                                                     ],
-                                                                    "description": "Identifiers of this resource server, one of which the \"aud\" of the token must name. A single identifier may be given as a string."
+                                                                    "description": "Identifiers of this resource server, one of which the \"aud\" of the token must name. A single identifier may be given as a string. Defaults to the \"resource\" of \"resource_metadata\" when it is a URL."
                                                                 },
                                                                 "issuers": {
                                                                     "$ref": "#/$defs/types/array_null",
@@ -16704,7 +18087,7 @@
                                                                                     ]
                                                                                 }
                                                                             ],
-                                                                            "description": "Identifiers of this resource server, one of which the \"aud\" of the introspection response must name. A single identifier may be given as a string."
+                                                                            "description": "Identifiers of this resource server, one of which the \"aud\" of the introspection response must name. A single identifier may be given as a string. Defaults to the \"resource\" of \"resource_metadata\" when it is a URL."
                                                                         },
                                                                         "issuer": {
                                                                             "$ref": "#/$defs/types/scalar",
@@ -17085,10 +18468,9 @@
                                                             "minItems": 1,
                                                             "default": [
                                                                 "ES256",
-                                                                "PS256",
                                                                 "RS256"
                                                             ],
-                                                            "description": "The algorithms a proof may be signed with, announced in the challenge."
+                                                            "description": "The algorithms a proof may be signed with, announced in the challenge. \"PS256\", \"PS384\" and \"PS512\" need the GMP or BCMath extension."
                                                         },
                                                         "cache": {
                                                             "$ref": "#/$defs/types/scalar",
@@ -17122,10 +18504,9 @@
                                                                     "minItems": 1,
                                                                     "default": [
                                                                         "ES256",
-                                                                        "PS256",
                                                                         "RS256"
                                                                     ],
-                                                                    "description": "The algorithms a proof may be signed with, announced in the challenge."
+                                                                    "description": "The algorithms a proof may be signed with, announced in the challenge. \"PS256\", \"PS384\" and \"PS512\" need the GMP or BCMath extension."
                                                                 }
                                                             ]
                                                         }
@@ -17142,7 +18523,6 @@
                                                 "enabled": false,
                                                 "algorithms": [
                                                     "ES256",
-                                                    "PS256",
                                                     "RS256"
                                                 ],
                                                 "cache": "cache.security",
@@ -17482,7 +18862,8 @@
                             },
                             "additionalProperties": false
                         },
-                        "minProperties": 1
+                        "minProperties": 1,
+                        "minItems": 1
                     },
                     "access_control": {
                         "$ref": "#/$defs/types/array_null",
@@ -18068,7 +19449,7 @@
                                 "$ref": "#/$defs/types/number",
                                 "minimum": 0,
                                 "maximum": 1,
-                                "description": "The sampling factor to apply to transactions. A value of 0 will deny sending any transaction, and a value of 1 will send all transactions."
+                                "description": "The sampling factor to apply to transactions. A value of 0 will deny sending any transaction, and a value of 1 will send all transactions. A value of null disables tracing unless \"traces_sampler\" is set."
                             },
                             "traces_sampler": {
                                 "$ref": "#/$defs/types/scalar"
@@ -18079,10 +19460,37 @@
                                 "maximum": 1,
                                 "description": "The sampling factor to apply to profiles. A value of 0 will deny sending any profiles, and a value of 1 will send all profiles. Profiles are sampled in relation to traces_sample_rate"
                             },
+                            "profiles_sampler": {
+                                "$ref": "#/$defs/types/scalar"
+                            },
+                            "profile_session_sample_rate": {
+                                "$ref": "#/$defs/types/number",
+                                "minimum": 0,
+                                "maximum": 1,
+                                "description": "The sampling factor to apply to continuous profiling sessions. A value of 0 disables continuous profiling, and a value of 1 profiles every session."
+                            },
+                            "profile_lifecycle": {
+                                "anyOf": [
+                                    {
+                                        "enum": [
+                                            "manual",
+                                            "trace"
+                                        ]
+                                    },
+                                    {
+                                        "$ref": "#/$defs/types/param"
+                                    }
+                                ],
+                                "description": "Whether the continuous profiler is started and stopped manually (\"manual\") or runs while a sampled transaction is active (\"trace\")."
+                            },
                             "enable_logs": {
                                 "$ref": "#/$defs/types/boolean"
                             },
                             "log_flush_threshold": {
+                                "$ref": "#/$defs/types/variable",
+                                "default": null
+                            },
+                            "metric_flush_threshold": {
                                 "$ref": "#/$defs/types/variable",
                                 "default": null
                             },
@@ -18129,6 +19537,10 @@
                             "ignore_transactions": {
                                 "$ref": "#/$defs/types/variable"
                             },
+                            "trace_ignore_status_codes": {
+                                "$ref": "#/$defs/types/variable",
+                                "description": "The HTTP status codes of incoming requests whose transactions are not sent. Each entry is either a single status code (e.g. 404) or an inclusive range (e.g. [500, 599])."
+                            },
                             "before_send": {
                                 "$ref": "#/$defs/types/scalar"
                             },
@@ -18165,6 +19577,12 @@
                             "max_breadcrumbs": {
                                 "$ref": "#/$defs/types/integer",
                                 "minimum": 0
+                            },
+                            "max_breadth": {
+                                "$ref": "#/$defs/types/variable"
+                            },
+                            "send_client_reports": {
+                                "$ref": "#/$defs/types/boolean"
                             },
                             "before_breadcrumb": {
                                 "$ref": "#/$defs/types/variable"
@@ -18214,6 +19632,9 @@
                                 "description": "The maximum execution time for the request+response as a whole. It works only when using the default transport."
                             },
                             "http_ssl_verify_peer": {
+                                "$ref": "#/$defs/types/boolean"
+                            },
+                            "http_ssl_native_ca": {
                                 "$ref": "#/$defs/types/boolean"
                             },
                             "http_compression": {
@@ -18278,6 +19699,17 @@
                                     }
                                 ]
                             },
+                            "^trace_ignore_status_code$": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/$defs/types/variable"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/types/variable",
+                                        "description": "The HTTP status codes of incoming requests whose transactions are not sent. Each entry is either a single status code (e.g. 404) or an inclusive range (e.g. [500, 599])."
+                                    }
+                                ]
+                            },
                             "^prefix$": {
                                 "anyOf": [
                                     {
@@ -18306,11 +19738,13 @@
                                 "/opt/homebrew/Cellar/php@8.5/8.5.13/share/php@8.5/pear"
                             ],
                             "log_flush_threshold": null,
+                            "metric_flush_threshold": null,
                             "enable_metrics": true,
                             "environment": "%kernel.environment%",
                             "release": "%env(default::SENTRY_RELEASE)%",
                             "ignore_exceptions": [],
                             "ignore_transactions": [],
+                            "trace_ignore_status_codes": [],
                             "tags": [],
                             "in_app_exclude": [
                                 "%kernel.cache_dir%",
@@ -18940,6 +20374,32 @@
                 },
                 "additionalProperties": false
             },
+            "survos_ai_chat": {
+                "$ref": "#/$defs/types/object_null",
+                "properties": {
+                    "routes_enabled": {
+                        "$ref": "#/$defs/types/boolean",
+                        "default": true,
+                        "description": "Set false to manage this bundle's routes manually in your app. Bundles exposing sensitive routes (e.g. running console commands) should default this off."
+                    },
+                    "route_prefix": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "",
+                        "description": "URL prefix applied to all routes from this bundle."
+                    },
+                    "locale_prefix": {
+                        "$ref": "#/$defs/types/boolean",
+                        "default": false,
+                        "description": "Prepend {_locale} (constrained to kernel.enabled_locales) to this bundle's route prefix, e.g. /{_locale}/f instead of /f -- for bundles whose routes are meant to be shared/bookmarked, so the URL itself carries the locale instead of a query param."
+                    },
+                    "connect": {
+                        "$ref": "#/$defs/types/variable",
+                        "default": [],
+                        "description": "Variables of @SurvosAiChat/mcp_connect.html.twig for the page at /ask/connect: name (required), server, lead, prompt, ... (see the README)."
+                    }
+                },
+                "additionalProperties": false
+            },
             "survos_ai_embed": {
                 "$ref": "#/$defs/types/object_null",
                 "properties": {
@@ -19229,6 +20689,21 @@
             "survos_ciine": {
                 "$ref": "#/$defs/types/object_null",
                 "properties": {
+                    "routes_enabled": {
+                        "$ref": "#/$defs/types/boolean",
+                        "default": true,
+                        "description": "Set false to manage this bundle's routes manually in your app. Bundles exposing sensitive routes (e.g. running console commands) should default this off."
+                    },
+                    "route_prefix": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "",
+                        "description": "URL prefix applied to all routes from this bundle."
+                    },
+                    "locale_prefix": {
+                        "$ref": "#/$defs/types/boolean",
+                        "default": false,
+                        "description": "Prepend {_locale} (constrained to kernel.enabled_locales) to this bundle's route prefix, e.g. /{_locale}/f instead of /f -- for bundles whose routes are meant to be shared/bookmarked, so the URL itself carries the locale instead of a query param."
+                    },
                     "endpoint": {
                         "$ref": "#/$defs/types/scalar",
                         "default": "%env(default::CIINE_ENDPOINT)%"
@@ -19530,6 +21005,16 @@
                         "$ref": "#/$defs/types/scalar",
                         "default": "App\\Entity\\User"
                     },
+                    "screenshot_dir": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "%kernel.project_dir%/public/screenshots",
+                        "description": "Where doc:screenshots writes the images and screenshots.json; the gallery needs it under public/."
+                    },
+                    "chrome_binary": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "%env(default::CHROME_PATH)%",
+                        "description": "Chrome or Chromium for screenshots; empty finds the installed one."
+                    },
                     "console": {
                         "$ref": "#/$defs/types/object_null",
                         "properties": {
@@ -19616,6 +21101,42 @@
                         "$ref": "#/$defs/types/scalar",
                         "default": null,
                         "description": "Browser-facing Kibana base URL (including any space/base path). In debug, null defaults to localhost:5601 only when all ES connections are loopback; otherwise the link is hidden."
+                    },
+                    "transport_dsn": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": null,
+                        "description": "Declare the \"elastic\" Messenger transport that ReindexDocuments and RemoveDocuments are routed to with this DSN. Null declares it as sync://: the messages are handled where they are dispatched."
+                    },
+                    "driver": {
+                        "anyOf": [
+                            {
+                                "enum": [
+                                    "doctrine",
+                                    "amqp",
+                                    "phpamqplib"
+                                ]
+                            },
+                            {
+                                "$ref": "#/$defs/types/param"
+                            }
+                        ],
+                        "default": "doctrine",
+                        "description": "Options shape of the declared transport: a queue_name of the Doctrine table, one AMQP exchange and queue (amqp), or a jwage/phpamqplib-messenger DSN path segment (phpamqplib). Explicit because the DSN is usually an unresolved env placeholder."
+                    },
+                    "queue_name": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "elastic",
+                        "description": "Queue (and AMQP exchange) behind the \"elastic\" transport. Prefix it on a broker shared by several applications, e.g. \"myapp.elastic\"."
+                    },
+                    "transport_options": {
+                        "$ref": "#/$defs/types/variable",
+                        "default": [],
+                        "description": "Options added to the declared transport, e.g. prefetch_count."
+                    },
+                    "retry_strategy": {
+                        "$ref": "#/$defs/types/variable",
+                        "default": [],
+                        "description": "Retry strategy of the declared transport; Messenger defaults when empty."
                     },
                     "server_url": {
                         "$ref": "#/$defs/types/scalar",
@@ -19939,6 +21460,21 @@
             "survos_omeka": {
                 "$ref": "#/$defs/types/object_null",
                 "properties": {
+                    "routes_enabled": {
+                        "$ref": "#/$defs/types/boolean",
+                        "default": true,
+                        "description": "Set false to manage this bundle's routes manually in your app. Bundles exposing sensitive routes (e.g. running console commands) should default this off."
+                    },
+                    "route_prefix": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "",
+                        "description": "URL prefix applied to all routes from this bundle."
+                    },
+                    "locale_prefix": {
+                        "$ref": "#/$defs/types/boolean",
+                        "default": false,
+                        "description": "Prepend {_locale} (constrained to kernel.enabled_locales) to this bundle's route prefix, e.g. /{_locale}/f instead of /f -- for bundles whose routes are meant to be shared/bookmarked, so the URL itself carries the locale instead of a query param."
+                    },
                     "clients": {
                         "$ref": "#/$defs/types/object_null",
                         "additionalProperties": {
@@ -20866,6 +22402,52 @@
                     "default_transport": {
                         "$ref": "#/$defs/types/scalar",
                         "default": null
+                    },
+                    "transport_dsn": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": null,
+                        "description": "Declare the Messenger transports of async transitions with this DSN instead of writing them by hand. Null: the application declares them."
+                    },
+                    "driver": {
+                        "anyOf": [
+                            {
+                                "enum": [
+                                    "doctrine",
+                                    "amqp",
+                                    "phpamqplib"
+                                ]
+                            },
+                            {
+                                "$ref": "#/$defs/types/param"
+                            }
+                        ],
+                        "default": "doctrine",
+                        "description": "Options shape of the declared transports: a queue_name of the Doctrine table, one AMQP exchange and queue per transport (amqp), or a jwage/phpamqplib-messenger DSN path segment (phpamqplib). Explicit because the DSN is usually an unresolved env placeholder."
+                    },
+                    "queue_prefix": {
+                        "$ref": "#/$defs/types/scalar",
+                        "default": "",
+                        "description": "Prefix of generated transport names on a broker shared by several applications; ignored by the doctrine driver."
+                    },
+                    "workflow_paths": {
+                        "$ref": "#/$defs/types/array_null",
+                        "items": {
+                            "$ref": "#/$defs/types/scalar"
+                        },
+                        "default": [
+                            "%kernel.project_dir%/src/Workflow"
+                        ],
+                        "description": "Directories whose #[AsWorkflow] classes are read to find async transitions."
+                    },
+                    "transport_options": {
+                        "$ref": "#/$defs/types/variable",
+                        "default": [],
+                        "description": "Options added to every declared transport, e.g. prefetch_count."
+                    },
+                    "retry_strategy": {
+                        "$ref": "#/$defs/types/variable",
+                        "default": [],
+                        "description": "Retry strategy of every declared transport; Messenger defaults when empty."
                     },
                     "lock_factory": {
                         "$ref": "#/$defs/types/scalar",
@@ -22664,7 +24246,8 @@
                                                         },
                                                         "additionalProperties": false
                                                     },
-                                                    "minProperties": 1
+                                                    "minProperties": 1,
+                                                    "minItems": 1
                                                 }
                                             ]
                                         },
@@ -23199,7 +24782,8 @@
                                                                 },
                                                                 "additionalProperties": false
                                                             },
-                                                            "minProperties": 1
+                                                            "minProperties": 1,
+                                                            "minItems": 1
                                                         }
                                                     ]
                                                 }
@@ -23644,7 +25228,8 @@
                                                 },
                                                 "additionalProperties": false
                                             },
-                                            "minProperties": 1
+                                            "minProperties": 1,
+                                            "minItems": 1
                                         }
                                     ]
                                 },
@@ -24179,7 +25764,8 @@
                                                         },
                                                         "additionalProperties": false
                                                     },
-                                                    "minProperties": 1
+                                                    "minProperties": 1,
+                                                    "minItems": 1
                                                 }
                                             ]
                                         }
@@ -24278,6 +25864,9 @@
         "nelmio_cors": {
             "$ref": "#/$defs/nodes/nelmio_cors"
         },
+        "notifier": {
+            "$ref": "#/$defs/nodes/notifier"
+        },
         "property_access": {
             "$ref": "#/$defs/nodes/property_access"
         },
@@ -24304,6 +25893,9 @@
         },
         "survos_admin": {
             "$ref": "#/$defs/nodes/survos_admin"
+        },
+        "survos_ai_chat": {
+            "$ref": "#/$defs/nodes/survos_ai_chat"
         },
         "survos_ai_embed": {
             "$ref": "#/$defs/nodes/survos_ai_embed"
@@ -24495,6 +26087,9 @@
                 "nelmio_cors": {
                     "$ref": "#/$defs/nodes/nelmio_cors"
                 },
+                "notifier": {
+                    "$ref": "#/$defs/nodes/notifier"
+                },
                 "parameters": true,
                 "property_access": {
                     "$ref": "#/$defs/nodes/property_access"
@@ -24523,6 +26118,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_chat": {
+                    "$ref": "#/$defs/nodes/survos_ai_chat"
                 },
                 "survos_ai_embed": {
                     "$ref": "#/$defs/nodes/survos_ai_embed"
@@ -24720,6 +26318,9 @@
                 "nelmio_cors": {
                     "$ref": "#/$defs/nodes/nelmio_cors"
                 },
+                "notifier": {
+                    "$ref": "#/$defs/nodes/notifier"
+                },
                 "parameters": true,
                 "property_access": {
                     "$ref": "#/$defs/nodes/property_access"
@@ -24751,6 +26352,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_chat": {
+                    "$ref": "#/$defs/nodes/survos_ai_chat"
                 },
                 "survos_ai_embed": {
                     "$ref": "#/$defs/nodes/survos_ai_embed"
@@ -24939,6 +26543,9 @@
                 "nelmio_cors": {
                     "$ref": "#/$defs/nodes/nelmio_cors"
                 },
+                "notifier": {
+                    "$ref": "#/$defs/nodes/notifier"
+                },
                 "parameters": true,
                 "property_access": {
                     "$ref": "#/$defs/nodes/property_access"
@@ -24967,6 +26574,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_chat": {
+                    "$ref": "#/$defs/nodes/survos_ai_chat"
                 },
                 "survos_ai_embed": {
                     "$ref": "#/$defs/nodes/survos_ai_embed"
@@ -25165,6 +26775,9 @@
                 "nelmio_cors": {
                     "$ref": "#/$defs/nodes/nelmio_cors"
                 },
+                "notifier": {
+                    "$ref": "#/$defs/nodes/notifier"
+                },
                 "property_access": {
                     "$ref": "#/$defs/nodes/property_access"
                 },
@@ -25191,6 +26804,9 @@
                 },
                 "survos_admin": {
                     "$ref": "#/$defs/nodes/survos_admin"
+                },
+                "survos_ai_chat": {
+                    "$ref": "#/$defs/nodes/survos_ai_chat"
                 },
                 "survos_ai_embed": {
                     "$ref": "#/$defs/nodes/survos_ai_embed"
