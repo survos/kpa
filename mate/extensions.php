@@ -5,6 +5,52 @@
 // every other key is overwritten by Mate.
 
 return [
+    'survos/auth-bundle' => [
+        'enabled' => true,
+        'skills' => [
+            'brevo-mailer' => [
+                'enabled' => true,
+                'mode' => 'managed',
+                'state' => 'managed',
+                'source' => 'vendor/survos/auth-bundle/skills/brevo-mailer',
+                'source_hash' => 'sha256:24a8d1279d0595a5b249240f427011c7aa66fbea226c461f7d30eee72cf5e0b1',
+                'hash' => 'sha256:cff83fd9a32a4b1a6586b6f715db732303bc7516ed86f47741acda5f48f3a16e',
+                'targets' => [
+                    '.agents/skills/mate-brevo-mailer',
+                    '.claude/skills/mate-brevo-mailer',
+                ],
+            ],
+            'oauth-login' => [
+                'enabled' => true,
+                'mode' => 'managed',
+                'state' => 'managed',
+                'source' => 'vendor/survos/auth-bundle/skills/oauth-login',
+                'source_hash' => 'sha256:532b28111352017ddf7cba869c9716925645836e89c4c12c9bb5f92f80922427',
+                'hash' => 'sha256:6b435b7736f9d95fc07802ce2f29c1465eef316b3f48c19c6ade1a349ca9179e',
+                'targets' => [
+                    '.agents/skills/mate-oauth-login',
+                    '.claude/skills/mate-oauth-login',
+                ],
+            ],
+        ],
+    ],
+    'survos/deployment-bundle' => [
+        'enabled' => true,
+        'skills' => [
+            'dokku-deploy' => [
+                'enabled' => true,
+                'mode' => 'managed',
+                'state' => 'managed',
+                'source' => 'vendor/survos/deployment-bundle/skills/dokku-deploy',
+                'source_hash' => 'sha256:39b1e632be676f24774701cb4ec882db1d8b1bc98187afaa9f1654c57543fd4e',
+                'hash' => 'sha256:c85a60e23f50015dc1425df230fc45cbe383611c4bcd3ca17b699f8bb7360b46',
+                'targets' => [
+                    '.agents/skills/mate-dokku-deploy',
+                    '.claude/skills/mate-dokku-deploy',
+                ],
+            ],
+        ],
+    ],
     'survos/jsonl-bundle' => [
         'enabled' => true,
         'skills' => [

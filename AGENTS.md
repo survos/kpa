@@ -496,5 +496,5 @@ AI Mate: project diagnostic tools, exposed through the `vendor/bin/mate` CLI.
 - Invocation: always run Mate as `vendor/bin/mate`; another interpreter reports on a runtime that is not this application's.
 - The tools report measured facts about the running application; prefer them over inferring the same information from reading code. They are described in `mate/AGENT_INSTRUCTIONS.md`.
 - Discover the tool surface with `vendor/bin/mate tools:list`, inspect parameters with `tools:inspect <tool>`, and run a tool with `tools:call <tool> --<param>=<value>` (add `--format=json` for machine-readable output).
-- Installed extensions: survos/jsonl-bundle, symfony/ai-mate, symfony/ai-symfony-mate-extension.
+- Installed extensions: survos/auth-bundle, survos/deployment-bundle, survos/jsonl-bundle, symfony/ai-mate, symfony/ai-symfony-mate-extension.
 <!-- END AI_MATE_INSTRUCTIONS -->
