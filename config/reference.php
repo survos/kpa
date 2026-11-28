@@ -3787,6 +3787,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *         http?: array{
  *             path?: string|Param, // HTTP endpoint path. Defaults to "/mcp/<name>". // Default: null
+ *             max_body_bytes?: int|Param, // Maximum HTTP request body size in bytes, larger requests are answered with a 413. Leave unset to use the SDK default value. // Default: null
  *             allowed_hosts?: mixed, // DNS rebinding protection hosts (without port). Leave unset to keep the SDK default (localhost only), set an array of hostnames to expose a public MCP server, or false to disable the protection entirely. // Default: null
  *             allowed_origins?: list<scalar|Param|null>,
  *         },
@@ -3809,7 +3810,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             lifetime?: float|Param, // Seconds a stream is held before the server closes it gracefully. 0 means until the client or the runtime ends it. // Default: 30.0
  *         },
  *         session?: array{ // Session storage. Every server needs its own store: session ids are not namespaced by server, so a shared store makes a session minted on one server valid on the others.
- *             store?: "file"|"memory"|"cache"|"framework"|Param, // Default: "file"
+ *             store?: "file"|"memory"|"cache"|"framework"|"none"|Param, // With "none", handshake-era HTTP clients are served without sessions, so requests to the client, resource subscriptions and logging are not available to them. // Default: "file"
  *             directory?: string|Param, // Directory for the "file" store. Defaults to "%kernel.cache_dir%/mcp-sessions/<name>". // Default: null
  *             cache_pool?: string|Param, // PSR-16 cache service for the "cache" store. // Default: "cache.mcp.sessions"
  *             prefix?: string|Param, // Key prefix for the "cache" and "framework" stores and a "session.lock.factory" lock. Defaults to "mcp-<name>-". // Default: null

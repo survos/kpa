@@ -13650,6 +13650,12 @@
                                             "default": null,
                                             "description": "HTTP endpoint path. Defaults to \"/mcp/<name>\"."
                                         },
+                                        "max_body_bytes": {
+                                            "$ref": "#/$defs/types/integer_null",
+                                            "minimum": 1,
+                                            "default": null,
+                                            "description": "Maximum HTTP request body size in bytes, larger requests are answered with a 413. Leave unset to use the SDK default value."
+                                        },
                                         "allowed_hosts": {
                                             "$ref": "#/$defs/types/variable",
                                             "default": null,
@@ -13666,6 +13672,7 @@
                                     "additionalProperties": false,
                                     "default": {
                                         "path": null,
+                                        "max_body_bytes": null,
                                         "allowed_hosts": null,
                                         "allowed_origins": []
                                     }
@@ -13832,14 +13839,16 @@
                                                         "file",
                                                         "memory",
                                                         "cache",
-                                                        "framework"
+                                                        "framework",
+                                                        "none"
                                                     ]
                                                 },
                                                 {
                                                     "$ref": "#/$defs/types/param"
                                                 }
                                             ],
-                                            "default": "file"
+                                            "default": "file",
+                                            "description": "With \"none\", handshake-era HTTP clients are served without sessions, so requests to the client, resource subscriptions and logging are not available to them."
                                         },
                                         "directory": {
                                             "$ref": "#/$defs/types/string_null",

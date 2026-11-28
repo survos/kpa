@@ -6,8 +6,8 @@ namespace App\Mcp;
 
 use App\Catalog\EpisodeCatalog;
 use App\Catalog\SongFinder;
-use Mcp\Capability\Attribute\McpTool;
-use Mcp\Exception\ToolCallException;
+use Mcp\Server\Capability\Attribute\McpTool;
+use Mcp\Server\Exception\ToolCallException;
 use Mcp\Schema\ToolAnnotations;
 
 /** Read-only MCP tools over the Kid Pan Alley song catalog and podcast. The chat calls the same methods. */

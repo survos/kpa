@@ -1,4 +1,8 @@
 api_platform:
+    # API Platform's MCP integration needs mcp/sdk ^0.9; the app runs 0.10
+    # (symfony/mcp-bundle dev-main). Re-enable once API Platform supports it.
+    mcp:
+        enabled: false
     title: KPA API
     version: 1.0.0
 
