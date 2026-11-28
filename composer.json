@@ -37,7 +37,6 @@
         "phpoffice/phpspreadsheet": "^5.8",
         "phpoffice/phpword": "^1.4",
         "sentry/sentry-symfony": "^5.10.0",
-        "spatie/flysystem-dropbox": "^3.1.0",
         "stevenmaguire/oauth2-dropbox": "^3.1",
         "survos/admin-bundle": "^2.10.19",
         "survos/ai-chat-bundle": "^2.45.87",

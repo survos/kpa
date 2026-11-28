@@ -37,9 +37,6 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-use League\Flysystem\Filesystem;
-use Spatie\Dropbox\Client;
-use Spatie\FlysystemDropbox\DropboxAdapter;
 use Yectep\PhpSpreadsheetBundle\Factory;
 
 use function Symfony\Component\String\u;
@@ -147,22 +144,6 @@ class AppService
     }
 
 
-    public function loadLyricsViaDropbox(string $dir)
-    {
-        $appSecret = '6vhzz4dk8l9e3q2';
-        $client = new Client($appSecret);
-
-        $adapter = new DropboxAdapter($client);
-
-        $filesystem = new Filesystem($adapter, ['case_sensitive' => false]);
-//        $filesystem->write('/', );
-        foreach ($filesystem->listContents('/', $filesystem::LIST_DEEP) as $content) {
-            dd($content);
-        }
-        dd('stopped');
-
-
-    }
     public function loadLyrics(string $dir, string $jsonlPath): void
     {
         if (!file_exists($dir)) {

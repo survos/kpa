@@ -47,12 +47,6 @@ class AppController extends AbstractController
         return $this->render('app/homepage.html.twig', ['stats' => $stats]);
     }
 
-    private function loadLyrics($songs)
-    {
-        $this->appService->loadLyricsViaDropbox('/');
-        // @todo: fetch lyrics from Dropbox
-    }
-
     private function loadBestFriendsLyrics($songs)
     {
 
@@ -170,8 +164,6 @@ class AppController extends AbstractController
     #[Route(path: '/load-lyrics-from-files', name: 'app_load_lyrics')]
     public function index(AppService $appService, EntityManagerInterface $em)
     {
-        $this->appService->loadLyricsViaDropbox('/');
-
         $dir = __DIR__ . '/../../data/lyrics';
         $appService->loadLyrics($dir);
         return $this->redirectToRoute('song_index', ['lyrics_only' => true]);
